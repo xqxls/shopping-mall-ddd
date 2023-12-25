@@ -15,6 +15,7 @@
         <module>mall-admin</module>
         <module>mall-gateway</module>
         <module>mall-auth</module>
+        <module>mall-admin-rpc</module>
     </modules>
 
     <parent>
@@ -43,16 +44,15 @@
         <mybatis.version>3.5.9</mybatis.version>
         <mysql-connector.version>8.0.29</mysql-connector.version>
         <spring-data-commons.version>2.7.0</spring-data-commons.version>
-        <jjwt.version>0.9.1</jjwt.version>
         <aliyun-oss.version>2.5.0</aliyun-oss.version>
         <alipay-sdk.version>4.38.61.ALL</alipay-sdk.version>
         <logstash-logback.version>5.3</logstash-logback.version>
         <admin-starter-server.version>2.7.0</admin-starter-server.version>
         <minio.version>8.4.1</minio.version>
         <knife4j.version>3.0.3</knife4j.version>
-        <nimbus-jose-jwt.version>9.23</nimbus-jose-jwt.version>
         <mall-common.version>1.0-SNAPSHOT</mall-common.version>
         <mall-repository.version>1.0-SNAPSHOT</mall-repository.version>
+        <fastjson.version>1.2.71</fastjson.version>
     </properties>
 
     <dependencies>
@@ -81,6 +81,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+        <!--阿里巴巴 fastjson-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
     </dependencies>
 
@@ -173,18 +179,6 @@
                 <artifactId>spring-data-commons</artifactId>
                 <version>${spring-data-commons.version}</version>
             </dependency>
-            <!--JWT(Json Web Token)登录支持-->
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <version>${jjwt.version}</version>
-            </dependency>
-            <!--JWT(Json Web Token)登录支持-->
-            <dependency>
-                <groupId>com.nimbusds</groupId>
-                <artifactId>nimbus-jose-jwt</artifactId>
-                <version>${nimbus-jose-jwt.version}</version>
-            </dependency>
             <!-- 阿里云OSS -->
             <dependency>
                 <groupId>com.aliyun.oss</groupId>
@@ -210,6 +204,7 @@
                 <version>${minio.version}</version>
             </dependency>
         </dependencies>
+
     </dependencyManagement>
 
     <build>
@@ -223,20 +218,6 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <!--使用aliyun的Maven镜像源提升下载速度-->
-    <repositories>
-        <repository>
-            <id>aliyunmaven</id>
-            <name>aliyun</name>
-            <url>https://maven.aliyun.com/repository/public</url>
-        </repository>
-        <repository>
-            <id>central2</id>
-            <name>central2</name>
-            <url>https://repo1.maven.org/maven2/</url>
-        </repository>
-    </repositories>
 
 
 </project>

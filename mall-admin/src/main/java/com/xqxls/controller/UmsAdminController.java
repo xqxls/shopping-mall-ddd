@@ -8,16 +8,21 @@ import com.xqxls.dto.UmsAdminLoginParam;
 import com.xqxls.dto.UmsAdminParam;
 import com.xqxls.dto.UpdateAdminPasswordParam;
 import com.xqxls.model.UmsAdmin;
+import com.xqxls.model.UmsResource;
 import com.xqxls.model.UmsRole;
+import com.xqxls.response.UmsAdminRpcResponse;
+import com.xqxls.response.UmsResourceRpcResponse;
 import com.xqxls.service.UmsAdminService;
 import com.xqxls.service.UmsRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -175,5 +180,29 @@ public class UmsAdminController {
     public UserDto loadUserByUsername(@RequestParam String username) {
         UserDto userDTO = adminService.loadUserByUsername(username);
         return userDTO;
+    }
+
+    @ApiOperation("根据用户名获取用户")
+    @RequestMapping(value = "/getAdminByUsername", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<UmsAdminRpcResponse> getAdminByUsername(@RequestParam(value = "username") String username) {
+        UmsAdminRpcResponse result = new UmsAdminRpcResponse();
+        UmsAdmin umsAdminEntity = adminService.getAdminByUsername(username);
+        BeanUtils.copyProperties(umsAdminEntity,result);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("根据用户id获取资源")
+    @RequestMapping(value = "/getResourceList", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<List<UmsResourceRpcResponse>> getResourceList(@RequestParam(value = "adminId") Long adminId) {
+        List<UmsResourceRpcResponse> result = new ArrayList<>();
+        List<UmsResource> umsResourceEntityList = adminService.getResourceList(adminId);
+        umsResourceEntityList.forEach(resource->{
+            UmsResourceRpcResponse response = new UmsResourceRpcResponse();
+            BeanUtils.copyProperties(resource,response);
+            result.add(response);
+        });
+        return CommonResult.success(result);
     }
 }

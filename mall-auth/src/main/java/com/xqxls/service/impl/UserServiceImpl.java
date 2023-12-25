@@ -1,61 +1,59 @@
 package com.xqxls.service.impl;
 
-import com.xqxls.constant.MessageConstant;
-import com.xqxls.domain.SecurityUser;
-import com.xqxls.service.UmsAdminService;
-import com.xqxls.service.UmsMemberService;
-import com.xqxls.constant.AuthConstant;
+import cn.dev33.satoken.secure.SaSecureUtil;
+import cn.dev33.satoken.stp.SaTokenInfo;
+import cn.dev33.satoken.stp.StpUtil;
 import com.xqxls.domain.UserDto;
+import com.xqxls.feign.UmsAdminFeign;
+import com.xqxls.response.UmsAdminRpcResponse;
+import com.xqxls.response.UmsResourceRpcResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AccountExpiredException;
-import org.springframework.security.authentication.CredentialsExpiredException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.LockedException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 用户管理业务类
  * Created by xqxls on 2020/6/19.
  */
 @Service
-public class UserServiceImpl implements UserDetailsService {
+public class UserServiceImpl {
 
     @Autowired
-    private UmsAdminService adminService;
-    @Autowired
-    private UmsMemberService memberService;
-    @Autowired
-    private HttpServletRequest request;
+    private UmsAdminFeign umsAdminFeign;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        String clientId = request.getParameter("client_id");
-        UserDto userDto;
-        if(AuthConstant.ADMIN_CLIENT_ID.equals(clientId)){
-            userDto = adminService.loadUserByUsername(username);
-        }else{
-            userDto = memberService.loadUserByUsername(username);
+    public UserDto loadUserByUsername(String username) {
+        UmsAdminRpcResponse umsAdminRpcResponse = umsAdminFeign.getAdminByUsername(username).getData();
+        if (Objects.isNull(umsAdminRpcResponse)) {
+            return null;
         }
-        if (userDto==null) {
-            throw new UsernameNotFoundException(MessageConstant.USERNAME_PASSWORD_ERROR);
+        List<UmsResourceRpcResponse> resourceList = umsAdminFeign.getResourceList(umsAdminRpcResponse.getId()).getData();
+        return UserDto.builder()
+                .id(umsAdminRpcResponse.getId())
+                .username(umsAdminRpcResponse.getUsername())
+                .password(umsAdminRpcResponse.getPassword())
+                .permissionList(resourceList.stream().map(UmsResourceRpcResponse::getUrl).collect(Collectors.toList()))
+                .build();
+    }
+
+    public SaTokenInfo login(String username, String password) {
+        SaTokenInfo saTokenInfo = null;
+        UserDto userDto = this.loadUserByUsername(username);
+        if (userDto == null) {
+            return null;
         }
-        userDto.setClientId(clientId);
-        SecurityUser securityUser = new SecurityUser(userDto);
-        if (!securityUser.isEnabled()) {
-            throw new DisabledException(MessageConstant.ACCOUNT_DISABLED);
-        } else if (!securityUser.isAccountNonLocked()) {
-            throw new LockedException(MessageConstant.ACCOUNT_LOCKED);
-        } else if (!securityUser.isAccountNonExpired()) {
-            throw new AccountExpiredException(MessageConstant.ACCOUNT_EXPIRED);
-        } else if (!securityUser.isCredentialsNonExpired()) {
-            throw new CredentialsExpiredException(MessageConstant.CREDENTIALS_EXPIRED);
+        if (!SaSecureUtil.md5(password).equals(userDto.getPassword())) {
+            return null;
         }
-        return securityUser;
+        // 密码校验成功后登录，一行代码实现登录
+        StpUtil.login(userDto.getId());
+        // 将用户信息存储到Session中
+        StpUtil.getSession().set("userInfo",userDto);
+        // 获取当前登录用户Token信息
+        saTokenInfo = StpUtil.getTokenInfo();
+        return saTokenInfo;
     }
 
 }

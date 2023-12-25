@@ -1,8 +1,6 @@
 package com.xqxls.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,12 +11,11 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserDto {
     private Long id;
     private String username;
     private String password;
-    private Integer status;
-    private String clientId;
-    private List<String> roles;
-
+    private List<String> permissionList;
 }

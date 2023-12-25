@@ -18,7 +18,6 @@ import com.xqxls.mapper.UmsAdminLoginLogMapper;
 import com.xqxls.mapper.UmsAdminMapper;
 import com.xqxls.mapper.UmsAdminRoleRelationMapper;
 import com.xqxls.model.*;
-import com.xqxls.service.AuthService;
 import com.xqxls.service.UmsAdminCacheService;
 import com.xqxls.service.UmsAdminService;
 import org.slf4j.Logger;
@@ -33,7 +32,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * UmsAdminService实现类
@@ -50,8 +48,6 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     private UmsAdminRoleRelationDao adminRoleRelationDao;
     @Autowired
     private UmsAdminLoginLogMapper loginLogMapper;
-    @Autowired
-    private AuthService authService;
     @Autowired
     private HttpServletRequest request;
 
@@ -97,9 +93,8 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         params.put("grant_type","password");
         params.put("username",username);
         params.put("password",password);
-        CommonResult restResult = authService.getAccessToken(params);
+        CommonResult restResult = null;
         if(ResultCode.SUCCESS.getCode()==restResult.getCode()&&restResult.getData()!=null){
-//            updateLoginTimeByUsername(username);
             insertLoginLog(username);
         }
         return restResult;
@@ -235,13 +230,8 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         //获取用户信息
         UmsAdmin admin = getAdminByUsername(username);
         if (admin != null) {
-            List<UmsRole> roleList = getRoleList(admin.getId());
             UserDto userDTO = new UserDto();
             BeanUtils.copyProperties(admin,userDTO);
-            if(CollUtil.isNotEmpty(roleList)){
-                List<String> roleStrList = roleList.stream().map(item -> item.getId() + "_" + item.getName()).collect(Collectors.toList());
-                userDTO.setRoles(roleStrList);
-            }
             return userDTO;
         }
         return null;

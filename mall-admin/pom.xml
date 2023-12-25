@@ -22,6 +22,13 @@
             <groupId>com.xqxls</groupId>
             <artifactId>mall-repository</artifactId>
         </dependency>
+        <!--mall-admin-rpc依赖-->
+        <dependency>
+            <groupId>com.xqxls</groupId>
+            <artifactId>mall-admin-rpc</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>

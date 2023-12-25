@@ -6,3 +6,5 @@ spring:
       config:
         server-addr: http://localhost:8848
         file-extension: yaml
+  main:
+    allow-bean-definition-overriding: true
