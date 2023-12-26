@@ -238,23 +238,6 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
-    public UmsAdmin getCurrentAdmin() {
-        String userStr = request.getHeader(AuthConstant.USER_TOKEN_HEADER);
-        if(StrUtil.isEmpty(userStr)){
-            Asserts.fail(ResultCode.UNAUTHORIZED);
-        }
-        UserDto userDto = JSONUtil.toBean(userStr, UserDto.class);
-        UmsAdmin admin = getCacheService().getAdmin(userDto.getId());
-        if(admin!=null){
-            return admin;
-        }else{
-            admin = adminMapper.selectByPrimaryKey(userDto.getId());
-            getCacheService().setAdmin(admin);
-            return admin;
-        }
-    }
-
-    @Override
     public UmsAdminCacheService getCacheService() {
         return SpringUtil.getBean(UmsAdminCacheService.class);
     }

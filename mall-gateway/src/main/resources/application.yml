@@ -57,6 +57,7 @@ secure:
       - "/webjars/**"
       - "/actuator/**"
       - "/mall-auth/oauth/token"
+      - "/mall-auth/oauth/info"
       - "/mall-search/**"
       - "/mall-portal/sso/login"
       - "/mall-portal/sso/register"
@@ -80,7 +81,7 @@ management: #开启SpringBoot Admin的监控
 # Sa-Token配置
 sa-token:
   # token名称 (同时也是cookie名称)
-  token-name: Authorization
+  token-name: authToken
   # token有效期，单位秒，-1代表永不过期
   timeout: 2592000
   # token临时有效期 (指定时间内无操作就视为token过期)，单位秒

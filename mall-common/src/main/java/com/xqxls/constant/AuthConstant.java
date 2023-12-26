@@ -51,4 +51,6 @@ public interface AuthConstant {
      */
     String USER_TOKEN_HEADER = "user";
 
+    String TOKEN = "token";
+
 }

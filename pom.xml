@@ -52,6 +52,10 @@
         <knife4j.version>3.0.3</knife4j.version>
         <mall-common.version>1.0-SNAPSHOT</mall-common.version>
         <mall-repository.version>1.0-SNAPSHOT</mall-repository.version>
+        <mall-admin-rpc.version>1.0-SNAPSHOT</mall-admin-rpc.version>
+        <sa-token-reactor-spring-boot-starter.version>1.24.0</sa-token-reactor-spring-boot-starter.version>
+        <sa-token-spring-boot-starter.version>1.24.0</sa-token-spring-boot-starter.version>
+        <sa-token-dao-redis-jackson.version>1.24.0</sa-token-dao-redis-jackson.version>
         <fastjson.version>1.2.71</fastjson.version>
     </properties>
 
@@ -114,11 +118,35 @@
                 <artifactId>mall-common</artifactId>
                 <version>${mall-common.version}</version>
             </dependency>
-            <!--mall中MBG生成模块-->
+            <!--mall中repository模块-->
             <dependency>
                 <groupId>com.xqxls</groupId>
                 <artifactId>mall-repository</artifactId>
                 <version>${mall-repository.version}</version>
+            </dependency>
+            <!--mall中admin-rpc模块-->
+            <dependency>
+                <groupId>com.xqxls</groupId>
+                <artifactId>mall-admin-rpc</artifactId>
+                <version>${mall-admin-rpc.version}</version>
+            </dependency>
+            <!-- Sa-Token 权限认证（Reactor响应式集成） -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-reactor-spring-boot-starter</artifactId>
+                <version>${sa-token-reactor-spring-boot-starter.version}</version>
+            </dependency>
+            <!-- Sa-Token 权限认证 -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-spring-boot-starter</artifactId>
+                <version>${sa-token-spring-boot-starter.version}</version>
+            </dependency>
+            <!-- Sa-Token 整合 Redis (使用jackson序列化方式) -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-dao-redis-jackson</artifactId>
+                <version>${sa-token-dao-redis-jackson.version}</version>
             </dependency>
             <!--MyBatis分页插件starter-->
             <dependency>
