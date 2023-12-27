@@ -14,10 +14,10 @@ spring:
             - Path=/mall-auth/**
           filters:
             - StripPrefix=1
-        - id: mall-admin
-          uri: lb://mall-admin
+        - id: mall-domain
+          uri: lb://mall-domain
           predicates:
-            - Path=/mall-admin/**
+            - Path=/mall-domain/**
           filters:
             - StripPrefix=1
         - id: mall-portal
@@ -66,9 +66,9 @@ secure:
       - "/mall-portal/product/**"
       - "/mall-portal/brand/**"
       - "/mall-portal/alipay/**"
-      - "/mall-admin/admin/login"
-      - "/mall-admin/admin/register"
-      - "/mall-admin/minio/upload"
+      - "/mall-domain/admin/login"
+      - "/mall-domain/admin/register"
+      - "/mall-domain/minio/upload"
 management: #开启SpringBoot Admin的监控
   endpoints:
     web:

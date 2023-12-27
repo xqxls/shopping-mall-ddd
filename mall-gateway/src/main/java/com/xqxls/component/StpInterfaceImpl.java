@@ -1,13 +1,11 @@
 package com.xqxls.component;
 
-import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpInterface;
 import cn.dev33.satoken.stp.StpUtil;
 import com.xqxls.domain.UserDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -20,7 +18,7 @@ public class StpInterfaceImpl implements StpInterface {
     public List<String> getPermissionList(Object loginId, String loginType) {
         // 返回此 loginId 拥有的权限码列表
         UserDto userDto = (UserDto) StpUtil.getSession().get("userInfo");
-        return userDto.getPermissionList().stream().map(p->"/mall-admin"+p).collect(Collectors.toList());
+        return userDto.getPermissionList().stream().map(p->"/mall-domain"+p).collect(Collectors.toList());
     }
 
     @Override

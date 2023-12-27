@@ -12,10 +12,11 @@
     <modules>
         <module>mall-common</module>
         <module>mall-repository</module>
-        <module>mall-admin</module>
+        <module>mall-domain</module>
         <module>mall-gateway</module>
         <module>mall-auth</module>
-        <module>mall-admin-rpc</module>
+        <module>mall-rpc</module>
+        <module>mall-trigger</module>
     </modules>
 
     <parent>
@@ -52,7 +53,8 @@
         <knife4j.version>3.0.3</knife4j.version>
         <mall-common.version>1.0-SNAPSHOT</mall-common.version>
         <mall-repository.version>1.0-SNAPSHOT</mall-repository.version>
-        <mall-admin-rpc.version>1.0-SNAPSHOT</mall-admin-rpc.version>
+        <mall-domain.version>1.0-SNAPSHOT</mall-domain.version>
+        <mall-rpc.version>1.0-SNAPSHOT</mall-rpc.version>
         <sa-token-reactor-spring-boot-starter.version>1.24.0</sa-token-reactor-spring-boot-starter.version>
         <sa-token-spring-boot-starter.version>1.24.0</sa-token-spring-boot-starter.version>
         <sa-token-dao-redis-jackson.version>1.24.0</sa-token-dao-redis-jackson.version>
@@ -112,23 +114,29 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!--mall通用模块-->
+            <!--mall-common通用模块-->
             <dependency>
                 <groupId>com.xqxls</groupId>
                 <artifactId>mall-common</artifactId>
                 <version>${mall-common.version}</version>
             </dependency>
-            <!--mall中repository模块-->
+            <!--mall-repository模块-->
             <dependency>
                 <groupId>com.xqxls</groupId>
                 <artifactId>mall-repository</artifactId>
                 <version>${mall-repository.version}</version>
             </dependency>
-            <!--mall中admin-rpc模块-->
+            <!--mall-rpc模块-->
             <dependency>
                 <groupId>com.xqxls</groupId>
-                <artifactId>mall-admin-rpc</artifactId>
-                <version>${mall-admin-rpc.version}</version>
+                <artifactId>mall-rpc</artifactId>
+                <version>${mall-rpc.version}</version>
+            </dependency>
+            <!--mall-domain模块-->
+            <dependency>
+                <groupId>com.xqxls</groupId>
+                <artifactId>mall-domain</artifactId>
+                <version>${mall-domain.version}</version>
             </dependency>
             <!-- Sa-Token 权限认证（Reactor响应式集成） -->
             <dependency>
