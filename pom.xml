@@ -59,6 +59,8 @@
         <sa-token-spring-boot-starter.version>1.24.0</sa-token-spring-boot-starter.version>
         <sa-token-dao-redis-jackson.version>1.24.0</sa-token-dao-redis-jackson.version>
         <fastjson.version>1.2.71</fastjson.version>
+        <mapstruct.version>1.4.1.Final</mapstruct.version>
+        <mapstruct-processor.version>1.4.1.Final</mapstruct-processor.version>
     </properties>
 
     <dependencies>
@@ -94,6 +96,7 @@
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
         </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -238,6 +241,17 @@
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
+            </dependency>
+            <!--实体转换工具类-->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct-processor.version}</version>
             </dependency>
         </dependencies>
 

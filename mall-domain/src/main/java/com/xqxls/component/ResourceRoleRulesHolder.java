@@ -1,6 +1,6 @@
 package com.xqxls.component;
 
-import com.xqxls.service.UmsResourceService;
+import com.xqxls.ums.service.UmsResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
