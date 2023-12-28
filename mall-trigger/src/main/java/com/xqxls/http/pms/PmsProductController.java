@@ -2,17 +2,17 @@ package com.xqxls.http.pms;
 
 import com.xqxls.api.CommonPage;
 import com.xqxls.api.CommonResult;
-import com.xqxls.dto.PmsProductParam;
-import com.xqxls.dto.PmsProductQueryParam;
-import com.xqxls.dto.PmsProductResult;
-import com.xqxls.model.PmsProduct;
-import com.xqxls.service.PmsProductService;
+import com.xqxls.pms.model.aggregates.PmsProductRich;
+import com.xqxls.pms.model.req.PmsProductReq;
+import com.xqxls.pms.model.res.PmsProductUpdateResult;
+import com.xqxls.pms.model.vo.PmsProductVO;
+import com.xqxls.pms.service.PmsProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -23,14 +23,14 @@ import java.util.List;
 @Api(tags = "PmsProductController", description = "商品管理")
 @RequestMapping("/product")
 public class PmsProductController {
-    @Autowired
+    @Resource
     private PmsProductService productService;
 
     @ApiOperation("创建商品")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult create(@RequestBody PmsProductParam productParam) {
-        int count = productService.create(productParam);
+    public CommonResult<Object> create(@RequestBody PmsProductRich pmsProductRich) {
+        int count = productService.create(pmsProductRich);
         if (count > 0) {
             return CommonResult.success(count);
         } else {
@@ -41,16 +41,16 @@ public class PmsProductController {
     @ApiOperation("根据商品id获取商品编辑信息")
     @RequestMapping(value = "/updateInfo/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<PmsProductResult> getUpdateInfo(@PathVariable Long id) {
-        PmsProductResult productResult = productService.getUpdateInfo(id);
-        return CommonResult.success(productResult);
+    public CommonResult<PmsProductUpdateResult> getUpdateInfo(@PathVariable Long id) {
+        PmsProductUpdateResult pmsProductUpdateResult = productService.getUpdateInfo(id);
+        return CommonResult.success(pmsProductUpdateResult);
     }
 
     @ApiOperation("更新商品")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult update(@PathVariable Long id, @RequestBody PmsProductParam productParam) {
-        int count = productService.update(id, productParam);
+    public CommonResult<Object> update(@PathVariable Long id, @RequestBody PmsProductRich pmsProductRich) {
+        int count = productService.update(id, pmsProductRich);
         if (count > 0) {
             return CommonResult.success(count);
         } else {
@@ -61,25 +61,25 @@ public class PmsProductController {
     @ApiOperation("查询商品")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<CommonPage<PmsProduct>> getList(PmsProductQueryParam productQueryParam,
-                                                        @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
-                                                        @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<PmsProduct> productList = productService.list(productQueryParam, pageSize, pageNum);
+    public CommonResult<CommonPage<PmsProductVO>> getList(PmsProductReq productReq,
+                                                          @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                          @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+        List<PmsProductVO> productList = productService.list(productReq, pageSize, pageNum);
         return CommonResult.success(CommonPage.restPage(productList));
     }
 
     @ApiOperation("根据商品名称或货号模糊查询")
     @RequestMapping(value = "/simpleList", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<List<PmsProduct>> getList(String keyword) {
-        List<PmsProduct> productList = productService.list(keyword);
+    public CommonResult<List<PmsProductVO>> getList(String keyword) {
+        List<PmsProductVO> productList = productService.list(keyword);
         return CommonResult.success(productList);
     }
 
     @ApiOperation("批量修改审核状态")
     @RequestMapping(value = "/update/verifyStatus", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult updateVerifyStatus(@RequestParam("ids") List<Long> ids,
+    public CommonResult<Object> updateVerifyStatus(@RequestParam("ids") List<Long> ids,
                                            @RequestParam("verifyStatus") Integer verifyStatus,
                                            @RequestParam("detail") String detail) {
         int count = productService.updateVerifyStatus(ids, verifyStatus, detail);
@@ -93,7 +93,7 @@ public class PmsProductController {
     @ApiOperation("批量上下架")
     @RequestMapping(value = "/update/publishStatus", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult updatePublishStatus(@RequestParam("ids") List<Long> ids,
+    public CommonResult<Object> updatePublishStatus(@RequestParam("ids") List<Long> ids,
                                             @RequestParam("publishStatus") Integer publishStatus) {
         int count = productService.updatePublishStatus(ids, publishStatus);
         if (count > 0) {
@@ -106,7 +106,7 @@ public class PmsProductController {
     @ApiOperation("批量推荐商品")
     @RequestMapping(value = "/update/recommendStatus", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult updateRecommendStatus(@RequestParam("ids") List<Long> ids,
+    public CommonResult<Object> updateRecommendStatus(@RequestParam("ids") List<Long> ids,
                                               @RequestParam("recommendStatus") Integer recommendStatus) {
         int count = productService.updateRecommendStatus(ids, recommendStatus);
         if (count > 0) {
@@ -119,7 +119,7 @@ public class PmsProductController {
     @ApiOperation("批量设为新品")
     @RequestMapping(value = "/update/newStatus", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult updateNewStatus(@RequestParam("ids") List<Long> ids,
+    public CommonResult<Object> updateNewStatus(@RequestParam("ids") List<Long> ids,
                                         @RequestParam("newStatus") Integer newStatus) {
         int count = productService.updateNewStatus(ids, newStatus);
         if (count > 0) {
@@ -132,7 +132,7 @@ public class PmsProductController {
     @ApiOperation("批量修改删除状态")
     @RequestMapping(value = "/update/deleteStatus", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult updateDeleteStatus(@RequestParam("ids") List<Long> ids,
+    public CommonResult<Object> updateDeleteStatus(@RequestParam("ids") List<Long> ids,
                                            @RequestParam("deleteStatus") Integer deleteStatus) {
         int count = productService.updateDeleteStatus(ids, deleteStatus);
         if (count > 0) {

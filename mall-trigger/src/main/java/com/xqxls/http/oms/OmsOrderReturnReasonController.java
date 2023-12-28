@@ -3,7 +3,7 @@ package com.xqxls.http.oms;
 import com.xqxls.api.CommonPage;
 import com.xqxls.api.CommonResult;
 import com.xqxls.model.OmsOrderReturnReason;
-import com.xqxls.service.OmsOrderReturnReasonService;
+import com.xqxls.oms.service.OmsOrderReturnReasonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,19 +2,19 @@ package com.xqxls.controller;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.collection.CollUtil;
 import com.xqxls.api.CommonResult;
 import com.xqxls.domain.UserDto;
 import com.xqxls.service.impl.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 自定义Oauth2获取令牌接口
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/oauth")
 public class AuthController {
 
-    @Autowired
+    @Resource
     private UserServiceImpl userService;
 
     @ApiOperation(value = "登录认证")
@@ -43,7 +43,7 @@ public class AuthController {
 
     @ApiOperation(value = "获取当前登录用户信息")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public CommonResult getAdminInfo() {
+    public CommonResult<UserDto> getAdminInfo() {
         UserDto userDto = (UserDto) StpUtil.getSession().get("userInfo");
         return CommonResult.success(userDto);
     }

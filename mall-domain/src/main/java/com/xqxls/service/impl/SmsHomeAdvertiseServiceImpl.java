@@ -61,13 +61,13 @@ public class SmsHomeAdvertiseServiceImpl implements SmsHomeAdvertiseService {
         PageHelper.startPage(pageNum, pageSize);
         SmsHomeAdvertiseExample example = new SmsHomeAdvertiseExample();
         SmsHomeAdvertiseExample.Criteria criteria = example.createCriteria();
-        if (!StringUtils.isEmpty(name)) {
+        if (StringUtils.hasText(name)) {
             criteria.andNameLike("%" + name + "%");
         }
         if (type != null) {
             criteria.andTypeEqualTo(type);
         }
-        if (!StringUtils.isEmpty(endTime)) {
+        if (StringUtils.hasText(endTime)) {
             String startStr = endTime + " 00:00:00";
             String endStr = endTime + " 23:59:59";
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

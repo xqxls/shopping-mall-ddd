@@ -3,7 +3,6 @@ package com.xqxls.ums.repository;
 import com.xqxls.ums.model.vo.UmsMenuVO;
 import com.xqxls.ums.model.vo.UmsResourceVO;
 import com.xqxls.ums.model.vo.UmsRoleVO;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

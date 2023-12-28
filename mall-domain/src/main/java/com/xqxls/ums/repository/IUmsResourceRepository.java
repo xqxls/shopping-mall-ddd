@@ -5,6 +5,11 @@ import com.xqxls.ums.model.vo.UmsResourceVO;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @Description:
+ * @Author: xqxls
+ * @CreateTime: 2023/12/27 14:39
+ */
 public interface IUmsResourceRepository {
 
     /**

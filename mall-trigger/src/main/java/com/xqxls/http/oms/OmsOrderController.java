@@ -4,7 +4,7 @@ import com.xqxls.api.CommonPage;
 import com.xqxls.api.CommonResult;
 import com.xqxls.dto.*;
 import com.xqxls.model.OmsOrder;
-import com.xqxls.service.OmsOrderService;
+import com.xqxls.oms.service.OmsOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

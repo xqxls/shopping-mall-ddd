@@ -6,7 +6,7 @@ import com.xqxls.dto.OmsOrderReturnApplyResult;
 import com.xqxls.dto.OmsReturnApplyQueryParam;
 import com.xqxls.dto.OmsUpdateStatusParam;
 import com.xqxls.model.OmsOrderReturnApply;
-import com.xqxls.service.OmsOrderReturnApplyService;
+import com.xqxls.oms.service.OmsOrderReturnApplyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -58,7 +58,7 @@ public class SmsHomeNewProductServiceImpl implements SmsHomeNewProductService {
         PageHelper.startPage(pageNum,pageSize);
         SmsHomeNewProductExample example = new SmsHomeNewProductExample();
         SmsHomeNewProductExample.Criteria criteria = example.createCriteria();
-        if(!StringUtils.isEmpty(productName)){
+        if(StringUtils.hasText(productName)){
             criteria.andProductNameLike("%"+productName+"%");
         }
         if(recommendStatus!=null){

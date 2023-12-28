@@ -2,7 +2,7 @@ package com.xqxls.http.oms;
 
 import com.xqxls.api.CommonResult;
 import com.xqxls.model.OmsOrderSetting;
-import com.xqxls.service.OmsOrderSettingService;
+import com.xqxls.oms.service.OmsOrderSettingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

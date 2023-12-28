@@ -108,7 +108,7 @@ public class SmsCouponServiceImpl implements SmsCouponService {
     public List<SmsCoupon> list(String name, Integer type, Integer pageSize, Integer pageNum) {
         SmsCouponExample example = new SmsCouponExample();
         SmsCouponExample.Criteria criteria = example.createCriteria();
-        if(!StringUtils.isEmpty(name)){
+        if(StringUtils.hasText(name)){
             criteria.andNameLike("%"+name+"%");
         }
         if(type!=null){

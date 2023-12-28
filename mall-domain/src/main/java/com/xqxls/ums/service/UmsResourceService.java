@@ -1,6 +1,5 @@
 package com.xqxls.ums.service;
 
-import com.xqxls.model.UmsResource;
 import com.xqxls.ums.model.vo.UmsResourceVO;
 
 import java.util.List;
