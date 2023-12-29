@@ -1,18 +1,14 @@
 package com.xqxls.oms.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.xqxls.dao.OmsOrderReturnApplyDao;
-import com.xqxls.dto.OmsOrderReturnApplyResult;
-import com.xqxls.dto.OmsReturnApplyQueryParam;
-import com.xqxls.dto.OmsUpdateStatusParam;
-import com.xqxls.mapper.OmsOrderReturnApplyMapper;
-import com.xqxls.model.OmsOrderReturnApply;
-import com.xqxls.model.OmsOrderReturnApplyExample;
+import com.xqxls.oms.model.aggregates.OmsOrderReturnApplyRich;
+import com.xqxls.oms.model.req.OmsReturnApplyReq;
+import com.xqxls.oms.model.req.OmsUpdateStatusReq;
+import com.xqxls.oms.model.vo.OmsOrderReturnApplyVO;
+import com.xqxls.oms.repository.IOmsOrderReturnApplyRepository;
 import com.xqxls.oms.service.OmsOrderReturnApplyService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -21,58 +17,26 @@ import java.util.List;
  */
 @Service
 public class OmsOrderReturnApplyServiceImpl implements OmsOrderReturnApplyService {
-    @Autowired
-    private OmsOrderReturnApplyDao returnApplyDao;
-    @Autowired
-    private OmsOrderReturnApplyMapper returnApplyMapper;
+    @Resource
+    private IOmsOrderReturnApplyRepository omsOrderReturnApplyRepository;
+
     @Override
-    public List<OmsOrderReturnApply> list(OmsReturnApplyQueryParam queryParam, Integer pageSize, Integer pageNum) {
-        PageHelper.startPage(pageNum,pageSize);
-        return returnApplyDao.getList(queryParam);
+    public List<OmsOrderReturnApplyVO> list(OmsReturnApplyReq omsReturnApplyReq, Integer pageSize, Integer pageNum) {
+        return omsOrderReturnApplyRepository.list(omsReturnApplyReq,pageSize,pageNum);
     }
 
     @Override
     public int delete(List<Long> ids) {
-        OmsOrderReturnApplyExample example = new OmsOrderReturnApplyExample();
-        example.createCriteria().andIdIn(ids).andStatusEqualTo(3);
-        return returnApplyMapper.deleteByExample(example);
+        return omsOrderReturnApplyRepository.delete(ids);
     }
 
     @Override
-    public int updateStatus(Long id, OmsUpdateStatusParam statusParam) {
-        Integer status = statusParam.getStatus();
-        OmsOrderReturnApply returnApply = new OmsOrderReturnApply();
-        if(status.equals(1)){
-            //确认退货
-            returnApply.setId(id);
-            returnApply.setStatus(1);
-            returnApply.setReturnAmount(statusParam.getReturnAmount());
-            returnApply.setCompanyAddressId(statusParam.getCompanyAddressId());
-            returnApply.setHandleTime(new Date());
-            returnApply.setHandleMan(statusParam.getHandleMan());
-            returnApply.setHandleNote(statusParam.getHandleNote());
-        }else if(status.equals(2)){
-            //完成退货
-            returnApply.setId(id);
-            returnApply.setStatus(2);
-            returnApply.setReceiveTime(new Date());
-            returnApply.setReceiveMan(statusParam.getReceiveMan());
-            returnApply.setReceiveNote(statusParam.getReceiveNote());
-        }else if(status.equals(3)){
-            //拒绝退货
-            returnApply.setId(id);
-            returnApply.setStatus(3);
-            returnApply.setHandleTime(new Date());
-            returnApply.setHandleMan(statusParam.getHandleMan());
-            returnApply.setHandleNote(statusParam.getHandleNote());
-        }else{
-            return 0;
-        }
-        return returnApplyMapper.updateByPrimaryKeySelective(returnApply);
+    public int updateStatus(Long id, OmsUpdateStatusReq omsUpdateStatusReq) {
+        return omsOrderReturnApplyRepository.updateStatus(id,omsUpdateStatusReq);
     }
 
     @Override
-    public OmsOrderReturnApplyResult getItem(Long id) {
-        return returnApplyDao.getDetail(id);
+    public OmsOrderReturnApplyRich getItem(Long id) {
+        return omsOrderReturnApplyRepository.getItem(id);
     }
 }

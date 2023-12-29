@@ -1,4 +1,4 @@
-package com.xqxls.oms.service;
+package com.xqxls.oms.repository;
 
 import com.xqxls.oms.model.req.OmsMoneyInfoReq;
 import com.xqxls.oms.model.req.OmsOrderDeliveryReq;
@@ -10,10 +10,15 @@ import com.xqxls.oms.model.vo.OmsOrderVO;
 import java.util.List;
 
 /**
- * 订单管理Service
- * Created by xqxls on 2018/10/11.
+ * @Description:
+ * @Author: xqxls
+ * @CreateTime: 2023/12/29 11:22
  */
-public interface OmsOrderService {
+public interface IOmsOrderRepository {
+
+    /**
+     * 订单查询
+     */
     List<OmsOrderVO> list(OmsOrderReq omsOrderReq, Integer pageSize, Integer pageNum);
 
     /**

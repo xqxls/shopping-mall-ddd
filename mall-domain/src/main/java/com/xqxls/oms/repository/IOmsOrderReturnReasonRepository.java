@@ -1,14 +1,16 @@
-package com.xqxls.oms.service;
+package com.xqxls.oms.repository;
 
 import com.xqxls.oms.model.vo.OmsOrderReturnReasonVO;
 
 import java.util.List;
 
 /**
- * 订单原因管理Service
- * Created by xqxls on 2018/10/17.
+ * @Description:
+ * @Author: xqxls
+ * @CreateTime: 2023/12/29 11:02
  */
-public interface OmsOrderReturnReasonService {
+public interface IOmsOrderReturnReasonRepository {
+
     /**
      * 添加订单原因
      */

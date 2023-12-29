@@ -1,4 +1,4 @@
-package com.xqxls.oms.service;
+package com.xqxls.oms.repository;
 
 import com.xqxls.oms.model.aggregates.OmsOrderReturnApplyRich;
 import com.xqxls.oms.model.req.OmsReturnApplyReq;
@@ -8,10 +8,12 @@ import com.xqxls.oms.model.vo.OmsOrderReturnApplyVO;
 import java.util.List;
 
 /**
- * 退货申请管理Service
- * Created by xqxls on 2018/10/18.
+ * @Description:
+ * @Author: xqxls
+ * @CreateTime: 2023/12/29 9:40
  */
-public interface OmsOrderReturnApplyService {
+public interface IOmsOrderReturnApplyRepository {
+
     /**
      * 分页查询申请
      */

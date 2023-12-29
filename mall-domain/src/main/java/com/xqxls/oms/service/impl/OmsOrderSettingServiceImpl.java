@@ -1,10 +1,11 @@
 package com.xqxls.oms.service.impl;
 
-import com.xqxls.mapper.OmsOrderSettingMapper;
-import com.xqxls.model.OmsOrderSetting;
+import com.xqxls.oms.model.vo.OmsOrderSettingVO;
+import com.xqxls.oms.repository.IOmsOrderSettingRepository;
 import com.xqxls.oms.service.OmsOrderSettingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 订单设置管理Service实现类
@@ -12,17 +13,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OmsOrderSettingServiceImpl implements OmsOrderSettingService {
-    @Autowired
-    private OmsOrderSettingMapper orderSettingMapper;
+    @Resource
+    private IOmsOrderSettingRepository orderSettingRepository;
 
     @Override
-    public OmsOrderSetting getItem(Long id) {
-        return orderSettingMapper.selectByPrimaryKey(id);
+    public OmsOrderSettingVO getItem(Long id) {
+        return orderSettingRepository.getItem(id);
     }
 
     @Override
-    public int update(Long id, OmsOrderSetting orderSetting) {
-        orderSetting.setId(id);
-        return orderSettingMapper.updateByPrimaryKey(orderSetting);
+    public int update(Long id, OmsOrderSettingVO orderSettingVO) {
+        return orderSettingRepository.update(id,orderSettingVO);
     }
 }

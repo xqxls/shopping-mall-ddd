@@ -1,12 +1,14 @@
-package com.xqxls.oms.service;
+package com.xqxls.oms.repository;
 
 import com.xqxls.oms.model.vo.OmsOrderSettingVO;
 
 /**
- * 订单设置Service
- * Created by xqxls on 2018/10/16.
+ * @Description:
+ * @Author: xqxls
+ * @CreateTime: 2023/12/29 9:27
  */
-public interface OmsOrderSettingService {
+public interface IOmsOrderSettingRepository {
+
     /**
      * 获取指定订单设置
      */

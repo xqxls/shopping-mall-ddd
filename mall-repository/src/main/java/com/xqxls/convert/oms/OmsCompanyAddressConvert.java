@@ -17,5 +17,7 @@ public interface OmsCompanyAddressConvert {
 
     OmsCompanyAddressConvert INSTANCE = Mappers.getMapper(OmsCompanyAddressConvert.class);
 
+    OmsCompanyAddressVO omsCompanyAddressEntityToVO(OmsCompanyAddress omsCompanyAddress);
+
     List<OmsCompanyAddressVO> omsCompanyAddressEntityToVOList(List<OmsCompanyAddress> list);
 }

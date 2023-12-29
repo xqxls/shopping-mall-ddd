@@ -1,14 +1,11 @@
 package com.xqxls.oms.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.xqxls.mapper.OmsOrderReturnReasonMapper;
-import com.xqxls.model.OmsOrderReturnReason;
-import com.xqxls.model.OmsOrderReturnReasonExample;
+import com.xqxls.oms.model.vo.OmsOrderReturnReasonVO;
+import com.xqxls.oms.repository.IOmsOrderReturnReasonRepository;
 import com.xqxls.oms.service.OmsOrderReturnReasonService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -17,49 +14,36 @@ import java.util.List;
  */
 @Service
 public class OmsOrderReturnReasonServiceImpl implements OmsOrderReturnReasonService {
-    @Autowired
-    private OmsOrderReturnReasonMapper returnReasonMapper;
+    @Resource
+    private IOmsOrderReturnReasonRepository omsOrderReturnReasonRepository;
+
     @Override
-    public int create(OmsOrderReturnReason returnReason) {
-        returnReason.setCreateTime(new Date());
-        return returnReasonMapper.insert(returnReason);
+    public int create(OmsOrderReturnReasonVO returnReasonVO) {
+        return omsOrderReturnReasonRepository.create(returnReasonVO);
     }
 
     @Override
-    public int update(Long id, OmsOrderReturnReason returnReason) {
-        returnReason.setId(id);
-        return returnReasonMapper.updateByPrimaryKey(returnReason);
+    public int update(Long id, OmsOrderReturnReasonVO returnReasonVO) {
+        return omsOrderReturnReasonRepository.update(id,returnReasonVO);
     }
 
     @Override
     public int delete(List<Long> ids) {
-        OmsOrderReturnReasonExample example = new OmsOrderReturnReasonExample();
-        example.createCriteria().andIdIn(ids);
-        return returnReasonMapper.deleteByExample(example);
+        return omsOrderReturnReasonRepository.delete(ids);
     }
 
     @Override
-    public List<OmsOrderReturnReason> list(Integer pageSize, Integer pageNum) {
-        PageHelper.startPage(pageNum,pageSize);
-        OmsOrderReturnReasonExample example = new OmsOrderReturnReasonExample();
-        example.setOrderByClause("sort desc");
-        return returnReasonMapper.selectByExample(example);
+    public List<OmsOrderReturnReasonVO> list(Integer pageSize, Integer pageNum) {
+        return omsOrderReturnReasonRepository.list(pageSize,pageNum);
     }
 
     @Override
     public int updateStatus(List<Long> ids, Integer status) {
-        if(!status.equals(0)&&!status.equals(1)){
-            return 0;
-        }
-        OmsOrderReturnReason record = new OmsOrderReturnReason();
-        record.setStatus(status);
-        OmsOrderReturnReasonExample example = new OmsOrderReturnReasonExample();
-        example.createCriteria().andIdIn(ids);
-        return returnReasonMapper.updateByExampleSelective(record,example);
+        return omsOrderReturnReasonRepository.updateStatus(ids,status);
     }
 
     @Override
-    public OmsOrderReturnReason getItem(Long id) {
-        return returnReasonMapper.selectByPrimaryKey(id);
+    public OmsOrderReturnReasonVO getItem(Long id) {
+        return omsOrderReturnReasonRepository.getItem(id);
     }
 }
