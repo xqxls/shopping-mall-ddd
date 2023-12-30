@@ -4,9 +4,6 @@ import com.xqxls.pms.model.aggregates.PmsProductRich;
 import com.xqxls.pms.model.req.PmsProductReq;
 import com.xqxls.pms.model.res.PmsProductUpdateResult;
 import com.xqxls.pms.model.vo.PmsProductVO;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,7 +17,6 @@ public interface IPmsProductRepository {
     /**
      * 创建商品
      */
-    @Transactional(isolation = Isolation.DEFAULT,propagation = Propagation.REQUIRED)
     int create(PmsProductRich pmsProductRich);
 
     /**
@@ -31,7 +27,6 @@ public interface IPmsProductRepository {
     /**
      * 更新商品
      */
-    @Transactional
     int update(Long id, PmsProductRich pmsProductRich);
 
     /**
@@ -45,7 +40,6 @@ public interface IPmsProductRepository {
      * @param verifyStatus 审核状态
      * @param detail 审核详情
      */
-    @Transactional
     int updateVerifyStatus(List<Long> ids, Integer verifyStatus, String detail);
 
     /**

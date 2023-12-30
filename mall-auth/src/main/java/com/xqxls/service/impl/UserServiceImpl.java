@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl {
 
-    @Autowired
+    @Resource
     private UmsAdminFeign umsAdminFeign;
 
     public UserDto loadUserByUsername(String username) {

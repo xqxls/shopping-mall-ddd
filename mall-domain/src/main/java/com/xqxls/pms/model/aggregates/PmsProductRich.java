@@ -1,6 +1,5 @@
 package com.xqxls.pms.model.aggregates;
 
-import com.xqxls.model.*;
 import com.xqxls.pms.model.vo.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

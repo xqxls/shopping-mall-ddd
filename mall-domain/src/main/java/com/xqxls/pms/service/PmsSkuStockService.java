@@ -1,6 +1,5 @@
 package com.xqxls.pms.service;
 
-import com.xqxls.model.PmsSkuStock;
 import com.xqxls.pms.model.vo.PmsSkuStockVO;
 
 import java.util.List;

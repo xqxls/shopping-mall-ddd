@@ -1,10 +1,10 @@
 package com.xqxls.component;
 
 import com.xqxls.ums.service.UmsResourceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 /**
  * 资源与角色访问对应关系操作组件
@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 @Component
 public class ResourceRoleRulesHolder {
 
-    @Autowired
+    @Resource
     private UmsResourceService resourceService;
 
     @PostConstruct

@@ -16,7 +16,7 @@ import java.util.List;
  * @Author: xqxls
  * @CreateTime: 2023/12/29 11:36
  */
-@Mapper
+@Mapper(componentModel = "spring")
 public interface OmsOrderConvert {
 
     OmsOrderConvert INSTANCE = Mappers.getMapper(OmsOrderConvert.class);
@@ -24,6 +24,8 @@ public interface OmsOrderConvert {
     OmsOrderDetailResult omsOrderDetailToResult(OmsOrderDetail detail);
 
     List<OmsOrderVO> omsOrderEntityToVOList(List<OmsOrder> list);
+
+    OmsOrderDeliveryParam omsOrderDeliveryReqToParam(OmsOrderDeliveryReq omsOrderDeliveryReq);
 
     List<OmsOrderDeliveryParam> omsOrderDeliveryReqToParamList(List<OmsOrderDeliveryReq> list);
 }

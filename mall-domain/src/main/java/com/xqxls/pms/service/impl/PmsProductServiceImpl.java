@@ -4,8 +4,8 @@ import com.xqxls.pms.model.aggregates.PmsProductRich;
 import com.xqxls.pms.model.req.PmsProductReq;
 import com.xqxls.pms.model.res.PmsProductUpdateResult;
 import com.xqxls.pms.model.vo.PmsProductVO;
+import com.xqxls.pms.repository.IPmsProductRepository;
 import com.xqxls.pms.service.PmsProductService;
-import com.xqxls.repository.pms.PmsProductRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class PmsProductServiceImpl implements PmsProductService {
     @Resource
-    private PmsProductRepository pmsProductRepository;
+    private IPmsProductRepository pmsProductRepository;
 
     @Override
     public int create(PmsProductRich pmsProductRich) {

@@ -1,18 +1,17 @@
 package com.xqxls.http.pms;
 
-
 import com.xqxls.api.CommonResult;
-import com.xqxls.dto.OssCallbackResult;
-import com.xqxls.dto.OssPolicyResult;
-import com.xqxls.service.impl.OssServiceImpl;
+import com.xqxls.pms.model.res.OssCallbackResult;
+import com.xqxls.pms.model.res.OssPolicyResult;
+import com.xqxls.pms.service.impl.OssServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -23,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 @Api(tags = "OssController", description = "Oss管理")
 @RequestMapping("/aliyun/oss")
 public class OssController {
-    @Autowired
+    @Resource
     private OssServiceImpl ossService;
 
     @ApiOperation(value = "oss上传签名生成")

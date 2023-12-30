@@ -18,20 +18,10 @@
     </properties>
 
     <dependencies>
-        <!--mall-common依赖-->
+        <!--mall-repository依赖-->
         <dependency>
             <groupId>com.xqxls</groupId>
-            <artifactId>mall-common</artifactId>
-        </dependency>
-        <!--mall-rpc依赖-->
-        <dependency>
-            <groupId>com.xqxls</groupId>
-            <artifactId>mall-rpc</artifactId>
-        </dependency>
-        <!--mall-domain依赖-->
-        <dependency>
-            <groupId>com.xqxls</groupId>
-            <artifactId>mall-domain</artifactId>
+            <artifactId>mall-repository</artifactId>
         </dependency>
     </dependencies>
 

@@ -15,6 +15,9 @@ import com.xqxls.pms.service.impl.PmsProductServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -72,6 +75,7 @@ public class PmsProductRepository implements IPmsProductRepository {
     private PmsProductVertifyRecordDao productVertifyRecordDao;
 
     @Override
+    @Transactional(isolation = Isolation.DEFAULT,propagation = Propagation.REQUIRED)
     public int create(PmsProductRich pmsProductRich) {
         int count;
         //创建商品
@@ -103,10 +107,12 @@ public class PmsProductRepository implements IPmsProductRepository {
 
     @Override
     public PmsProductUpdateResult getUpdateInfo(Long id) {
+
         return PmsProductConvert.INSTANCE.pmsProductResultToUpdateResult(productDao.getUpdateInfo(id));
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int update(Long id, PmsProductRich pmsProductRich) {
         int count;
         //更新商品信息
@@ -219,6 +225,7 @@ public class PmsProductRepository implements IPmsProductRepository {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateVerifyStatus(List<Long> ids, Integer verifyStatus, String detail) {
         PmsProduct product = new PmsProduct();
         product.setVerifyStatus(verifyStatus);

@@ -18,10 +18,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.xqxls</groupId>
-            <artifactId>mall-repository</artifactId>
-        </dependency>
         <!--mall-rpc依赖-->
         <dependency>
             <groupId>com.xqxls</groupId>

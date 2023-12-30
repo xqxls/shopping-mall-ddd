@@ -1,6 +1,5 @@
 package com.xqxls.pms.service.impl;
 
-import com.xqxls.dto.ProductAttrInfo;
 import com.xqxls.pms.model.req.PmsProductAttributeReq;
 import com.xqxls.pms.model.res.ProductAttrInfoResult;
 import com.xqxls.pms.model.vo.PmsProductAttributeVO;

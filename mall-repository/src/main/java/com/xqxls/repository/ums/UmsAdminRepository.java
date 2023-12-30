@@ -47,6 +47,8 @@ public class UmsAdminRepository implements IUmsAdminRepository {
     private UmsAdminRoleRelationMapper adminRoleRelationMapper;
     @Resource
     private UmsAdminRoleRelationDao adminRoleRelationDao;
+    @Resource
+    private UmsAdminCacheService umsAdminCacheService;
 
     @Override
     public UmsAdminVO getAdminByUsername(String username) {
@@ -102,7 +104,7 @@ public class UmsAdminRepository implements IUmsAdminRepository {
 
     @Override
     public int update(Long id, UmsAdminVO umsAdminVO) {
-        getCacheService().delAdmin(id);
+        umsAdminCacheService.delAdmin(id);
         umsAdminVO.setId(id);
         UmsAdmin rawAdmin = adminMapper.selectByPrimaryKey(id);
         if(rawAdmin.getPassword().equals(SaSecureUtil.md5(umsAdminVO.getPassword()))){
@@ -123,7 +125,7 @@ public class UmsAdminRepository implements IUmsAdminRepository {
 
     @Override
     public int delete(Long id) {
-        getCacheService().delAdmin(id);
+        umsAdminCacheService.delAdmin(id);
         return adminMapper.deleteByPrimaryKey(id);
     }
 
@@ -177,12 +179,8 @@ public class UmsAdminRepository implements IUmsAdminRepository {
         }
         umsAdmin.setPassword(SaSecureUtil.md5(updateAdminPasswordReq.getNewPassword()));
         adminMapper.updateByPrimaryKey(umsAdmin);
-        getCacheService().delAdmin(umsAdmin.getId());
+        umsAdminCacheService.delAdmin(umsAdmin.getId());
         return 1;
     }
 
-    @Override
-    public UmsAdminCacheService getCacheService() {
-        return SpringUtil.getBean(UmsAdminCacheService.class);
-    }
 }

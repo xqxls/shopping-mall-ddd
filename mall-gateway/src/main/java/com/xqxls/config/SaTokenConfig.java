@@ -19,7 +19,7 @@ import java.util.List;
 @Configuration
 public class SaTokenConfig {
 
-    @Autowired
+    @Resource
     private IgnoreUrlsConfig ignoreUrlsConfig;
 
     /**

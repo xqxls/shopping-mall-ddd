@@ -1,12 +1,8 @@
 package com.xqxls.pms.service;
 
-import com.xqxls.dto.PmsProductCategoryParam;
-import com.xqxls.dto.PmsProductCategoryWithChildrenItem;
-import com.xqxls.model.PmsProductCategory;
 import com.xqxls.pms.model.req.PmsProductCategoryReq;
 import com.xqxls.pms.model.res.PmsProductCategoryWithChildrenItemResult;
 import com.xqxls.pms.model.vo.PmsProductCategoryVO;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

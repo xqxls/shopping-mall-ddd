@@ -1,7 +1,5 @@
 package com.xqxls.pms.service;
 
-import com.xqxls.dto.PmsProductAttributeCategoryItem;
-import com.xqxls.model.PmsProductAttributeCategory;
 import com.xqxls.pms.model.res.PmsProductAttributeCategoryItemResult;
 import com.xqxls.pms.model.vo.PmsProductAttributeCategoryVO;
 

@@ -3,9 +3,9 @@ package com.xqxls.ums.service.impl;
 import com.xqxls.ums.model.vo.UmsResourceVO;
 import com.xqxls.ums.repository.IUmsResourceRepository;
 import com.xqxls.ums.service.UmsResourceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +16,7 @@ import java.util.Map;
 @Service
 public class UmsResourceServiceImpl implements UmsResourceService {
 
-    @Autowired
+    @Resource
     private IUmsResourceRepository umsResourceRepository;
 
     @Override

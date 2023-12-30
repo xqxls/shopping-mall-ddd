@@ -1,6 +1,5 @@
 package com.xqxls.ums.repository;
 
-import com.xqxls.redis.UmsAdminCacheService;
 import com.xqxls.ums.model.req.UmsAdminReq;
 import com.xqxls.ums.model.req.UpdateAdminPasswordReq;
 import com.xqxls.ums.model.vo.UmsAdminVO;
@@ -66,10 +65,5 @@ public interface IUmsAdminRepository {
      * 修改密码
      */
     int updatePassword(UpdateAdminPasswordReq updateAdminPasswordReq);
-
-    /**
-     * 获取缓存服务
-     */
-    UmsAdminCacheService getCacheService();
 
 }

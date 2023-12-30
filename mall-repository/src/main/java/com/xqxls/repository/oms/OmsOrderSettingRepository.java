@@ -5,6 +5,7 @@ import com.xqxls.mapper.OmsOrderSettingMapper;
 import com.xqxls.model.OmsOrderSetting;
 import com.xqxls.oms.model.vo.OmsOrderSettingVO;
 import com.xqxls.oms.repository.IOmsOrderSettingRepository;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 
@@ -13,6 +14,7 @@ import javax.annotation.Resource;
  * @Author: xqxls
  * @CreateTime: 2023/12/29 9:30
  */
+@Repository
 public class OmsOrderSettingRepository implements IOmsOrderSettingRepository {
 
     @Resource
