@@ -37,7 +37,7 @@ public class AuthController {
         }
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token", saTokenInfo.getTokenValue());
-        tokenMap.put("tokenHead", saTokenInfo.getTokenName());
+        tokenMap.put("tokenHead", "");
         return CommonResult.success(tokenMap);
     }
 

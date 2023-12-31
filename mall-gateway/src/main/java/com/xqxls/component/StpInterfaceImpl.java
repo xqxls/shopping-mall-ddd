@@ -18,7 +18,7 @@ public class StpInterfaceImpl implements StpInterface {
     public List<String> getPermissionList(Object loginId, String loginType) {
         // 返回此 loginId 拥有的权限码列表
         UserDto userDto = (UserDto) StpUtil.getSession().get("userInfo");
-        return userDto.getPermissionList().stream().map(p->"/mall-domain"+p).collect(Collectors.toList());
+        return userDto.getPermissionList();
     }
 
     @Override

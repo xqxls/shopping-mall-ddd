@@ -1,5 +1,6 @@
 package com.xqxls.ums.service;
 
+import com.xqxls.api.CommonResult;
 import com.xqxls.ums.model.req.UmsAdminReq;
 import com.xqxls.ums.model.req.UpdateAdminPasswordReq;
 import com.xqxls.ums.model.vo.UmsAdminVO;
@@ -7,6 +8,7 @@ import com.xqxls.ums.model.vo.UmsResourceVO;
 import com.xqxls.ums.model.vo.UmsRoleVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 后台管理员Service
@@ -64,4 +66,11 @@ public interface UmsAdminService {
      */
     int updatePassword(UpdateAdminPasswordReq updateAdminPasswordReq);
 
+    /**
+     * 登录
+     * @param username 用户名
+     * @param password 密码
+     * @return token
+     */
+    Map<String,String> login(String username, String password);
 }

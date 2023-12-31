@@ -17,5 +17,6 @@ public class UserDto {
     private Long id;
     private String username;
     private String password;
+    private String icon;
     private List<String> permissionList;
 }

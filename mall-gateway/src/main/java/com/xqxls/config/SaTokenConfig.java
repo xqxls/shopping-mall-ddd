@@ -43,7 +43,9 @@ public class SaTokenConfig {
                     String url = request.getUrl();
                     String path = URLUtil.getPath(url);
                     if(!ignoreUrls.contains(path)){
-                        SaRouter.match(path, () -> StpUtil.checkPermission(path));
+                        int secondSlashIndex = path.indexOf("/", 1);
+                        String matchPath = path.substring(secondSlashIndex);
+                        SaRouter.match(matchPath, () -> StpUtil.checkPermission(matchPath));
                     }
                 })
                 // setAuth方法异常处理
@@ -54,4 +56,5 @@ public class SaTokenConfig {
                     return SaResult.error(e.getMessage());
                 });
     }
+
 }

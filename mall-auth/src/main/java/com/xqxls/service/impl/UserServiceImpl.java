@@ -34,6 +34,7 @@ public class UserServiceImpl {
                 .id(umsAdminRpcResponse.getId())
                 .username(umsAdminRpcResponse.getUsername())
                 .password(umsAdminRpcResponse.getPassword())
+                .icon(umsAdminRpcResponse.getIcon())
                 .permissionList(resourceList.stream().map(UmsResourceRpcResponse::getUrl).collect(Collectors.toList()))
                 .build();
     }

@@ -1,16 +1,20 @@
 package com.xqxls.http.ums;
 
+import cn.hutool.core.collection.CollUtil;
 import com.xqxls.api.CommonPage;
 import com.xqxls.api.CommonResult;
 import com.xqxls.domain.UserDto;
+import com.xqxls.model.UmsRole;
 import com.xqxls.response.UmsAdminRpcResponse;
 import com.xqxls.response.UmsResourceRpcResponse;
+import com.xqxls.ums.model.req.UmsAdminLoginReq;
 import com.xqxls.ums.model.req.UmsAdminReq;
 import com.xqxls.ums.model.req.UpdateAdminPasswordReq;
 import com.xqxls.ums.model.vo.UmsAdminVO;
 import com.xqxls.ums.model.vo.UmsResourceVO;
 import com.xqxls.ums.model.vo.UmsRoleVO;
 import com.xqxls.ums.service.UmsAdminService;
+import com.xqxls.ums.service.UmsRoleService;
 import com.xqxls.util.SecurityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +25,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 后台用户管理
@@ -34,6 +41,9 @@ public class UmsAdminController {
     @Resource
     private UmsAdminService adminService;
 
+    @Resource
+    private UmsRoleService roleService;
+
     @ApiOperation(value = "用户注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
@@ -43,6 +53,17 @@ public class UmsAdminController {
             return CommonResult.failed();
         }
         return CommonResult.success(umsAdminVO);
+    }
+
+    @ApiOperation(value = "登录以后返回token")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult<Map<String,String>> login(@Validated @RequestBody UmsAdminLoginReq umsAdminLoginReq) {
+        Map<String,String> result = adminService.login(umsAdminLoginReq.getUsername(),umsAdminLoginReq.getPassword());
+        if (result == null) {
+            return CommonResult.failed();
+        }
+        return CommonResult.success(result);
     }
 
     @ApiOperation("根据用户名或姓名分页获取用户列表")
@@ -140,8 +161,18 @@ public class UmsAdminController {
     @ApiOperation(value = "获取当前登录用户信息")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<UserDto> getAdminInfo() {
-        return CommonResult.success(SecurityUtil.getCurrentUser());
+    public CommonResult<Map<String, Object>> getAdminInfo() {
+        UserDto userDto = SecurityUtil.getCurrentUser();
+        Map<String, Object> data = new HashMap<>();
+        data.put("username", userDto.getUsername());
+        data.put("menus", roleService.getMenuList(userDto.getId()));
+        data.put("icon", userDto.getIcon());
+        List<UmsRoleVO> roleList = adminService.getRoleList(userDto.getId());
+        if(CollUtil.isNotEmpty(roleList)){
+            List<String> roles = roleList.stream().map(UmsRoleVO::getName).collect(Collectors.toList());
+            data.put("roles",roles);
+        }
+        return CommonResult.success(data);
     }
 
     @ApiOperation("根据用户名获取用户")
