@@ -18,5 +18,6 @@ public class UserDto {
     private String username;
     private String password;
     private String icon;
+    private List<String> roles;
     private List<String> permissionList;
 }

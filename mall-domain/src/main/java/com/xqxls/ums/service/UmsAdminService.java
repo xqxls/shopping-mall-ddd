@@ -1,6 +1,7 @@
 package com.xqxls.ums.service;
 
 import com.xqxls.api.CommonResult;
+import com.xqxls.domain.UserDto;
 import com.xqxls.ums.model.req.UmsAdminReq;
 import com.xqxls.ums.model.req.UpdateAdminPasswordReq;
 import com.xqxls.ums.model.vo.UmsAdminVO;
@@ -73,4 +74,9 @@ public interface UmsAdminService {
      * @return token
      */
     Map<String,String> login(String username, String password);
+
+    /**
+     * 获取用户信息
+     */
+    UserDto loadUserByUsername(String username);
 }

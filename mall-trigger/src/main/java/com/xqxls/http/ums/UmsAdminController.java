@@ -176,13 +176,10 @@ public class UmsAdminController {
     }
 
     @ApiOperation("根据用户名获取用户")
-    @RequestMapping(value = "/getAdminByUsername", method = RequestMethod.GET)
+    @RequestMapping(value = "/loadByUsername", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<UmsAdminRpcResponse> getAdminByUsername(@RequestParam(value = "username") String username) {
-        UmsAdminRpcResponse result = new UmsAdminRpcResponse();
-        UmsAdminVO umsAdminVO = adminService.getAdminByUsername(username);
-        BeanUtils.copyProperties(umsAdminVO,result);
-        return CommonResult.success(result);
+    public CommonResult<UserDto> getAdminByUsername(@RequestParam(value = "username") String username) {
+        return CommonResult.success(adminService.loadUserByUsername(username));
     }
 
     @ApiOperation("根据用户id获取资源")

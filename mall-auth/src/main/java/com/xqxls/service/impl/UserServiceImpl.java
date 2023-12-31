@@ -5,14 +5,9 @@ import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.xqxls.domain.UserDto;
 import com.xqxls.feign.UmsAdminFeign;
-import com.xqxls.response.UmsAdminRpcResponse;
-import com.xqxls.response.UmsResourceRpcResponse;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * 用户管理业务类
@@ -25,18 +20,7 @@ public class UserServiceImpl {
     private UmsAdminFeign umsAdminFeign;
 
     public UserDto loadUserByUsername(String username) {
-        UmsAdminRpcResponse umsAdminRpcResponse = umsAdminFeign.getAdminByUsername(username).getData();
-        if (Objects.isNull(umsAdminRpcResponse)) {
-            return null;
-        }
-        List<UmsResourceRpcResponse> resourceList = umsAdminFeign.getResourceList(umsAdminRpcResponse.getId()).getData();
-        return UserDto.builder()
-                .id(umsAdminRpcResponse.getId())
-                .username(umsAdminRpcResponse.getUsername())
-                .password(umsAdminRpcResponse.getPassword())
-                .icon(umsAdminRpcResponse.getIcon())
-                .permissionList(resourceList.stream().map(UmsResourceRpcResponse::getUrl).collect(Collectors.toList()))
-                .build();
+        return umsAdminFeign.loadUserByUsername(username).getData();
     }
 
     public SaTokenInfo login(String username, String password) {

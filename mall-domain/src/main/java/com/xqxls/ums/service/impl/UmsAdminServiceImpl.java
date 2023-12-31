@@ -1,8 +1,10 @@
 package com.xqxls.ums.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xqxls.api.CommonResult;
 import com.xqxls.api.ResultCode;
+import com.xqxls.domain.UserDto;
 import com.xqxls.exception.Asserts;
 import com.xqxls.feign.AuthFeign;
 import com.xqxls.ums.model.req.UmsAdminReq;
@@ -12,6 +14,7 @@ import com.xqxls.ums.model.vo.UmsResourceVO;
 import com.xqxls.ums.model.vo.UmsRoleVO;
 import com.xqxls.ums.repository.IUmsAdminRepository;
 import com.xqxls.ums.service.UmsAdminService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -21,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * UmsAdminService实现类
@@ -93,6 +97,23 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         CommonResult<Map<String,String>> restResult = authFeign.login(username,password);
         if(ResultCode.SUCCESS.getCode()==restResult.getCode()&&restResult.getData()!=null){
             return restResult.getData();
+        }
+        return null;
+    }
+
+    @Override
+    public UserDto loadUserByUsername(String username) {
+        //获取用户信息
+        UmsAdminVO adminVO = getAdminByUsername(username);
+        if (adminVO != null) {
+            List<UmsRoleVO> roleList = getRoleList(adminVO.getId());
+            UserDto userDto = new UserDto();
+            BeanUtils.copyProperties(adminVO,userDto);
+            if(CollUtil.isNotEmpty(roleList)){
+                List<String> roleStrList = roleList.stream().map(item -> item.getId() + "_" + item.getName()).collect(Collectors.toList());
+                userDto.setRoles(roleStrList);
+            }
+            return userDto;
         }
         return null;
     }

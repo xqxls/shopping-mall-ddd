@@ -7,20 +7,27 @@ import cn.dev33.satoken.reactor.filter.SaReactorFilter;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.URLUtil;
+import com.xqxls.component.MyStpUtil;
+import com.xqxls.constant.AuthConstant;
+import com.xqxls.service.RedisService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 
 import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Configuration
 public class SaTokenConfig {
 
     @Resource
     private IgnoreUrlsConfig ignoreUrlsConfig;
+    @Resource
+    private RedisService redisService;
 
     /**
      * 注册Sa-Token全局过滤器
@@ -42,11 +49,20 @@ public class SaTokenConfig {
                     SaRequest request = SaHolder.getRequest();
                     String url = request.getUrl();
                     String path = URLUtil.getPath(url);
+                    PathMatcher pathMatcher = new AntPathMatcher();
                     if(!ignoreUrls.contains(path)){
-                        int secondSlashIndex = path.indexOf("/", 1);
-                        String matchPath = path.substring(secondSlashIndex);
-                        SaRouter.match(matchPath, () -> StpUtil.checkPermission(matchPath));
+                        Map<Object, Object> resourceRolesMap = redisService.hGetAll(AuthConstant.RESOURCE_ROLES_MAP_KEY);
+                        Iterator<Object> iterator = resourceRolesMap.keySet().iterator();
+                        List<String> authorities = new ArrayList<>();
+                        while (iterator.hasNext()) {
+                            String pattern = (String) iterator.next();
+                            if (pathMatcher.match(pattern, path)) {
+                                authorities.addAll(Convert.toList(String.class, resourceRolesMap.get(pattern)));
+                            }
+                        }
+                        SaRouter.match("/**", () -> MyStpUtil.containsRole(authorities));
                     }
+
                 })
                 // setAuth方法异常处理
                 .setError(e -> {
