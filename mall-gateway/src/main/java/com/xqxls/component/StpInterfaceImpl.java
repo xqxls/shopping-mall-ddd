@@ -2,14 +2,10 @@ package com.xqxls.component;
 
 import cn.dev33.satoken.stp.StpInterface;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.convert.Convert;
 import com.xqxls.domain.UserDto;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 自定义权限验证接口扩展
