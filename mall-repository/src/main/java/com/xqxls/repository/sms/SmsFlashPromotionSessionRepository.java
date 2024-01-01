@@ -3,13 +3,13 @@ package com.xqxls.repository.sms;
 import com.xqxls.convert.sms.SmsFlashPromotionSessionConvert;
 import com.xqxls.mapper.SmsFlashPromotionSessionMapper;
 import com.xqxls.model.SmsFlashPromotionSession;
-import com.xqxls.model.SmsFlashPromotionSessionExample;
 import com.xqxls.sms.model.res.SmsFlashPromotionSessionDetailResult;
 import com.xqxls.sms.model.vo.SmsFlashPromotionSessionVO;
 import com.xqxls.sms.repository.ISmsFlashPromotionSessionRepository;
 import com.xqxls.sms.service.SmsFlashPromotionProductRelationService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -63,14 +63,14 @@ public class SmsFlashPromotionSessionRepository implements ISmsFlashPromotionSes
 
     @Override
     public List<SmsFlashPromotionSessionVO> list() {
-        SmsFlashPromotionSessionExample example = new SmsFlashPromotionSessionExample();
+        Example example = new Example(SmsFlashPromotionSession.class);
         return SmsFlashPromotionSessionConvert.INSTANCE.smsFlashPromotionSessionEntityToVOList(promotionSessionMapper.selectByExample(example));
     }
 
     @Override
     public List<SmsFlashPromotionSessionDetailResult> selectList(Long flashPromotionId) {
-        SmsFlashPromotionSessionExample example = new SmsFlashPromotionSessionExample();
-        example.createCriteria().andStatusEqualTo(1);
+        Example example = new Example(SmsFlashPromotionSession.class);
+        example.createCriteria().andEqualTo("status",1);
         List<SmsFlashPromotionSession> list = promotionSessionMapper.selectByExample(example);
         List<SmsFlashPromotionSessionDetailResult> resultList = new ArrayList<>();
         for (SmsFlashPromotionSession promotionSession : list) {

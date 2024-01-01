@@ -4,12 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.xqxls.convert.sms.SmsHomeRecommendSubjectConvert;
 import com.xqxls.mapper.SmsHomeRecommendSubjectMapper;
 import com.xqxls.model.SmsHomeRecommendSubject;
-import com.xqxls.model.SmsHomeRecommendSubjectExample;
 import com.xqxls.sms.model.vo.SmsHomeRecommendSubjectVO;
 import com.xqxls.sms.repository.ISmsHomeRecommendSubjectRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -47,15 +47,15 @@ public class SmsHomeRecommendSubjectRepository implements ISmsHomeRecommendSubje
 
     @Override
     public int delete(List<Long> ids) {
-        SmsHomeRecommendSubjectExample example = new SmsHomeRecommendSubjectExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(SmsHomeRecommendSubject.class);
+        example.createCriteria().andIn("id",ids);
         return smsHomeRecommendSubjectMapper.deleteByExample(example);
     }
 
     @Override
     public int updateRecommendStatus(List<Long> ids, Integer recommendStatus) {
-        SmsHomeRecommendSubjectExample example = new SmsHomeRecommendSubjectExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(SmsHomeRecommendSubject.class);
+        example.createCriteria().andIn("id",ids);
         SmsHomeRecommendSubject record = new SmsHomeRecommendSubject();
         record.setRecommendStatus(recommendStatus);
         return smsHomeRecommendSubjectMapper.updateByExampleSelective(record,example);
@@ -64,13 +64,13 @@ public class SmsHomeRecommendSubjectRepository implements ISmsHomeRecommendSubje
     @Override
     public List<SmsHomeRecommendSubjectVO> list(String subjectName, Integer recommendStatus, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum,pageSize);
-        SmsHomeRecommendSubjectExample example = new SmsHomeRecommendSubjectExample();
-        SmsHomeRecommendSubjectExample.Criteria criteria = example.createCriteria();
+        Example example = new Example(SmsHomeRecommendSubject.class);
+        Example.Criteria criteria = example.createCriteria();
         if(StringUtils.hasText(subjectName)){
-            criteria.andSubjectNameLike("%"+subjectName+"%");
+            criteria.andLike("subjectName","%"+subjectName+"%");
         }
         if(recommendStatus!=null){
-            criteria.andRecommendStatusEqualTo(recommendStatus);
+            criteria.andEqualTo("recommendStatus",recommendStatus);
         }
         example.setOrderByClause("sort desc");
         return SmsHomeRecommendSubjectConvert.INSTANCE.smsHomeRecommendSubjectEntityToVOList(smsHomeRecommendSubjectMapper.selectByExample(example));

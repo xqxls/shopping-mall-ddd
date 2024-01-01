@@ -18,6 +18,7 @@ import com.xqxls.sms.repository.ISmsCouponRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -84,14 +85,14 @@ public class SmsCouponRepository implements ISmsCouponRepository {
     }
 
     private void deleteProductCategoryRelation(Long id) {
-        SmsCouponProductCategoryRelationExample productCategoryRelationExample = new SmsCouponProductCategoryRelationExample();
-        productCategoryRelationExample.createCriteria().andCouponIdEqualTo(id);
+        Example productCategoryRelationExample = new Example(SmsCouponProductCategoryRelation.class);
+        productCategoryRelationExample.createCriteria().andEqualTo("couponId",id);
         productCategoryRelationMapper.deleteByExample(productCategoryRelationExample);
     }
 
     private void deleteProductRelation(Long id) {
-        SmsCouponProductRelationExample productRelationExample = new SmsCouponProductRelationExample();
-        productRelationExample.createCriteria().andCouponIdEqualTo(id);
+        Example productRelationExample = new Example(SmsCouponProductRelation.class);
+        productRelationExample.createCriteria().andEqualTo("couponId",id);
         productRelationMapper.deleteByExample(productRelationExample);
     }
 
@@ -124,13 +125,13 @@ public class SmsCouponRepository implements ISmsCouponRepository {
 
     @Override
     public List<SmsCouponVO> list(String name, Integer type, Integer pageSize, Integer pageNum) {
-        SmsCouponExample example = new SmsCouponExample();
-        SmsCouponExample.Criteria criteria = example.createCriteria();
+        Example example = new Example(SmsCoupon.class);
+        Example.Criteria criteria = example.createCriteria();
         if(StringUtils.hasText(name)){
-            criteria.andNameLike("%"+name+"%");
+            criteria.andLike("name","%"+name+"%");
         }
         if(type!=null){
-            criteria.andTypeEqualTo(type);
+            criteria.andEqualTo("type",type);
         }
         PageHelper.startPage(pageNum,pageSize);
         return SmsCouponConvert.INSTANCE.smsCouponEntityToVOList(couponMapper.selectByExample(example));

@@ -17,6 +17,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -102,18 +103,18 @@ public class PmsProductCategoryRepository implements IPmsProductCategoryReposito
         //更新商品分类时要更新商品中的名称
         PmsProduct product = new PmsProduct();
         product.setProductCategoryName(productCategory.getName());
-        PmsProductExample example = new PmsProductExample();
-        example.createCriteria().andProductCategoryIdEqualTo(id);
+        Example example = new Example(PmsProduct.class);
+        example.createCriteria().andEqualTo("productCategoryId",id);
         productMapper.updateByExampleSelective(product,example);
         //同时更新筛选属性的信息
         if(!CollectionUtils.isEmpty(pmsProductCategoryReq.getProductAttributeIdList())){
-            PmsProductCategoryAttributeRelationExample relationExample = new PmsProductCategoryAttributeRelationExample();
-            relationExample.createCriteria().andProductCategoryIdEqualTo(id);
+            Example relationExample = new Example(PmsProductCategoryAttributeRelation.class);
+            relationExample.createCriteria().andEqualTo("productCategoryId",id);
             productCategoryAttributeRelationMapper.deleteByExample(relationExample);
             insertRelationList(id,pmsProductCategoryReq.getProductAttributeIdList());
         }else{
-            PmsProductCategoryAttributeRelationExample relationExample = new PmsProductCategoryAttributeRelationExample();
-            relationExample.createCriteria().andProductCategoryIdEqualTo(id);
+            Example relationExample = new Example(PmsProductCategoryAttributeRelation.class);
+            relationExample.createCriteria().andEqualTo("productCategoryId",id);
             productCategoryAttributeRelationMapper.deleteByExample(relationExample);
         }
         return productCategoryMapper.updateByPrimaryKeySelective(productCategory);
@@ -122,9 +123,9 @@ public class PmsProductCategoryRepository implements IPmsProductCategoryReposito
     @Override
     public List<PmsProductCategoryVO> getList(Long parentId, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
-        PmsProductCategoryExample example = new PmsProductCategoryExample();
+        Example example = new Example(PmsProductCategory.class);
         example.setOrderByClause("sort desc");
-        example.createCriteria().andParentIdEqualTo(parentId);
+        example.createCriteria().andEqualTo("parentId",parentId);
         return PmsProductCategoryConvert.INSTANCE.pmsProductCategoryEntityToVOList(productCategoryMapper.selectByExample(example));
     }
 
@@ -142,8 +143,8 @@ public class PmsProductCategoryRepository implements IPmsProductCategoryReposito
     public int updateNavStatus(List<Long> ids, Integer navStatus) {
         PmsProductCategory productCategory = new PmsProductCategory();
         productCategory.setNavStatus(navStatus);
-        PmsProductCategoryExample example = new PmsProductCategoryExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(PmsProductCategory.class);
+        example.createCriteria().andIn("id",ids);
         return productCategoryMapper.updateByExampleSelective(productCategory, example);
     }
 
@@ -151,8 +152,8 @@ public class PmsProductCategoryRepository implements IPmsProductCategoryReposito
     public int updateShowStatus(List<Long> ids, Integer showStatus) {
         PmsProductCategory productCategory = new PmsProductCategory();
         productCategory.setShowStatus(showStatus);
-        PmsProductCategoryExample example = new PmsProductCategoryExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(PmsProductCategory.class);
+        example.createCriteria().andIn("id",ids);
         return productCategoryMapper.updateByExampleSelective(productCategory, example);
     }
 

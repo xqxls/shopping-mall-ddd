@@ -3,7 +3,6 @@ package com.xqxls.repository.ums;
 import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.spring.SpringUtil;
 import com.github.pagehelper.PageHelper;
 import com.xqxls.convert.ums.UmsAdminConvert;
 import com.xqxls.convert.ums.UmsResourceConvert;
@@ -13,9 +12,7 @@ import com.xqxls.exception.ApiException;
 import com.xqxls.mapper.UmsAdminMapper;
 import com.xqxls.mapper.UmsAdminRoleRelationMapper;
 import com.xqxls.model.UmsAdmin;
-import com.xqxls.model.UmsAdminExample;
 import com.xqxls.model.UmsAdminRoleRelation;
-import com.xqxls.model.UmsAdminRoleRelationExample;
 import com.xqxls.redis.UmsAdminCacheService;
 import com.xqxls.ums.model.req.UmsAdminReq;
 import com.xqxls.ums.model.req.UpdateAdminPasswordReq;
@@ -27,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -52,8 +50,8 @@ public class UmsAdminRepository implements IUmsAdminRepository {
 
     @Override
     public UmsAdminVO getAdminByUsername(String username) {
-        UmsAdminExample example = new UmsAdminExample();
-        example.createCriteria().andUsernameEqualTo(username);
+        Example example = new Example(UmsAdmin.class);
+        example.createCriteria().andEqualTo("username",username);
         List<UmsAdmin> adminList = adminMapper.selectByExample(example);
         if (adminList.isEmpty() ) {
             throw new ApiException("用户名不存在");
@@ -72,8 +70,8 @@ public class UmsAdminRepository implements IUmsAdminRepository {
         umsAdmin.setCreateTime(new Date());
         umsAdmin.setStatus(1);
         //查询是否有相同用户名的用户
-        UmsAdminExample example = new UmsAdminExample();
-        example.createCriteria().andUsernameEqualTo(umsAdmin.getUsername());
+        Example example = new Example(UmsAdmin.class);
+        example.createCriteria().andEqualTo("username",umsAdmin.getUsername());
         List<UmsAdmin> umsAdminList = adminMapper.selectByExample(example);
         if (!umsAdminList.isEmpty()) {
             throw new ApiException("用户名已存在，请勿重复注册");
@@ -93,11 +91,11 @@ public class UmsAdminRepository implements IUmsAdminRepository {
     @Override
     public List<UmsAdminVO> list(String keyword, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
-        UmsAdminExample example = new UmsAdminExample();
-        UmsAdminExample.Criteria criteria = example.createCriteria();
+        Example example = new Example(UmsAdmin.class);
+        Example.Criteria criteria = example.createCriteria();
         if (StringUtils.hasText(keyword)) {
-            criteria.andUsernameLike("%" + keyword + "%");
-            example.or(example.createCriteria().andNickNameLike("%" + keyword + "%"));
+            criteria.andLike("username","%" + keyword + "%");
+            example.or(example.createCriteria().andLike("nickName","%" + keyword + "%"));
         }
         return UmsAdminConvert.INSTANCE.convertAdminList(adminMapper.selectByExample(example));
     }
@@ -133,9 +131,9 @@ public class UmsAdminRepository implements IUmsAdminRepository {
     public int updateRole(Long adminId, List<Long> roleIds) {
         int count = roleIds == null ? 0 : roleIds.size();
         //先删除原来的关系
-        UmsAdminRoleRelationExample adminRoleRelationExample = new UmsAdminRoleRelationExample();
-        adminRoleRelationExample.createCriteria().andAdminIdEqualTo(adminId);
-        adminRoleRelationMapper.deleteByExample(adminRoleRelationExample);
+        Example example = new Example(UmsAdminRoleRelation.class);
+        example.createCriteria().andEqualTo("adminId",adminId);
+        adminRoleRelationMapper.deleteByExample(example);
         //建立新关系
         if (!CollectionUtils.isEmpty(roleIds)) {
             List<UmsAdminRoleRelation> list = new ArrayList<>();
@@ -167,8 +165,8 @@ public class UmsAdminRepository implements IUmsAdminRepository {
                 ||StrUtil.isEmpty(updateAdminPasswordReq.getNewPassword())){
             return -1;
         }
-        UmsAdminExample example = new UmsAdminExample();
-        example.createCriteria().andUsernameEqualTo(updateAdminPasswordReq.getUsername());
+        Example example = new Example(UmsAdmin.class);
+        example.createCriteria().andEqualTo("username",updateAdminPasswordReq.getUsername());
         List<UmsAdmin> adminList = adminMapper.selectByExample(example);
         if(CollUtil.isEmpty(adminList)){
             return -2;

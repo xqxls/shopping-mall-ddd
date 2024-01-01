@@ -12,7 +12,6 @@ import com.xqxls.dto.OmsOrderQueryParam;
 import com.xqxls.mapper.OmsOrderMapper;
 import com.xqxls.mapper.OmsOrderOperateHistoryMapper;
 import com.xqxls.model.OmsOrder;
-import com.xqxls.model.OmsOrderExample;
 import com.xqxls.model.OmsOrderOperateHistory;
 import com.xqxls.oms.model.req.OmsMoneyInfoReq;
 import com.xqxls.oms.model.req.OmsOrderDeliveryReq;
@@ -24,6 +23,7 @@ import com.xqxls.oms.repository.IOmsOrderRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -81,8 +81,8 @@ public class OmsOrderRepository implements IOmsOrderRepository {
     public int close(List<Long> ids, String note) {
         OmsOrder record = new OmsOrder();
         record.setStatus(4);
-        OmsOrderExample example = new OmsOrderExample();
-        example.createCriteria().andDeleteStatusEqualTo(0).andIdIn(ids);
+        Example example = new Example(OmsOrder.class);
+        example.createCriteria().andEqualTo("deleteStatus",0).andIn("id",ids);
         int count = orderMapper.updateByExampleSelective(record, example);
         List<OmsOrderOperateHistory> historyList = ids.stream().map(orderId -> {
             OmsOrderOperateHistory history = new OmsOrderOperateHistory();
@@ -101,8 +101,8 @@ public class OmsOrderRepository implements IOmsOrderRepository {
     public int delete(List<Long> ids) {
         OmsOrder record = new OmsOrder();
         record.setDeleteStatus(1);
-        OmsOrderExample example = new OmsOrderExample();
-        example.createCriteria().andDeleteStatusEqualTo(0).andIdIn(ids);
+        Example example = new Example(OmsOrder.class);
+        example.createCriteria().andEqualTo("deleteStatus",0).andIn("id",ids);
         return orderMapper.updateByExampleSelective(record, example);
     }
 

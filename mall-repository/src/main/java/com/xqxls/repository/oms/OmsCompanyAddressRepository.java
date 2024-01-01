@@ -2,10 +2,11 @@ package com.xqxls.repository.oms;
 
 import com.xqxls.convert.oms.OmsCompanyAddressConvert;
 import com.xqxls.mapper.OmsCompanyAddressMapper;
-import com.xqxls.model.OmsCompanyAddressExample;
+import com.xqxls.model.OmsCompanyAddress;
 import com.xqxls.oms.model.vo.OmsCompanyAddressVO;
 import com.xqxls.oms.repository.IOmsCompanyAddressRepository;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -23,6 +24,6 @@ public class OmsCompanyAddressRepository implements IOmsCompanyAddressRepository
 
     @Override
     public List<OmsCompanyAddressVO> list() {
-        return OmsCompanyAddressConvert.INSTANCE.omsCompanyAddressEntityToVOList(companyAddressMapper.selectByExample(new OmsCompanyAddressExample()));
+        return OmsCompanyAddressConvert.INSTANCE.omsCompanyAddressEntityToVOList(companyAddressMapper.selectByExample(new Example(OmsCompanyAddress.class)));
     }
 }

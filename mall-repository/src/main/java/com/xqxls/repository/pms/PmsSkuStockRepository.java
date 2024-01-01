@@ -4,11 +4,11 @@ import com.xqxls.convert.pms.PmsSkuStockConvert;
 import com.xqxls.dao.PmsSkuStockDao;
 import com.xqxls.mapper.PmsSkuStockMapper;
 import com.xqxls.model.PmsSkuStock;
-import com.xqxls.model.PmsSkuStockExample;
 import com.xqxls.pms.model.vo.PmsSkuStockVO;
 import com.xqxls.pms.repository.IPmsSkuStockRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,10 +28,10 @@ public class PmsSkuStockRepository implements IPmsSkuStockRepository {
 
     @Override
     public List<PmsSkuStockVO> getList(Long pid, String keyword) {
-        PmsSkuStockExample example = new PmsSkuStockExample();
-        PmsSkuStockExample.Criteria criteria = example.createCriteria().andProductIdEqualTo(pid);
+        Example example = new Example(PmsSkuStock.class);
+        Example.Criteria criteria = example.createCriteria().andEqualTo("productId",pid);
         if (StringUtils.hasText(keyword)) {
-            criteria.andSkuCodeLike("%" + keyword + "%");
+            criteria.andLike("skuCode","%" + keyword + "%");
         }
         return PmsSkuStockConvert.INSTANCE.pmsSkuStockEntityToVOList(skuStockMapper.selectByExample(example));
     }

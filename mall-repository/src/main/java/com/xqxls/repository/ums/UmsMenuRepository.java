@@ -4,10 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.xqxls.convert.ums.UmsMenuConvert;
 import com.xqxls.mapper.UmsMenuMapper;
 import com.xqxls.model.UmsMenu;
-import com.xqxls.model.UmsMenuExample;
 import com.xqxls.ums.model.vo.UmsMenuVO;
 import com.xqxls.ums.repository.IUmsMenuRepository;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -71,16 +71,16 @@ public class UmsMenuRepository implements IUmsMenuRepository {
     @Override
     public List<UmsMenuVO> list(Long parentId, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
-        UmsMenuExample example = new UmsMenuExample();
+        Example example = new Example(UmsMenu.class);
         example.setOrderByClause("sort desc");
-        example.createCriteria().andParentIdEqualTo(parentId);
+        example.createCriteria().andEqualTo("parentId",parentId);
         return UmsMenuConvert.INSTANCE.umsMenuEntityToVOList(menuMapper.selectByExample(example));
     }
 
 
     @Override
     public List<UmsMenuVO> list() {
-        List<UmsMenu> menuList = menuMapper.selectByExample(new UmsMenuExample());
+        List<UmsMenu> menuList = menuMapper.selectByExample(new Example(UmsMenu.class));
         return UmsMenuConvert.INSTANCE.umsMenuEntityToVOList(menuList);
     }
 

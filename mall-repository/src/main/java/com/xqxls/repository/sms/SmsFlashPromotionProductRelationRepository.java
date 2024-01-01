@@ -6,7 +6,6 @@ import com.xqxls.dao.SmsFlashPromotionProductRelationDao;
 import com.xqxls.dto.SmsFlashPromotionProduct;
 import com.xqxls.mapper.SmsFlashPromotionProductRelationMapper;
 import com.xqxls.model.SmsFlashPromotionProductRelation;
-import com.xqxls.model.SmsFlashPromotionProductRelationExample;
 import com.xqxls.pms.model.vo.PmsProductVO;
 import com.xqxls.sms.model.res.SmsFlashPromotionProductResult;
 import com.xqxls.sms.model.vo.SmsFlashPromotionProductRelationVO;
@@ -14,6 +13,7 @@ import com.xqxls.sms.repository.ISmsFlashPromotionProductRelationRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -78,10 +78,10 @@ public class SmsFlashPromotionProductRelationRepository implements ISmsFlashProm
 
     @Override
     public long getCount(Long flashPromotionId, Long flashPromotionSessionId) {
-        SmsFlashPromotionProductRelationExample example = new SmsFlashPromotionProductRelationExample();
+        Example example = new Example(SmsFlashPromotionProductRelation.class);
         example.createCriteria()
-                .andFlashPromotionIdEqualTo(flashPromotionId)
-                .andFlashPromotionSessionIdEqualTo(flashPromotionSessionId);
-        return relationMapper.countByExample(example);
+                .andEqualTo("flashPromotionId",flashPromotionId)
+                .andEqualTo("flashPromotionSessionId",flashPromotionSessionId);
+        return relationMapper.selectCountByExample(example);
     }
 }

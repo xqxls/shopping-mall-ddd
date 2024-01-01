@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
@@ -121,35 +122,35 @@ public class PmsProductRepository implements IPmsProductRepository {
         product.setId(id);
         productMapper.updateByPrimaryKeySelective(product);
         //会员价格
-        PmsMemberPriceExample pmsMemberPriceExample = new PmsMemberPriceExample();
-        pmsMemberPriceExample.createCriteria().andProductIdEqualTo(id);
+        Example pmsMemberPriceExample = new Example(PmsMemberPrice.class);
+        pmsMemberPriceExample.createCriteria().andEqualTo("productId",id);
         memberPriceMapper.deleteByExample(pmsMemberPriceExample);
         relateAndInsertList(memberPriceDao, PmsMemberPriceConvert.INSTANCE.pmsMemberPriceVOToEntityList(pmsProductRich.getMemberPriceList()), id);
         //阶梯价格
-        PmsProductLadderExample ladderExample = new PmsProductLadderExample();
-        ladderExample.createCriteria().andProductIdEqualTo(id);
+        Example ladderExample = new Example(PmsProductLadder.class);
+        ladderExample.createCriteria().andEqualTo("productId",id);
         productLadderMapper.deleteByExample(ladderExample);
         relateAndInsertList(productLadderDao, PmsProductLadderConvert.INSTANCE.pmsProductLadderVOToEntityList(pmsProductRich.getProductLadderList()), id);
         //满减价格
-        PmsProductFullReductionExample fullReductionExample = new PmsProductFullReductionExample();
-        fullReductionExample.createCriteria().andProductIdEqualTo(id);
+        Example fullReductionExample = new Example(PmsProductFullReduction.class);
+        fullReductionExample.createCriteria().andEqualTo("productId",id);
         productFullReductionMapper.deleteByExample(fullReductionExample);
         relateAndInsertList(productFullReductionDao, PmsProductFullReductionConvert.INSTANCE.pmsProductFullReductionVOToEntityList(pmsProductRich.getProductFullReductionList()), id);
         //修改sku库存信息
         handleUpdateSkuStockList(id, PmsSkuStockConvert.INSTANCE.pmsSkuStockVOToEntityList(pmsProductRich.getSkuStockList()));
         //修改商品参数,添加自定义商品规格
-        PmsProductAttributeValueExample productAttributeValueExample = new PmsProductAttributeValueExample();
-        productAttributeValueExample.createCriteria().andProductIdEqualTo(id);
+        Example productAttributeValueExample = new Example(PmsProductAttributeValue.class);
+        productAttributeValueExample.createCriteria().andEqualTo("productId",id);
         productAttributeValueMapper.deleteByExample(productAttributeValueExample);
         relateAndInsertList(productAttributeValueDao, PmsProductAttributeValueConvert.INSTANCE.pmsProductAttributeValueVOToEntityList(pmsProductRich.getProductAttributeValueList()), id);
         //关联专题
-        CmsSubjectProductRelationExample subjectProductRelationExample = new CmsSubjectProductRelationExample();
-        subjectProductRelationExample.createCriteria().andProductIdEqualTo(id);
+        Example subjectProductRelationExample = new Example(CmsSubjectProductRelation.class);
+        subjectProductRelationExample.createCriteria().andEqualTo("productId",id);
         subjectProductRelationMapper.deleteByExample(subjectProductRelationExample);
         relateAndInsertList(subjectProductRelationDao, CmsSubjectProductRelationConvert.INSTANCE.cmsSubjectProductRelationVOToEntityList(pmsProductRich.getSubjectProductRelationList()), id);
         //关联优选
-        CmsPrefrenceAreaProductRelationExample prefrenceAreaExample = new CmsPrefrenceAreaProductRelationExample();
-        prefrenceAreaExample.createCriteria().andProductIdEqualTo(id);
+        Example prefrenceAreaExample = new Example(CmsPrefrenceAreaProductRelation.class);
+        prefrenceAreaExample.createCriteria().andEqualTo("productId",id);
         prefrenceAreaProductRelationMapper.deleteByExample(prefrenceAreaExample);
         relateAndInsertList(prefrenceAreaProductRelationDao, CmsPrefrenceAreaProductRelationConvert.INSTANCE.cmsPrefrenceAreaProductRelationVOToEntityList(pmsProductRich.getPrefrenceAreaProductRelationList()), id);
         count = 1;
@@ -159,14 +160,14 @@ public class PmsProductRepository implements IPmsProductRepository {
     private void handleUpdateSkuStockList(Long id, List<PmsSkuStock> currSkuList) {
         //当前没有sku直接删除
         if(CollUtil.isEmpty(currSkuList)){
-            PmsSkuStockExample skuStockExample = new PmsSkuStockExample();
-            skuStockExample.createCriteria().andProductIdEqualTo(id);
+            Example skuStockExample = new Example(PmsSkuStock.class);
+            skuStockExample.createCriteria().andEqualTo("productId",id);
             skuStockMapper.deleteByExample(skuStockExample);
             return;
         }
         //获取初始sku信息
-        PmsSkuStockExample skuStockExample = new PmsSkuStockExample();
-        skuStockExample.createCriteria().andProductIdEqualTo(id);
+        Example skuStockExample = new Example(PmsSkuStock.class);
+        skuStockExample.createCriteria().andEqualTo("productId",id);
         List<PmsSkuStock> oriStuList = skuStockMapper.selectByExample(skuStockExample);
         //获取新增sku信息
         List<PmsSkuStock> insertSkuList = currSkuList.stream().filter(item->item.getId()==null).collect(Collectors.toList());
@@ -184,8 +185,8 @@ public class PmsProductRepository implements IPmsProductRepository {
         //删除sku
         if(CollUtil.isNotEmpty(removeSkuList)){
             List<Long> removeSkuIds = removeSkuList.stream().map(PmsSkuStock::getId).collect(Collectors.toList());
-            PmsSkuStockExample removeExample = new PmsSkuStockExample();
-            removeExample.createCriteria().andIdIn(removeSkuIds);
+            Example removeExample = new Example(PmsSkuStock.class);
+            removeExample.createCriteria().andIn("id",removeSkuIds);
             skuStockMapper.deleteByExample(removeExample);
         }
         //修改sku
@@ -200,26 +201,26 @@ public class PmsProductRepository implements IPmsProductRepository {
     @Override
     public List<PmsProductVO> list(PmsProductReq pmsProductReq, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
-        PmsProductExample productExample = new PmsProductExample();
-        PmsProductExample.Criteria criteria = productExample.createCriteria();
-        criteria.andDeleteStatusEqualTo(0);
+        Example productExample = new Example(PmsProduct.class);
+        Example.Criteria criteria = productExample.createCriteria();
+        criteria.andEqualTo("deleteStatus",0);
         if (pmsProductReq.getPublishStatus() != null) {
-            criteria.andPublishStatusEqualTo(pmsProductReq.getPublishStatus());
+            criteria.andEqualTo("publishStatus",pmsProductReq.getPublishStatus());
         }
         if (pmsProductReq.getVerifyStatus() != null) {
-            criteria.andVerifyStatusEqualTo(pmsProductReq.getVerifyStatus());
+            criteria.andEqualTo("verifyStatus",pmsProductReq.getVerifyStatus());
         }
         if (StringUtils.hasText(pmsProductReq.getKeyword())) {
-            criteria.andNameLike("%" + pmsProductReq.getKeyword() + "%");
+            criteria.andLike("name","%" + pmsProductReq.getKeyword() + "%");
         }
         if (StringUtils.hasText(pmsProductReq.getProductSn())) {
-            criteria.andProductSnEqualTo(pmsProductReq.getProductSn());
+            criteria.andEqualTo("productSn",pmsProductReq.getProductSn());
         }
         if (pmsProductReq.getBrandId() != null) {
-            criteria.andBrandIdEqualTo(pmsProductReq.getBrandId());
+            criteria.andEqualTo("brandId",pmsProductReq.getBrandId());
         }
         if (pmsProductReq.getProductCategoryId() != null) {
-            criteria.andProductCategoryIdEqualTo(pmsProductReq.getProductCategoryId());
+            criteria.andEqualTo("productCategoryId",pmsProductReq.getProductCategoryId());
         }
         return PmsProductConvert.INSTANCE.pmsProductEntityToVOList(productMapper.selectByExample(productExample));
     }
@@ -229,8 +230,8 @@ public class PmsProductRepository implements IPmsProductRepository {
     public int updateVerifyStatus(List<Long> ids, Integer verifyStatus, String detail) {
         PmsProduct product = new PmsProduct();
         product.setVerifyStatus(verifyStatus);
-        PmsProductExample example = new PmsProductExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(PmsProduct.class);
+        example.createCriteria().andIn("id",ids);
         List<PmsProductVertifyRecord> list = new ArrayList<>();
         int count = productMapper.updateByExampleSelective(product, example);
         //修改完审核状态后插入审核记录
@@ -251,8 +252,8 @@ public class PmsProductRepository implements IPmsProductRepository {
     public int updatePublishStatus(List<Long> ids, Integer publishStatus) {
         PmsProduct record = new PmsProduct();
         record.setPublishStatus(publishStatus);
-        PmsProductExample example = new PmsProductExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(PmsProduct.class);
+        example.createCriteria().andIn("id",ids);
         return productMapper.updateByExampleSelective(record, example);
     }
 
@@ -260,8 +261,8 @@ public class PmsProductRepository implements IPmsProductRepository {
     public int updateRecommendStatus(List<Long> ids, Integer recommendStatus) {
         PmsProduct record = new PmsProduct();
         record.setRecommandStatus(recommendStatus);
-        PmsProductExample example = new PmsProductExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(PmsProduct.class);
+        example.createCriteria().andIn("id",ids);
         return productMapper.updateByExampleSelective(record, example);
     }
 
@@ -269,8 +270,8 @@ public class PmsProductRepository implements IPmsProductRepository {
     public int updateNewStatus(List<Long> ids, Integer newStatus) {
         PmsProduct record = new PmsProduct();
         record.setNewStatus(newStatus);
-        PmsProductExample example = new PmsProductExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(PmsProduct.class);
+        example.createCriteria().andIn("id",ids);
         return productMapper.updateByExampleSelective(record, example);
     }
 
@@ -278,21 +279,21 @@ public class PmsProductRepository implements IPmsProductRepository {
     public int updateDeleteStatus(List<Long> ids, Integer deleteStatus) {
         PmsProduct record = new PmsProduct();
         record.setDeleteStatus(deleteStatus);
-        PmsProductExample example = new PmsProductExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(PmsProduct.class);
+        example.createCriteria().andIn("id",ids);
         return productMapper.updateByExampleSelective(record, example);
     }
 
     @Override
     public List<PmsProductVO> list(String keyword) {
-        PmsProductExample productExample = new PmsProductExample();
-        PmsProductExample.Criteria criteria = productExample.createCriteria();
-        criteria.andDeleteStatusEqualTo(0);
+        Example example = new Example(PmsProduct.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("deleteStatus",0);
         if(StringUtils.hasText(keyword)){
-            criteria.andNameLike("%" + keyword + "%");
-            productExample.or().andDeleteStatusEqualTo(0).andProductSnLike("%" + keyword + "%");
+            criteria.andLike("name","%" + keyword + "%");
+            example.or().andEqualTo("deleteStatus",0).andLike("productSn","%" + keyword + "%");
         }
-        return PmsProductConvert.INSTANCE.pmsProductEntityToVOList(productMapper.selectByExample(productExample));
+        return PmsProductConvert.INSTANCE.pmsProductEntityToVOList(productMapper.selectByExample(example));
     }
 
     /**

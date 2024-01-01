@@ -4,10 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.xqxls.convert.oms.OmsOrderReturnReasonConvert;
 import com.xqxls.mapper.OmsOrderReturnReasonMapper;
 import com.xqxls.model.OmsOrderReturnReason;
-import com.xqxls.model.OmsOrderReturnReasonExample;
 import com.xqxls.oms.model.vo.OmsOrderReturnReasonVO;
 import com.xqxls.oms.repository.IOmsOrderReturnReasonRepository;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -40,15 +40,15 @@ public class OmsOrderReturnReasonRepository implements IOmsOrderReturnReasonRepo
 
     @Override
     public int delete(List<Long> ids) {
-        OmsOrderReturnReasonExample example = new OmsOrderReturnReasonExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(OmsOrderReturnReason.class);
+        example.createCriteria().andIn("id",ids);
         return returnReasonMapper.deleteByExample(example);
     }
 
     @Override
     public List<OmsOrderReturnReasonVO> list(Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum,pageSize);
-        OmsOrderReturnReasonExample example = new OmsOrderReturnReasonExample();
+        Example example = new Example(OmsOrderReturnReason.class);
         example.setOrderByClause("sort desc");
         return OmsOrderReturnReasonConvert.INSTANCE.omsOrderReturnReasonEntityToVOList(returnReasonMapper.selectByExample(example));
     }
@@ -60,8 +60,8 @@ public class OmsOrderReturnReasonRepository implements IOmsOrderReturnReasonRepo
         }
         OmsOrderReturnReason record = new OmsOrderReturnReason();
         record.setStatus(status);
-        OmsOrderReturnReasonExample example = new OmsOrderReturnReasonExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(OmsOrderReturnReason.class);
+        example.createCriteria().andIn("id",ids);
         return returnReasonMapper.updateByExampleSelective(record,example);
     }
 

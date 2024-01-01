@@ -16,6 +16,7 @@ import com.xqxls.ums.repository.IUmsRoleRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -60,8 +61,8 @@ public class UmsRoleRepository implements IUmsRoleRepository {
 
     @Override
     public int delete(List<Long> ids) {
-        UmsRoleExample example = new UmsRoleExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(UmsRole.class);
+        example.createCriteria().andIn("id",ids);
         int count = roleMapper.deleteByExample(example);
         umsResourceRepository.initResourceRolesMap();
         return count;
@@ -69,15 +70,15 @@ public class UmsRoleRepository implements IUmsRoleRepository {
 
     @Override
     public List<UmsRoleVO> list() {
-        return UmsRoleConvert.INSTANCE.umsRoleEntityToVOList(roleMapper.selectByExample(new UmsRoleExample()));
+        return UmsRoleConvert.INSTANCE.umsRoleEntityToVOList(roleMapper.selectByExample(new Example(UmsRole.class)));
     }
 
     @Override
     public List<UmsRoleVO> list(String keyword, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
-        UmsRoleExample example = new UmsRoleExample();
+        Example example = new Example(UmsRole.class);
         if (StringUtils.hasText(keyword)) {
-            example.createCriteria().andNameLike("%" + keyword + "%");
+            example.createCriteria().andLike("name","%" + keyword + "%");
         }
         return UmsRoleConvert.INSTANCE.umsRoleEntityToVOList(roleMapper.selectByExample(example));
     }
@@ -101,8 +102,8 @@ public class UmsRoleRepository implements IUmsRoleRepository {
     @Transactional(rollbackFor = Exception.class)
     public int allocMenu(Long roleId, List<Long> menuIds) {
         //先删除原有关系
-        UmsRoleMenuRelationExample example=new UmsRoleMenuRelationExample();
-        example.createCriteria().andRoleIdEqualTo(roleId);
+        Example example=new Example(UmsRoleMenuRelation.class);
+        example.createCriteria().andEqualTo("roleId",roleId);
         roleMenuRelationMapper.deleteByExample(example);
         //批量插入新关系
         for (Long menuId : menuIds) {
@@ -118,8 +119,8 @@ public class UmsRoleRepository implements IUmsRoleRepository {
     @Transactional(rollbackFor = Exception.class)
     public int allocResource(Long roleId, List<Long> resourceIds) {
         //先删除原有关系
-        UmsRoleResourceRelationExample example=new UmsRoleResourceRelationExample();
-        example.createCriteria().andRoleIdEqualTo(roleId);
+        Example example=new Example(UmsRoleResourceRelation.class);
+        example.createCriteria().andEqualTo("roleId",roleId);
         roleResourceRelationMapper.deleteByExample(example);
         //批量插入新关系
         for (Long resourceId : resourceIds) {

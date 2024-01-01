@@ -3,10 +3,10 @@ package com.xqxls.repository.ums;
 import com.xqxls.convert.ums.UmsResourceCategoryConvert;
 import com.xqxls.mapper.UmsResourceCategoryMapper;
 import com.xqxls.model.UmsResourceCategory;
-import com.xqxls.model.UmsResourceCategoryExample;
 import com.xqxls.ums.model.vo.UmsResourceCategoryVO;
 import com.xqxls.ums.repository.IUmsResourceCategoryRepository;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -25,7 +25,7 @@ public class UmsResourceCategoryRepository implements IUmsResourceCategoryReposi
 
     @Override
     public List<UmsResourceCategoryVO> listAll() {
-        UmsResourceCategoryExample example = new UmsResourceCategoryExample();
+        Example example = new Example(UmsResourceCategory.class);
         example.setOrderByClause("sort desc");
         return UmsResourceCategoryConvert.INSTANCE.convertResourceCategoryList(resourceCategoryMapper.selectByExample(example));
     }

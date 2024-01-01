@@ -5,9 +5,7 @@ import com.xqxls.convert.pms.PmsBrandConvert;
 import com.xqxls.mapper.PmsBrandMapper;
 import com.xqxls.mapper.PmsProductMapper;
 import com.xqxls.model.PmsBrand;
-import com.xqxls.model.PmsBrandExample;
 import com.xqxls.model.PmsProduct;
-import com.xqxls.model.PmsProductExample;
 import com.xqxls.pms.model.req.PmsBrandReq;
 import com.xqxls.pms.model.vo.PmsBrandVO;
 import com.xqxls.pms.repository.IPmsBrandRepository;
@@ -15,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -34,7 +33,7 @@ public class PmsBrandRepository implements IPmsBrandRepository {
 
     @Override
     public List<PmsBrandVO> listAllBrand() {
-        return PmsBrandConvert.INSTANCE.pmsBrandEntityToVOList(brandMapper.selectByExample(new PmsBrandExample()));
+        return PmsBrandConvert.INSTANCE.pmsBrandEntityToVOList(brandMapper.selectByExample(new Example(PmsBrand.class)));
     }
 
     @Override
@@ -61,8 +60,8 @@ public class PmsBrandRepository implements IPmsBrandRepository {
         //更新品牌时要更新商品中的品牌名称
         PmsProduct product = new PmsProduct();
         product.setBrandName(pmsBrand.getName());
-        PmsProductExample example = new PmsProductExample();
-        example.createCriteria().andBrandIdEqualTo(id);
+        Example example = new Example(PmsProduct.class);
+        example.createCriteria().andEqualTo("brandId",id);
         productMapper.updateByExampleSelective(product,example);
         return brandMapper.updateByPrimaryKeySelective(pmsBrand);
     }
@@ -74,21 +73,21 @@ public class PmsBrandRepository implements IPmsBrandRepository {
 
     @Override
     public int deleteBrand(List<Long> ids) {
-        PmsBrandExample pmsBrandExample = new PmsBrandExample();
-        pmsBrandExample.createCriteria().andIdIn(ids);
-        return brandMapper.deleteByExample(pmsBrandExample);
+        Example example = new Example(PmsBrand.class);
+        example.createCriteria().andIn("id",ids);
+        return brandMapper.deleteByExample(example);
     }
 
     @Override
     public List<PmsBrandVO> listBrand(String keyword, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        PmsBrandExample pmsBrandExample = new PmsBrandExample();
-        pmsBrandExample.setOrderByClause("sort desc");
-        PmsBrandExample.Criteria criteria = pmsBrandExample.createCriteria();
+        Example example = new Example(PmsBrand.class);
+        example.setOrderByClause("sort desc");
+        Example.Criteria criteria = example.createCriteria();
         if (StringUtils.hasText(keyword)) {
-            criteria.andNameLike("%" + keyword + "%");
+            criteria.andLike("name","%" + keyword + "%");
         }
-        return PmsBrandConvert.INSTANCE.pmsBrandEntityToVOList(brandMapper.selectByExample(pmsBrandExample));
+        return PmsBrandConvert.INSTANCE.pmsBrandEntityToVOList(brandMapper.selectByExample(example));
     }
 
     @Override
@@ -100,17 +99,17 @@ public class PmsBrandRepository implements IPmsBrandRepository {
     public int updateShowStatus(List<Long> ids, Integer showStatus) {
         PmsBrand pmsBrand = new PmsBrand();
         pmsBrand.setShowStatus(showStatus);
-        PmsBrandExample pmsBrandExample = new PmsBrandExample();
-        pmsBrandExample.createCriteria().andIdIn(ids);
-        return brandMapper.updateByExampleSelective(pmsBrand, pmsBrandExample);
+        Example example = new Example(PmsBrand.class);
+        example.createCriteria().andIn("id",ids);
+        return brandMapper.updateByExampleSelective(pmsBrand, example);
     }
 
     @Override
     public int updateFactoryStatus(List<Long> ids, Integer factoryStatus) {
         PmsBrand pmsBrand = new PmsBrand();
         pmsBrand.setFactoryStatus(factoryStatus);
-        PmsBrandExample pmsBrandExample = new PmsBrandExample();
-        pmsBrandExample.createCriteria().andIdIn(ids);
-        return brandMapper.updateByExampleSelective(pmsBrand, pmsBrandExample);
+        Example example = new Example(PmsBrand.class);
+        example.createCriteria().andIn("id",ids);
+        return brandMapper.updateByExampleSelective(pmsBrand, example);
     }
 }

@@ -4,8 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import com.xqxls.api.CommonPage;
 import com.xqxls.api.CommonResult;
 import com.xqxls.domain.UserDto;
-import com.xqxls.model.UmsRole;
-import com.xqxls.response.UmsAdminRpcResponse;
 import com.xqxls.response.UmsResourceRpcResponse;
 import com.xqxls.ums.model.req.UmsAdminLoginReq;
 import com.xqxls.ums.model.req.UmsAdminReq;

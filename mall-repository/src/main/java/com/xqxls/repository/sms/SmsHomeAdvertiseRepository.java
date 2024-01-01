@@ -4,11 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.xqxls.convert.sms.SmsHomeAdvertiseConvert;
 import com.xqxls.mapper.SmsHomeAdvertiseMapper;
 import com.xqxls.model.SmsHomeAdvertise;
-import com.xqxls.model.SmsHomeAdvertiseExample;
 import com.xqxls.sms.model.vo.SmsHomeAdvertiseVO;
 import com.xqxls.sms.repository.ISmsHomeAdvertiseRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
@@ -37,8 +37,8 @@ public class SmsHomeAdvertiseRepository implements ISmsHomeAdvertiseRepository {
 
     @Override
     public int delete(List<Long> ids) {
-        SmsHomeAdvertiseExample example = new SmsHomeAdvertiseExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(SmsHomeAdvertise.class);
+        example.createCriteria().andIn("id",ids);
         return smsHomeAdvertiseMapper.deleteByExample(example);
     }
 
@@ -65,13 +65,13 @@ public class SmsHomeAdvertiseRepository implements ISmsHomeAdvertiseRepository {
     @Override
     public List<SmsHomeAdvertiseVO> list(String name, Integer type, String endTime, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
-        SmsHomeAdvertiseExample example = new SmsHomeAdvertiseExample();
-        SmsHomeAdvertiseExample.Criteria criteria = example.createCriteria();
+        Example example = new Example(SmsHomeAdvertise.class);
+        Example.Criteria criteria = example.createCriteria();
         if (StringUtils.hasText(name)) {
-            criteria.andNameLike("%" + name + "%");
+            criteria.andLike("name","%" + name + "%");
         }
         if (type != null) {
-            criteria.andTypeEqualTo(type);
+            criteria.andEqualTo("type",type);
         }
         if (StringUtils.hasText(endTime)) {
             String startStr = endTime + " 00:00:00";
@@ -90,7 +90,7 @@ public class SmsHomeAdvertiseRepository implements ISmsHomeAdvertiseRepository {
                 e.printStackTrace();
             }
             if (start != null && end != null) {
-                criteria.andEndTimeBetween(start, end);
+                criteria.andBetween("endTime",start, end);
             }
         }
         example.setOrderByClause("sort desc");

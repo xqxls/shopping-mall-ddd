@@ -3,11 +3,12 @@ package com.xqxls.repository.pms;
 import com.github.pagehelper.PageHelper;
 import com.xqxls.convert.pms.CmsSubjectConvert;
 import com.xqxls.mapper.CmsSubjectMapper;
-import com.xqxls.model.CmsSubjectExample;
+import com.xqxls.model.CmsSubject;
 import com.xqxls.pms.model.vo.CmsSubjectVO;
 import com.xqxls.pms.repository.ICmsSubjectRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,16 +26,16 @@ public class CmsSubjectRepository implements ICmsSubjectRepository {
 
     @Override
     public List<CmsSubjectVO> listAll() {
-        return CmsSubjectConvert.INSTANCE.cmsSubjectEntityToVOList(cmsSubjectMapper.selectByExample(new CmsSubjectExample()));
+        return CmsSubjectConvert.INSTANCE.cmsSubjectEntityToVOList(cmsSubjectMapper.selectByExample(new Example(CmsSubject.class)));
     }
 
     @Override
     public List<CmsSubjectVO> list(String keyword, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        CmsSubjectExample example = new CmsSubjectExample();
-        CmsSubjectExample.Criteria criteria = example.createCriteria();
+        Example example = new Example(CmsSubject.class);
+        Example.Criteria criteria = example.createCriteria();
         if (StringUtils.hasText(keyword)) {
-            criteria.andTitleLike("%" + keyword + "%");
+            criteria.andLike("title","%" + keyword + "%");
         }
         return CmsSubjectConvert.INSTANCE.cmsSubjectEntityToVOList(cmsSubjectMapper.selectByExample(example));
     }

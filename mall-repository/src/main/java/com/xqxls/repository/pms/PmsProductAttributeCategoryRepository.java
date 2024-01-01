@@ -7,13 +7,13 @@ import com.xqxls.dto.PmsProductAttributeCategoryItem;
 import com.xqxls.mapper.PmsProductAttributeCategoryMapper;
 import com.xqxls.model.PmsProductAttribute;
 import com.xqxls.model.PmsProductAttributeCategory;
-import com.xqxls.model.PmsProductAttributeCategoryExample;
 import com.xqxls.pms.model.res.PmsProductAttributeCategoryItemResult;
 import com.xqxls.pms.model.vo.PmsProductAttributeCategoryVO;
 import com.xqxls.pms.model.vo.PmsProductAttributeVO;
 import com.xqxls.pms.repository.IPmsProductAttributeCategoryRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class PmsProductAttributeCategoryRepository implements IPmsProductAttribu
     @Override
     public List<PmsProductAttributeCategoryVO> getList(Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum,pageSize);
-        return PmsProductAttributeCategoryConvert.INSTANCE.pmsProductAttributeCategoryEntityToVOList(productAttributeCategoryMapper.selectByExample(new PmsProductAttributeCategoryExample()));
+        return PmsProductAttributeCategoryConvert.INSTANCE.pmsProductAttributeCategoryEntityToVOList(productAttributeCategoryMapper.selectByExample(new Example(PmsProductAttributeCategory.class)));
     }
 
     @Override

@@ -8,7 +8,6 @@ import com.xqxls.dto.OmsOrderReturnApplyResult;
 import com.xqxls.dto.OmsReturnApplyQueryParam;
 import com.xqxls.mapper.OmsOrderReturnApplyMapper;
 import com.xqxls.model.OmsOrderReturnApply;
-import com.xqxls.model.OmsOrderReturnApplyExample;
 import com.xqxls.oms.model.aggregates.OmsOrderReturnApplyRich;
 import com.xqxls.oms.model.req.OmsReturnApplyReq;
 import com.xqxls.oms.model.req.OmsUpdateStatusReq;
@@ -16,6 +15,7 @@ import com.xqxls.oms.model.vo.OmsCompanyAddressVO;
 import com.xqxls.oms.model.vo.OmsOrderReturnApplyVO;
 import com.xqxls.oms.repository.IOmsOrderReturnApplyRepository;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -43,8 +43,8 @@ public class OmsOrderReturnApplyRepository implements IOmsOrderReturnApplyReposi
 
     @Override
     public int delete(List<Long> ids) {
-        OmsOrderReturnApplyExample example = new OmsOrderReturnApplyExample();
-        example.createCriteria().andIdIn(ids).andStatusEqualTo(3);
+        Example example = new Example(OmsOrderReturnApply.class);
+        example.createCriteria().andIn("id",ids).andEqualTo("status",3);
         return returnApplyMapper.deleteByExample(example);
     }
 

@@ -4,12 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.xqxls.convert.sms.SmsFlashPromotionConvert;
 import com.xqxls.mapper.SmsFlashPromotionMapper;
 import com.xqxls.model.SmsFlashPromotion;
-import com.xqxls.model.SmsFlashPromotionExample;
 import com.xqxls.sms.model.vo.SmsFlashPromotionVO;
 import com.xqxls.sms.repository.ISmsFlashPromotionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -61,9 +60,9 @@ public class SmsFlashPromotionRepository implements ISmsFlashPromotionRepository
     @Override
     public List<SmsFlashPromotionVO> list(String keyword, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
-        SmsFlashPromotionExample example = new SmsFlashPromotionExample();
+        Example example = new Example(SmsFlashPromotion.class);
         if (StringUtils.hasText(keyword)) {
-            example.createCriteria().andTitleLike("%" + keyword + "%");
+            example.createCriteria().andLike("title","%" + keyword + "%");
         }
         return SmsFlashPromotionConvert.INSTANCE.smsFlashPromotionEntityToVOList(flashPromotionMapper.selectByExample(example));
     }

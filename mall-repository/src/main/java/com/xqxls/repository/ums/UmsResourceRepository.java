@@ -13,6 +13,7 @@ import com.xqxls.ums.model.vo.UmsResourceVO;
 import com.xqxls.ums.repository.IUmsResourceRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -71,31 +72,31 @@ public class UmsResourceRepository implements IUmsResourceRepository {
     @Override
     public List<UmsResourceVO> list(Long categoryId, String nameKeyword, String urlKeyword, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum,pageSize);
-        UmsResourceExample example = new UmsResourceExample();
-        UmsResourceExample.Criteria criteria = example.createCriteria();
+        Example example = new Example(UmsResource.class);
+        Example.Criteria criteria = example.createCriteria();
         if(categoryId!=null){
-            criteria.andCategoryIdEqualTo(categoryId);
+            criteria.andEqualTo("categoryId",categoryId);
         }
         if(StrUtil.isNotEmpty(nameKeyword)){
-            criteria.andNameLike('%'+nameKeyword+'%');
+            criteria.andLike("name",'%'+nameKeyword+'%');
         }
         if(StrUtil.isNotEmpty(urlKeyword)){
-            criteria.andUrlLike('%'+urlKeyword+'%');
+            criteria.andLike("url",'%'+urlKeyword+'%');
         }
         return UmsResourceConvert.INSTANCE.convertResourceList(resourceMapper.selectByExample(example));
     }
 
     @Override
     public List<UmsResourceVO> listAll() {
-        return UmsResourceConvert.INSTANCE.convertResourceList(resourceMapper.selectByExample(new UmsResourceExample()));
+        return UmsResourceConvert.INSTANCE.convertResourceList(resourceMapper.selectByExample(new Example(UmsResource.class)));
     }
 
     @Override
     public Map<String, List<String>> initResourceRolesMap() {
         Map<String,List<String>> resourceRoleMap = new TreeMap<>();
-        List<UmsResource> resourceList = resourceMapper.selectByExample(new UmsResourceExample());
-        List<UmsRole> roleList = roleMapper.selectByExample(new UmsRoleExample());
-        List<UmsRoleResourceRelation> relationList = roleResourceRelationMapper.selectByExample(new UmsRoleResourceRelationExample());
+        List<UmsResource> resourceList = resourceMapper.selectByExample(new Example(UmsResource.class));
+        List<UmsRole> roleList = roleMapper.selectByExample(new Example(UmsRole.class));
+        List<UmsRoleResourceRelation> relationList = roleResourceRelationMapper.selectByExample(new Example(UmsRoleResourceRelation.class));
         for (UmsResource resource : resourceList) {
             Set<Long> roleIds = relationList.stream().filter(item -> item.getResourceId().equals(resource.getId())).map(UmsRoleResourceRelation::getRoleId).collect(Collectors.toSet());
             List<String> roleNames = roleList.stream().filter(item -> roleIds.contains(item.getId())).map(item -> item.getId() + "_" + item.getName()).collect(Collectors.toList());

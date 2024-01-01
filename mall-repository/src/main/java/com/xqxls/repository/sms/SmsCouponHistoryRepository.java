@@ -3,12 +3,12 @@ package com.xqxls.repository.sms;
 import com.github.pagehelper.PageHelper;
 import com.xqxls.convert.sms.SmsCouponHistoryConvert;
 import com.xqxls.mapper.SmsCouponHistoryMapper;
-import com.xqxls.model.SmsCouponHistoryExample;
+import com.xqxls.model.SmsCouponHistory;
 import com.xqxls.sms.model.vo.SmsCouponHistoryVO;
 import com.xqxls.sms.repository.ISmsCouponHistoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -27,16 +27,16 @@ public class SmsCouponHistoryRepository implements ISmsCouponHistoryRepository {
     @Override
     public List<SmsCouponHistoryVO> list(Long couponId, Integer useStatus, String orderSn, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum,pageSize);
-        SmsCouponHistoryExample example = new SmsCouponHistoryExample();
-        SmsCouponHistoryExample.Criteria criteria = example.createCriteria();
+        Example example = new Example(SmsCouponHistory.class);
+        Example.Criteria criteria = example.createCriteria();
         if(couponId!=null){
-            criteria.andCouponIdEqualTo(couponId);
+            criteria.andEqualTo("couponId",couponId);
         }
         if(useStatus!=null){
-            criteria.andUseStatusEqualTo(useStatus);
+            criteria.andEqualTo("useStatus",useStatus);
         }
         if(StringUtils.hasText(orderSn)){
-            criteria.andOrderSnEqualTo(orderSn);
+            criteria.andEqualTo("orderSn",orderSn);
         }
         return SmsCouponHistoryConvert.INSTANCE.smsCouponHistoryEntityToVOList(historyMapper.selectByExample(example));
     }

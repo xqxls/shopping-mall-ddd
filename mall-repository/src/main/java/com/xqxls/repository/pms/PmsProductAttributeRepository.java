@@ -7,7 +7,6 @@ import com.xqxls.mapper.PmsProductAttributeCategoryMapper;
 import com.xqxls.mapper.PmsProductAttributeMapper;
 import com.xqxls.model.PmsProductAttribute;
 import com.xqxls.model.PmsProductAttributeCategory;
-import com.xqxls.model.PmsProductAttributeExample;
 import com.xqxls.pms.model.req.PmsProductAttributeReq;
 import com.xqxls.pms.model.res.ProductAttrInfoResult;
 import com.xqxls.pms.model.vo.PmsProductAttributeVO;
@@ -15,6 +14,7 @@ import com.xqxls.pms.repository.IPmsProductAttributeRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -37,9 +37,9 @@ public class PmsProductAttributeRepository implements IPmsProductAttributeReposi
     @Override
     public List<PmsProductAttributeVO> getList(Long cid, Integer type, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
-        PmsProductAttributeExample example = new PmsProductAttributeExample();
+        Example example = new Example(PmsProductAttribute.class);
         example.setOrderByClause("sort desc");
-        example.createCriteria().andProductAttributeCategoryIdEqualTo(cid).andTypeEqualTo(type);
+        example.createCriteria().andEqualTo("productAttributeCategoryId",cid).andEqualTo("type",type);
         return PmsProductAttributeConvert.INSTANCE.pmsProductAttributeEntityToVOList(productAttributeMapper.selectByExample(example));
     }
 
@@ -80,8 +80,8 @@ public class PmsProductAttributeRepository implements IPmsProductAttributeReposi
         PmsProductAttribute pmsProductAttribute = productAttributeMapper.selectByPrimaryKey(ids.get(0));
         Integer type = pmsProductAttribute.getType();
         PmsProductAttributeCategory pmsProductAttributeCategory = productAttributeCategoryMapper.selectByPrimaryKey(pmsProductAttribute.getProductAttributeCategoryId());
-        PmsProductAttributeExample example = new PmsProductAttributeExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(PmsProductAttribute.class);
+        example.createCriteria().andIn("id",ids);
         int count = productAttributeMapper.deleteByExample(example);
         //删除完成后修改数量
         if(type==0){

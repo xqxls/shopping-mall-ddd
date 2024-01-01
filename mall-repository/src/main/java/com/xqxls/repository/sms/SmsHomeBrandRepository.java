@@ -4,12 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.xqxls.convert.sms.SmsHomeBrandConvert;
 import com.xqxls.mapper.SmsHomeBrandMapper;
 import com.xqxls.model.SmsHomeBrand;
-import com.xqxls.model.SmsHomeBrandExample;
 import com.xqxls.sms.model.vo.SmsHomeBrandVO;
 import com.xqxls.sms.repository.ISmsHomeBrandRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -47,15 +47,15 @@ public class SmsHomeBrandRepository implements ISmsHomeBrandRepository {
 
     @Override
     public int delete(List<Long> ids) {
-        SmsHomeBrandExample example = new SmsHomeBrandExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(SmsHomeBrand.class);
+        example.createCriteria().andIn("id",ids);
         return SmsHomeBrandMapper.deleteByExample(example);
     }
 
     @Override
     public int updateRecommendStatus(List<Long> ids, Integer recommendStatus) {
-        SmsHomeBrandExample example = new SmsHomeBrandExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(SmsHomeBrand.class);
+        example.createCriteria().andIn("id",ids);
         SmsHomeBrand record = new SmsHomeBrand();
         record.setRecommendStatus(recommendStatus);
         return SmsHomeBrandMapper.updateByExampleSelective(record,example);
@@ -64,13 +64,13 @@ public class SmsHomeBrandRepository implements ISmsHomeBrandRepository {
     @Override
     public List<SmsHomeBrandVO> list(String brandName, Integer recommendStatus, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum,pageSize);
-        SmsHomeBrandExample example = new SmsHomeBrandExample();
-        SmsHomeBrandExample.Criteria criteria = example.createCriteria();
+        Example example = new Example(SmsHomeBrand.class);
+        Example.Criteria criteria = example.createCriteria();
         if(StringUtils.hasText(brandName)){
-            criteria.andBrandNameLike("%"+brandName+"%");
+            criteria.andLike("brandName","%"+brandName+"%");
         }
         if(recommendStatus!=null){
-            criteria.andRecommendStatusEqualTo(recommendStatus);
+            criteria.andEqualTo("recommendStatus",recommendStatus);
         }
         example.setOrderByClause("sort desc");
         return SmsHomeBrandConvert.INSTANCE.smsHomeBrandEntityToVOList(SmsHomeBrandMapper.selectByExample(example));

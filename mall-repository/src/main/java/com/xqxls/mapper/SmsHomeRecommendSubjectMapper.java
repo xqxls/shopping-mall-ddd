@@ -1,31 +1,8 @@
 package com.xqxls.mapper;
 
+import com.xqxls.base.TkBaseMapper;
 import com.xqxls.model.SmsHomeRecommendSubject;
-import com.xqxls.model.SmsHomeRecommendSubjectExample;
-import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+public interface SmsHomeRecommendSubjectMapper extends TkBaseMapper<SmsHomeRecommendSubject> {
 
-public interface SmsHomeRecommendSubjectMapper {
-    long countByExample(SmsHomeRecommendSubjectExample example);
-
-    int deleteByExample(SmsHomeRecommendSubjectExample example);
-
-    int deleteByPrimaryKey(Long id);
-
-    int insert(SmsHomeRecommendSubject record);
-
-    int insertSelective(SmsHomeRecommendSubject record);
-
-    List<SmsHomeRecommendSubject> selectByExample(SmsHomeRecommendSubjectExample example);
-
-    SmsHomeRecommendSubject selectByPrimaryKey(Long id);
-
-    int updateByExampleSelective(@Param("record") SmsHomeRecommendSubject record, @Param("example") SmsHomeRecommendSubjectExample example);
-
-    int updateByExample(@Param("record") SmsHomeRecommendSubject record, @Param("example") SmsHomeRecommendSubjectExample example);
-
-    int updateByPrimaryKeySelective(SmsHomeRecommendSubject record);
-
-    int updateByPrimaryKey(SmsHomeRecommendSubject record);
 }

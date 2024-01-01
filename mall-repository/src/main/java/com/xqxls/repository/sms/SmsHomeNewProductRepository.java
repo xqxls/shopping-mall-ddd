@@ -4,12 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.xqxls.convert.sms.SmsHomeNewProductConvert;
 import com.xqxls.mapper.SmsHomeNewProductMapper;
 import com.xqxls.model.SmsHomeNewProduct;
-import com.xqxls.model.SmsHomeNewProductExample;
 import com.xqxls.sms.model.vo.SmsHomeNewProductVO;
 import com.xqxls.sms.repository.ISmsHomeNewProductRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -47,15 +47,15 @@ public class SmsHomeNewProductRepository implements ISmsHomeNewProductRepository
 
     @Override
     public int delete(List<Long> ids) {
-        SmsHomeNewProductExample example = new SmsHomeNewProductExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(SmsHomeNewProduct.class);
+        example.createCriteria().andIn("id",ids);
         return smsHomeNewProductMapper.deleteByExample(example);
     }
 
     @Override
     public int updateRecommendStatus(List<Long> ids, Integer recommendStatus) {
-        SmsHomeNewProductExample example = new SmsHomeNewProductExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(SmsHomeNewProduct.class);
+        example.createCriteria().andIn("id",ids);
         SmsHomeNewProduct record = new SmsHomeNewProduct();
         record.setRecommendStatus(recommendStatus);
         return smsHomeNewProductMapper.updateByExampleSelective(record,example);
@@ -64,13 +64,13 @@ public class SmsHomeNewProductRepository implements ISmsHomeNewProductRepository
     @Override
     public List<SmsHomeNewProductVO> list(String productName, Integer recommendStatus, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum,pageSize);
-        SmsHomeNewProductExample example = new SmsHomeNewProductExample();
-        SmsHomeNewProductExample.Criteria criteria = example.createCriteria();
+        Example example = new Example(SmsHomeNewProduct.class);
+        Example.Criteria criteria = example.createCriteria();
         if(StringUtils.hasText(productName)){
-            criteria.andProductNameLike("%"+productName+"%");
+            criteria.andLike("productName","%"+productName+"%");
         }
         if(recommendStatus!=null){
-            criteria.andRecommendStatusEqualTo(recommendStatus);
+            criteria.andEqualTo("recommendStatus",recommendStatus);
         }
         example.setOrderByClause("sort desc");
         return SmsHomeNewProductConvert.INSTANCE.smsHomeNewProductEntityToVOList(smsHomeNewProductMapper.selectByExample(example));

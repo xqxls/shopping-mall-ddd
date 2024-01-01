@@ -4,12 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.xqxls.convert.sms.SmsHomeRecommendProductConvert;
 import com.xqxls.mapper.SmsHomeRecommendProductMapper;
 import com.xqxls.model.SmsHomeRecommendProduct;
-import com.xqxls.model.SmsHomeRecommendProductExample;
 import com.xqxls.sms.model.vo.SmsHomeRecommendProductVO;
 import com.xqxls.sms.repository.ISmsHomeRecommendProductRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -47,15 +47,15 @@ public class SmsHomeRecommendProductRepository implements ISmsHomeRecommendProdu
 
     @Override
     public int delete(List<Long> ids) {
-        SmsHomeRecommendProductExample example = new SmsHomeRecommendProductExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(SmsHomeRecommendProduct.class);
+        example.createCriteria().andIn("id",ids);
         return SmsHomeRecommendProductMapper.deleteByExample(example);
     }
 
     @Override
     public int updateRecommendStatus(List<Long> ids, Integer recommendStatus) {
-        SmsHomeRecommendProductExample example = new SmsHomeRecommendProductExample();
-        example.createCriteria().andIdIn(ids);
+        Example example = new Example(SmsHomeRecommendProduct.class);
+        example.createCriteria().andIn("id",ids);
         SmsHomeRecommendProduct record = new SmsHomeRecommendProduct();
         record.setRecommendStatus(recommendStatus);
         return SmsHomeRecommendProductMapper.updateByExampleSelective(record,example);
@@ -64,13 +64,13 @@ public class SmsHomeRecommendProductRepository implements ISmsHomeRecommendProdu
     @Override
     public List<SmsHomeRecommendProductVO> list(String productName, Integer recommendStatus, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum,pageSize);
-        SmsHomeRecommendProductExample example = new SmsHomeRecommendProductExample();
-        SmsHomeRecommendProductExample.Criteria criteria = example.createCriteria();
+        Example example = new Example(SmsHomeRecommendProduct.class);
+        Example.Criteria criteria = example.createCriteria();
         if(StringUtils.hasText(productName)){
-            criteria.andProductNameLike("%"+productName+"%");
+            criteria.andLike("productName","%"+productName+"%");
         }
         if(recommendStatus!=null){
-            criteria.andRecommendStatusEqualTo(recommendStatus);
+            criteria.andEqualTo("recommendStatus",recommendStatus);
         }
         example.setOrderByClause("sort desc");
         return SmsHomeRecommendProductConvert.INSTANCE.smsHomeRecommendProductEntityToVOList(SmsHomeRecommendProductMapper.selectByExample(example));
