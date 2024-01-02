@@ -49,7 +49,7 @@
 
 ### 启动前台服务`mall-portal`
 
-- 直接运行com.xqxls.portal.MallPortalApplication的main函数即可；
+- 直接运行com.xqxls.MallPortalApplication的main函数即可；
 - 通过`mall-gateway`网关服务访问接口文档：http://localhost:8201/mall-portal/swagger-ui.html
 
 ![](../resource/mall_swarm_windows_07.png)

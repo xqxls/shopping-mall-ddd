@@ -16,11 +16,11 @@ import javax.annotation.Resource;
 public class UmsAdminCacheServiceImpl implements UmsAdminCacheService {
     @Resource
     private RedisService redisService;
-    @Value("${redis.database}")
+    @Value("${redis.database:''}")
     private String REDIS_DATABASE;
-    @Value("${redis.expire.common}")
+    @Value("${redis.expire.common:''}")
     private Long REDIS_EXPIRE;
-    @Value("${redis.key.admin}")
+    @Value("${redis.key.admin:''}")
     private String REDIS_KEY_ADMIN;
 
     @Override

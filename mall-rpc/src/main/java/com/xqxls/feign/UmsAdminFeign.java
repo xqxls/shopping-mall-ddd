@@ -18,4 +18,7 @@ public interface UmsAdminFeign {
 
     @GetMapping(value = "/admin/getResourceList")
     CommonResult<List<UmsResourceRpcResponse>> getResourceList(@RequestParam(value = "adminId") Long adminId);
+
+    @GetMapping(value = "/resource/findAll")
+    CommonResult<List<UmsResourceRpcResponse>> findAll();
 }

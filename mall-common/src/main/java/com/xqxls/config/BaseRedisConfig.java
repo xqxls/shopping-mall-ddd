@@ -38,7 +38,6 @@ public class BaseRedisConfig {
         return redisTemplate;
     }
 
-    @Bean
     public RedisSerializer<Object> redisSerializer() {
         //创建JSON序列化器
         Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);

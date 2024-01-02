@@ -3,7 +3,6 @@ package com.xqxls.convert.sms;
 import com.xqxls.model.SmsFlashPromotion;
 import com.xqxls.model.SmsFlashPromotionSession;
 import com.xqxls.sms.model.vo.SmsFlashPromotionSessionVO;
-import com.xqxls.sms.model.vo.SmsFlashPromotionVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

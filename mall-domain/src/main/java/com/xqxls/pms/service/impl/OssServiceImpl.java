@@ -27,17 +27,17 @@ import java.util.Date;
 public class OssServiceImpl implements OssService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OssServiceImpl.class);
-	@Value("${aliyun.oss.policy.expire}")
+	@Value("${aliyun.oss.policy.expire:''}")
 	private int ALIYUN_OSS_EXPIRE;
-	@Value("${aliyun.oss.maxSize}")
+	@Value("${aliyun.oss.maxSize:''}")
 	private int ALIYUN_OSS_MAX_SIZE;
-	@Value("${aliyun.oss.callback}")
+	@Value("${aliyun.oss.callback:''}")
 	private String ALIYUN_OSS_CALLBACK;
-	@Value("${aliyun.oss.bucketName}")
+	@Value("${aliyun.oss.bucketName:''}")
 	private String ALIYUN_OSS_BUCKET_NAME;
-	@Value("${aliyun.oss.endpoint}")
+	@Value("${aliyun.oss.endpoint:''}")
 	private String ALIYUN_OSS_ENDPOINT;
-	@Value("${aliyun.oss.dir.prefix}")
+	@Value("${aliyun.oss.dir.prefix:''}")
 	private String ALIYUN_OSS_DIR_PREFIX;
 
 	@Resource

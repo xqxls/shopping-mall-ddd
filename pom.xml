@@ -17,6 +17,8 @@
         <module>mall-auth</module>
         <module>mall-rpc</module>
         <module>mall-trigger</module>
+        <module>mall-portal</module>
+        <module>mall-infrastructure</module>
     </modules>
 
     <parent>
@@ -54,6 +56,7 @@
         <mall-repository.version>1.0-SNAPSHOT</mall-repository.version>
         <mall-domain.version>1.0-SNAPSHOT</mall-domain.version>
         <mall-rpc.version>1.0-SNAPSHOT</mall-rpc.version>
+        <mall-infrastructure.version>1.0-SNAPSHOT</mall-infrastructure.version>
         <sa-token-reactor-spring-boot-starter.version>1.24.0</sa-token-reactor-spring-boot-starter.version>
         <sa-token-spring-boot-starter.version>1.24.0</sa-token-spring-boot-starter.version>
         <sa-token-dao-redis-jackson.version>1.24.0</sa-token-dao-redis-jackson.version>
@@ -139,6 +142,12 @@
                 <groupId>com.xqxls</groupId>
                 <artifactId>mall-domain</artifactId>
                 <version>${mall-domain.version}</version>
+            </dependency>
+            <!--mall-infrastructure模块-->
+            <dependency>
+                <groupId>com.xqxls</groupId>
+                <artifactId>mall-infrastructure</artifactId>
+                <version>${mall-infrastructure.version}</version>
             </dependency>
             <!-- Sa-Token 权限认证（Reactor响应式集成） -->
             <dependency>

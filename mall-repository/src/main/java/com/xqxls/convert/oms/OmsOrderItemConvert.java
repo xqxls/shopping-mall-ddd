@@ -3,7 +3,6 @@ package com.xqxls.convert.oms;
 import com.xqxls.model.OmsOrder;
 import com.xqxls.model.OmsOrderItem;
 import com.xqxls.oms.model.vo.OmsOrderItemVO;
-import com.xqxls.oms.model.vo.OmsOrderVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

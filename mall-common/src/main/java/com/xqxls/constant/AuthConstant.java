@@ -12,9 +12,24 @@ public interface AuthConstant {
     String ADMIN_URL_PATTERN = "/mall-admin/**";
 
     /**
+     * 用户信息Http请求头
+     */
+    String USER_TOKEN_HEADER = "user";
+
+    /**
      * Redis缓存权限规则key
      */
     String RESOURCE_ROLES_MAP_KEY = "auth:resourceRolesMap";
+
+    /**
+     * 后台管理client_id
+     */
+    String ADMIN_CLIENT_ID = "admin-app";
+
+    /**
+     * 前台商城client_id
+     */
+    String PORTAL_CLIENT_ID = "portal-app";
 
 
 }

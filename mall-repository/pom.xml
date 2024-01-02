@@ -23,6 +23,10 @@
             <artifactId>mall-domain</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.xqxls</groupId>
+            <artifactId>mall-infrastructure</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
         </dependency>
@@ -30,15 +34,7 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
-        <!--tk.mybatis依赖-->
-        <dependency>
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
+
         <!--实体转换工具类-->
         <dependency>
             <groupId>org.mapstruct</groupId>
