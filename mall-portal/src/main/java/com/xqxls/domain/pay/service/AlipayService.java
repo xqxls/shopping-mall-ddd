@@ -1,7 +1,6 @@
 package com.xqxls.domain.pay.service;
 
 import com.xqxls.domain.pay.model.req.AliPayReq;
-import com.xqxls.dto.AliPayParam;
 
 import java.util.Map;
 

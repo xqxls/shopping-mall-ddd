@@ -73,6 +73,11 @@ public class UmsMemberRepository implements IUmsMemberRepository {
     }
 
     @Override
+    public UmsMember getEntityById(Long id) {
+        return memberMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void register(String username, String password, String telephone, String authCode) {
         //验证验证码

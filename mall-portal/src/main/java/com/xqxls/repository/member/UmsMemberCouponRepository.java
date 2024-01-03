@@ -189,6 +189,122 @@ public class UmsMemberCouponRepository implements IUmsMemberCouponRepository {
         }
     }
 
+    @Override
+    public List<SmsCouponHistoryDetailResult> listCartResult(List<CartPromotionItem> cartPromotionItemList, Integer type) {
+        UmsMember currentMember = umsMemberRepository.getCurrentMember();
+        Date now = new Date();
+        //获取该用户所有优惠券
+        List<SmsCouponHistoryDetail> allList = couponHistoryDao.getDetailList(currentMember.getId());
+        //根据优惠券使用类型来判断优惠券是否可用
+        List<SmsCouponHistoryDetail> enableList = new ArrayList<>();
+        List<SmsCouponHistoryDetail> disableList = new ArrayList<>();
+        for (SmsCouponHistoryDetail couponHistoryDetail : allList) {
+            Integer useType = couponHistoryDetail.getCoupon().getUseType();
+            BigDecimal minPoint = couponHistoryDetail.getCoupon().getMinPoint();
+            Date endTime = couponHistoryDetail.getCoupon().getEndTime();
+            if(useType.equals(0)){
+                //0->全场通用
+                //判断是否满足优惠起点
+                //计算购物车商品的总价
+                BigDecimal totalAmount = calcTotalAmount(cartPromotionItemList);
+                if(now.before(endTime)&&totalAmount.subtract(minPoint).intValue()>=0){
+                    enableList.add(couponHistoryDetail);
+                }else{
+                    disableList.add(couponHistoryDetail);
+                }
+            }else if(useType.equals(1)){
+                //1->指定分类
+                //计算指定分类商品的总价
+                List<Long> productCategoryIds = new ArrayList<>();
+                for (SmsCouponProductCategoryRelation categoryRelation : couponHistoryDetail.getCategoryRelationList()) {
+                    productCategoryIds.add(categoryRelation.getProductCategoryId());
+                }
+                BigDecimal totalAmount = calcTotalAmountByproductCategoryId(cartPromotionItemList,productCategoryIds);
+                if(now.before(endTime)&&totalAmount.intValue()>0&&totalAmount.subtract(minPoint).intValue()>=0){
+                    enableList.add(couponHistoryDetail);
+                }else{
+                    disableList.add(couponHistoryDetail);
+                }
+            }else if(useType.equals(2)){
+                //2->指定商品
+                //计算指定商品的总价
+                List<Long> productIds = new ArrayList<>();
+                for (SmsCouponProductRelation productRelation : couponHistoryDetail.getProductRelationList()) {
+                    productIds.add(productRelation.getProductId());
+                }
+                BigDecimal totalAmount = calcTotalAmountByProductId(cartPromotionItemList,productIds);
+                if(now.before(endTime)&&totalAmount.intValue()>0&&totalAmount.subtract(minPoint).intValue()>=0){
+                    enableList.add(couponHistoryDetail);
+                }else{
+                    disableList.add(couponHistoryDetail);
+                }
+            }
+        }
+        if(type.equals(1)){
+            return convertDetailToResult(enableList);
+        }else{
+            return convertDetailToResult(disableList);
+        }
+    }
+
+    @Override
+    public List<SmsCouponHistoryDetail> listCartDetail(List<CartPromotionItem> cartPromotionItemList, Integer type) {
+        UmsMember currentMember = umsMemberRepository.getCurrentMember();
+        Date now = new Date();
+        //获取该用户所有优惠券
+        List<SmsCouponHistoryDetail> allList = couponHistoryDao.getDetailList(currentMember.getId());
+        //根据优惠券使用类型来判断优惠券是否可用
+        List<SmsCouponHistoryDetail> enableList = new ArrayList<>();
+        List<SmsCouponHistoryDetail> disableList = new ArrayList<>();
+        for (SmsCouponHistoryDetail couponHistoryDetail : allList) {
+            Integer useType = couponHistoryDetail.getCoupon().getUseType();
+            BigDecimal minPoint = couponHistoryDetail.getCoupon().getMinPoint();
+            Date endTime = couponHistoryDetail.getCoupon().getEndTime();
+            if(useType.equals(0)){
+                //0->全场通用
+                //判断是否满足优惠起点
+                //计算购物车商品的总价
+                BigDecimal totalAmount = calcTotalAmount(cartPromotionItemList);
+                if(now.before(endTime)&&totalAmount.subtract(minPoint).intValue()>=0){
+                    enableList.add(couponHistoryDetail);
+                }else{
+                    disableList.add(couponHistoryDetail);
+                }
+            }else if(useType.equals(1)){
+                //1->指定分类
+                //计算指定分类商品的总价
+                List<Long> productCategoryIds = new ArrayList<>();
+                for (SmsCouponProductCategoryRelation categoryRelation : couponHistoryDetail.getCategoryRelationList()) {
+                    productCategoryIds.add(categoryRelation.getProductCategoryId());
+                }
+                BigDecimal totalAmount = calcTotalAmountByproductCategoryId(cartPromotionItemList,productCategoryIds);
+                if(now.before(endTime)&&totalAmount.intValue()>0&&totalAmount.subtract(minPoint).intValue()>=0){
+                    enableList.add(couponHistoryDetail);
+                }else{
+                    disableList.add(couponHistoryDetail);
+                }
+            }else if(useType.equals(2)){
+                //2->指定商品
+                //计算指定商品的总价
+                List<Long> productIds = new ArrayList<>();
+                for (SmsCouponProductRelation productRelation : couponHistoryDetail.getProductRelationList()) {
+                    productIds.add(productRelation.getProductId());
+                }
+                BigDecimal totalAmount = calcTotalAmountByProductId(cartPromotionItemList,productIds);
+                if(now.before(endTime)&&totalAmount.intValue()>0&&totalAmount.subtract(minPoint).intValue()>=0){
+                    enableList.add(couponHistoryDetail);
+                }else{
+                    disableList.add(couponHistoryDetail);
+                }
+            }
+        }
+        if(type.equals(1)){
+            return enableList;
+        }else{
+            return disableList;
+        }
+    }
+
     private List<SmsCouponHistoryDetailResult> convertDetailToResult(List<SmsCouponHistoryDetail> list){
         List<SmsCouponHistoryDetailResult> results = new ArrayList<>();
         for(SmsCouponHistoryDetail detail:list){

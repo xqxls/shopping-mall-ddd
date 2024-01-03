@@ -1,6 +1,6 @@
 package com.xqxls.component;
 
-import com.xqxls.service.OmsPortalOrderService;
+import com.xqxls.domain.order.service.OmsPortalOrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;

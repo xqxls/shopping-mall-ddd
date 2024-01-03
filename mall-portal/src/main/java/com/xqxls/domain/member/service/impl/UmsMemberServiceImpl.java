@@ -4,6 +4,7 @@ import com.xqxls.domain.UserDto;
 import com.xqxls.domain.member.model.vo.UmsMemberVO;
 import com.xqxls.domain.member.repository.IUmsMemberRepository;
 import com.xqxls.domain.member.service.UmsMemberService;
+import com.xqxls.model.UmsMember;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -44,8 +45,13 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     }
 
     @Override
-    public UmsMemberVO getCurrentMember() {
+    public UmsMemberVO getCurrentMemberVO() {
         return umsMemberRepository.getCurrentMemberVO();
+    }
+
+    @Override
+    public UmsMember getCurrentMember() {
+        return umsMemberRepository.getCurrentMember();
     }
 
     @Override

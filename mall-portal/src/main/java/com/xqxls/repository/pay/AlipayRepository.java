@@ -12,7 +12,7 @@ import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.xqxls.config.AlipayConfig;
 import com.xqxls.domain.pay.model.req.AliPayReq;
 import com.xqxls.domain.pay.repository.IAlipayRepository;
-import com.xqxls.service.OmsPortalOrderService;
+import com.xqxls.domain.order.service.OmsPortalOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 

@@ -32,6 +32,12 @@ public class OmsPromotionRepository implements IOmsPromotionRepository {
 
     @Override
     public List<CartPromotionItemResult> calcCartPromotion(List<OmsCartItemVO> cartItemVOList) {
+
+        return OmsPromotionConvert.INSTANCE.cartPromotionItemEntityToResultList(calcCartPromotionItem(cartItemVOList));
+    }
+
+    @Override
+    public List<CartPromotionItem> calcCartPromotionItem(List<OmsCartItemVO> cartItemVOList) {
         List<OmsCartItem> cartItemList = OmsPromotionConvert.INSTANCE.omsCartItemVOToEntityList(cartItemVOList);
         //1.先根据productId对CartItem进行分组，以spu为单位进行计算优惠
         Map<Long, List<OmsCartItem>> productCartMap = groupCartItemBySpu(cartItemList);
@@ -112,7 +118,7 @@ public class OmsPromotionRepository implements IOmsPromotionRepository {
                 handleNoReduce(cartPromotionItemList, itemList,promotionProduct);
             }
         }
-        return OmsPromotionConvert.INSTANCE.cartPromotionItemEntityToResultList(cartPromotionItemList);
+        return cartPromotionItemList;
     }
 
     /**

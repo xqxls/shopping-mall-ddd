@@ -49,7 +49,7 @@ public class UmsMemberController {
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<UmsMemberVO> info() {
-        UmsMemberVO member = memberService.getCurrentMember();
+        UmsMemberVO member = memberService.getCurrentMemberVO();
         return CommonResult.success(member);
     }
 

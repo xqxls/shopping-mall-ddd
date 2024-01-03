@@ -26,6 +26,11 @@ public interface IUmsMemberRepository {
     UmsMemberVO getById(Long id);
 
     /**
+     * 根据会员编号获取会员
+     */
+    UmsMember getEntityById(Long id);
+
+    /**
      * 用户注册
      */
     void register(String username, String password, String telephone, String authCode);

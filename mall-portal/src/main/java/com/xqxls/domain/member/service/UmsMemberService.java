@@ -3,6 +3,7 @@ package com.xqxls.domain.member.service;
 import com.xqxls.api.CommonResult;
 import com.xqxls.domain.UserDto;
 import com.xqxls.domain.member.model.vo.UmsMemberVO;
+import com.xqxls.model.UmsMember;
 
 import java.util.Map;
 
@@ -40,7 +41,12 @@ public interface UmsMemberService {
     /**
      * 获取当前登录会员
      */
-    UmsMemberVO getCurrentMember();
+    UmsMemberVO getCurrentMemberVO();
+
+    /**
+     * 获取当前登录会员
+     */
+    UmsMember getCurrentMember();
 
     /**
      * 根据会员id修改会员积分

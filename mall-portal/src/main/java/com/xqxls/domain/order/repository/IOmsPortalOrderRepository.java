@@ -1,46 +1,42 @@
-package com.xqxls.service;
+package com.xqxls.domain.order.repository;
 
-import com.xqxls.api.CommonPage;
-import com.xqxls.dto.ConfirmOrderResult;
-import com.xqxls.dto.OmsOrderDetail;
-import com.xqxls.dto.OrderParam;
-import org.springframework.transaction.annotation.Transactional;
+import com.xqxls.domain.order.model.aggregates.ConfirmOrderRich;
+import com.xqxls.domain.order.model.req.OrderReq;
+import com.xqxls.domain.order.model.res.OmsOrderDetailResult;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * 前台订单管理Service
- * Created by macro on 2018/8/30.
+ * @Description:
+ * @Author: xqxls
+ * @CreateTime: 2024/1/3 21:28
  */
-public interface OmsPortalOrderService {
+public interface IOmsPortalOrderRepository {
+
     /**
      * 根据用户购物车信息生成确认单信息
      */
-    ConfirmOrderResult generateConfirmOrder(List<Long> cartIds);
+    ConfirmOrderRich generateConfirmOrder(List<Long> cartIds);
 
     /**
      * 根据提交信息生成订单
      */
-    @Transactional
-    Map<String, Object> generateOrder(OrderParam orderParam);
+    Map<String, Object> generateOrder(OrderReq orderReq);
 
     /**
      * 支付成功后的回调
      */
-    @Transactional
     Integer paySuccess(Long orderId, Integer payType);
 
     /**
      * 自动取消超时订单
      */
-    @Transactional
     Integer cancelTimeOutOrder();
 
     /**
      * 取消单个超时订单
      */
-    @Transactional
     void cancelOrder(Long orderId);
 
     /**
@@ -56,12 +52,12 @@ public interface OmsPortalOrderService {
     /**
      * 分页获取用户订单
      */
-    CommonPage<OmsOrderDetail> list(Integer status, Integer pageNum, Integer pageSize);
+    List<OmsOrderDetailResult> list(Integer status, Integer pageNum, Integer pageSize);
 
     /**
      * 根据订单ID获取订单详情
      */
-    OmsOrderDetail detail(Long orderId);
+    OmsOrderDetailResult detail(Long orderId);
 
     /**
      * 用户根据订单ID删除订单
@@ -71,6 +67,5 @@ public interface OmsPortalOrderService {
     /**
      * 根据orderSn来实现的支付成功逻辑
      */
-    @Transactional
     void paySuccessByOrderSn(String orderSn, Integer payType);
 }

@@ -21,4 +21,7 @@ public interface OmsCartItemConvert {
 
     List<OmsCartItemVO> convertEntityToVOList(List<OmsCartItem> list);
 
+    OmsCartItem convertVOToEntity(OmsCartItemVO vo);
+
+
 }

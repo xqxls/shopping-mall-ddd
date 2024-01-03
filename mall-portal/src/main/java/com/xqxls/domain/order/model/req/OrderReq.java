@@ -1,4 +1,4 @@
-package com.xqxls.dto;
+package com.xqxls.domain.order.model.req;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -7,12 +7,14 @@ import lombok.EqualsAndHashCode;
 import java.util.List;
 
 /**
- * 生成订单时传入的参数
- * Created by macro on 2018/8/30.
+ * @Description:
+ * @Author: xqxls
+ * @CreateTime: 2024/1/3 21:33
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class OrderParam {
+public class OrderReq {
+
     @ApiModelProperty("收货地址ID")
     private Long memberReceiveAddressId;
     @ApiModelProperty("优惠券ID")

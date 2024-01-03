@@ -6,7 +6,7 @@ import com.xqxls.domain.member.model.vo.SmsCouponHistoryVO;
 import com.xqxls.domain.member.model.vo.SmsCouponVO;
 import com.xqxls.domain.member.service.UmsMemberService;
 import com.xqxls.dto.CartPromotionItem;
-import com.xqxls.service.OmsCartItemService;
+import com.xqxls.domain.order.service.OmsCartItemService;
 import com.xqxls.domain.member.service.UmsMemberCouponService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -28,9 +28,9 @@ import java.util.List;
 public class UmsMemberCouponController {
     @Resource
     private UmsMemberCouponService memberCouponService;
-    @Autowired
+    @Resource
     private OmsCartItemService cartItemService;
-    @Autowired
+    @Resource
     private UmsMemberService memberService;
 
     @ApiOperation("领取指定优惠券")
@@ -67,8 +67,8 @@ public class UmsMemberCouponController {
     @RequestMapping(value = "/list/cart/{type}", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<List<SmsCouponHistoryDetailResult>> listCart(@PathVariable Integer type) {
-        List<CartPromotionItem> cartPromotionItemList = cartItemService.listPromotion(memberService.getCurrentMember().getId(), null);
-        List<SmsCouponHistoryDetailResult> couponHistoryList = memberCouponService.listCart(cartPromotionItemList, type);
+        List<CartPromotionItem> cartPromotionItemList = cartItemService.listPromotionItem(memberService.getCurrentMember().getId(), null);
+        List<SmsCouponHistoryDetailResult> couponHistoryList = memberCouponService.listCartResult(cartPromotionItemList, type);
         return CommonResult.success(couponHistoryList);
     }
 
