@@ -2,9 +2,9 @@ package com.xqxls.controller;
 
 import com.xqxls.api.CommonPage;
 import com.xqxls.api.CommonResult;
-import com.xqxls.domain.ConfirmOrderResult;
-import com.xqxls.domain.OmsOrderDetail;
-import com.xqxls.domain.OrderParam;
+import com.xqxls.dto.ConfirmOrderResult;
+import com.xqxls.dto.OmsOrderDetail;
+import com.xqxls.dto.OrderParam;
 import com.xqxls.service.OmsPortalOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

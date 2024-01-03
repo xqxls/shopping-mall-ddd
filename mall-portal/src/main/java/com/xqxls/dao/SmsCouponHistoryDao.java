@@ -1,7 +1,7 @@
 package com.xqxls.dao;
 
 import com.xqxls.model.SmsCoupon;
-import com.xqxls.domain.SmsCouponHistoryDetail;
+import com.xqxls.dto.SmsCouponHistoryDetail;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

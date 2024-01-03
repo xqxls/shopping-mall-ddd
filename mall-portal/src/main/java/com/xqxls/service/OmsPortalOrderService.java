@@ -1,9 +1,9 @@
 package com.xqxls.service;
 
 import com.xqxls.api.CommonPage;
-import com.xqxls.domain.ConfirmOrderResult;
-import com.xqxls.domain.OmsOrderDetail;
-import com.xqxls.domain.OrderParam;
+import com.xqxls.dto.ConfirmOrderResult;
+import com.xqxls.dto.OmsOrderDetail;
+import com.xqxls.dto.OrderParam;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

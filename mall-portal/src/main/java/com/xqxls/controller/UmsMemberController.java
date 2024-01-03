@@ -2,16 +2,18 @@ package com.xqxls.controller;
 
 import com.xqxls.api.CommonResult;
 import com.xqxls.domain.UserDto;
-import com.xqxls.model.UmsMember;
-import com.xqxls.service.UmsMemberService;
+import com.xqxls.domain.member.model.vo.UmsMemberVO;
+import com.xqxls.domain.member.service.UmsMemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * 会员登录注册管理Controller
@@ -21,13 +23,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Api(tags = "UmsMemberController", description = "会员登录注册管理")
 @RequestMapping("/sso")
 public class UmsMemberController {
-    @Autowired
+    @Resource
     private UmsMemberService memberService;
 
     @ApiOperation("会员注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult register(@RequestParam String username,
+    public CommonResult<Object> register(@RequestParam String username,
                                  @RequestParam String password,
                                  @RequestParam String telephone,
                                  @RequestParam String authCode) {
@@ -38,23 +40,23 @@ public class UmsMemberController {
     @ApiOperation("会员登录")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult login(@RequestParam String username,
-                              @RequestParam String password) {
-        return memberService.login(username, password);
+    public CommonResult<Map<String,String>> login(@RequestParam String username,
+                                                  @RequestParam String password) {
+        return CommonResult.success(memberService.login(username, password));
     }
 
     @ApiOperation("获取会员信息")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult info() {
-        UmsMember member = memberService.getCurrentMember();
+    public CommonResult<UmsMemberVO> info() {
+        UmsMemberVO member = memberService.getCurrentMember();
         return CommonResult.success(member);
     }
 
     @ApiOperation("获取验证码")
     @RequestMapping(value = "/getAuthCode", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult getAuthCode(@RequestParam String telephone) {
+    public CommonResult<Object> getAuthCode(@RequestParam String telephone) {
         String authCode = memberService.generateAuthCode(telephone);
         return CommonResult.success(authCode,"获取验证码成功");
     }
@@ -62,7 +64,7 @@ public class UmsMemberController {
     @ApiOperation("修改密码")
     @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult updatePassword(@RequestParam String telephone,
+    public CommonResult<Object> updatePassword(@RequestParam String telephone,
                                  @RequestParam String password,
                                  @RequestParam String authCode) {
         memberService.updatePassword(telephone,password,authCode);

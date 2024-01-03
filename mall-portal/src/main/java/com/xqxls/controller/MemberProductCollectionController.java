@@ -2,8 +2,8 @@ package com.xqxls.controller;
 
 import com.xqxls.api.CommonPage;
 import com.xqxls.api.CommonResult;
-import com.xqxls.domain.MemberProductCollection;
-import com.xqxls.service.MemberCollectionService;
+import com.xqxls.dto.MemberProductCollection;
+import com.xqxls.domain.member.service.MemberCollectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

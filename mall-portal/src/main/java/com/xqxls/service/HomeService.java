@@ -3,7 +3,7 @@ package com.xqxls.service;
 import com.xqxls.model.CmsSubject;
 import com.xqxls.model.PmsProduct;
 import com.xqxls.model.PmsProductCategory;
-import com.xqxls.domain.HomeContentResult;
+import com.xqxls.dto.HomeContentResult;
 
 import java.util.List;
 

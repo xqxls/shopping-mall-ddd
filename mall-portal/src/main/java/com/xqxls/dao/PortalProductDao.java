@@ -1,8 +1,8 @@
 package com.xqxls.dao;
 
 import com.xqxls.model.SmsCoupon;
-import com.xqxls.domain.CartProduct;
-import com.xqxls.domain.PromotionProduct;
+import com.xqxls.dto.CartProduct;
+import com.xqxls.dto.PromotionProduct;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

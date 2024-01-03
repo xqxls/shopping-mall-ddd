@@ -35,16 +35,6 @@
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
 
-        <!--实体转换工具类-->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
 </project>

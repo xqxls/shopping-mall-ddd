@@ -1,8 +1,9 @@
 package com.xqxls.service;
 
+import com.xqxls.domain.order.model.res.CartPromotionItemResult;
 import com.xqxls.model.OmsCartItem;
-import com.xqxls.domain.CartProduct;
-import com.xqxls.domain.CartPromotionItem;
+import com.xqxls.dto.CartProduct;
+import com.xqxls.dto.CartPromotionItem;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface OmsCartItemService {
     /**
      * 获取包含促销活动信息的购物车列表
      */
-    List<CartPromotionItem> listPromotion(Long memberId, List<Long> cartIds);
+    List<CartPromotionItemResult> listPromotion(Long memberId, List<Long> cartIds);
 
     /**
      * 修改某个购物车商品的数量

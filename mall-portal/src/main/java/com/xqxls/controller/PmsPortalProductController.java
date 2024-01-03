@@ -2,17 +2,17 @@ package com.xqxls.controller;
 
 import com.xqxls.api.CommonPage;
 import com.xqxls.api.CommonResult;
-import com.xqxls.model.PmsProduct;
-import com.xqxls.domain.PmsPortalProductDetail;
-import com.xqxls.domain.PmsProductCategoryNode;
-import com.xqxls.service.PmsPortalProductService;
+import com.xqxls.domain.product.model.aggregates.PmsPortalProductDetailRich;
+import com.xqxls.domain.product.model.res.PmsProductCategoryNodeResult;
+import com.xqxls.domain.product.model.vo.PmsProductVO;
+import com.xqxls.domain.product.service.PmsPortalProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("/product")
 public class PmsPortalProductController {
 
-    @Autowired
+    @Resource
     private PmsPortalProductService portalProductService;
 
     @ApiOperation(value = "综合搜索、筛选、排序")
@@ -32,29 +32,29 @@ public class PmsPortalProductController {
             defaultValue = "0", allowableValues = "0,1,2,3,4", paramType = "query", dataType = "integer")
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<CommonPage<PmsProduct>> search(@RequestParam(required = false) String keyword,
+    public CommonResult<CommonPage<PmsProductVO>> search(@RequestParam(required = false) String keyword,
                                                        @RequestParam(required = false) Long brandId,
                                                        @RequestParam(required = false) Long productCategoryId,
                                                        @RequestParam(required = false, defaultValue = "0") Integer pageNum,
                                                        @RequestParam(required = false, defaultValue = "5") Integer pageSize,
                                                        @RequestParam(required = false, defaultValue = "0") Integer sort) {
-        List<PmsProduct> productList = portalProductService.search(keyword, brandId, productCategoryId, pageNum, pageSize, sort);
+        List<PmsProductVO> productList = portalProductService.search(keyword, brandId, productCategoryId, pageNum, pageSize, sort);
         return CommonResult.success(CommonPage.restPage(productList));
     }
 
     @ApiOperation("以树形结构获取所有商品分类")
     @RequestMapping(value = "/categoryTreeList", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<List<PmsProductCategoryNode>> categoryTreeList() {
-        List<PmsProductCategoryNode> list = portalProductService.categoryTreeList();
+    public CommonResult<List<PmsProductCategoryNodeResult>> categoryTreeList() {
+        List<PmsProductCategoryNodeResult> list = portalProductService.categoryTreeList();
         return CommonResult.success(list);
     }
 
     @ApiOperation("获取前台商品详情")
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<PmsPortalProductDetail> detail(@PathVariable Long id) {
-        PmsPortalProductDetail productDetail = portalProductService.detail(id);
+    public CommonResult<PmsPortalProductDetailRich> detail(@PathVariable Long id) {
+        PmsPortalProductDetailRich productDetail = portalProductService.detail(id);
         return CommonResult.success(productDetail);
     }
 }

@@ -2,17 +2,17 @@ package com.xqxls.controller;
 
 import com.xqxls.api.CommonResult;
 import com.xqxls.config.AlipayConfig;
-import com.xqxls.domain.AliPayParam;
-import com.xqxls.service.AlipayService;
+import com.xqxls.domain.pay.model.req.AliPayReq;
+import com.xqxls.domain.pay.service.AlipayService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -23,7 +23,6 @@ import java.util.Map;
  * @auther macrozheng
  * @description 支付宝支付Controller
  * @date 2023/9/8
- * @github https://github.com/macrozheng
  */
 @Controller
 @Api(tags = "AlipayController")
@@ -31,25 +30,25 @@ import java.util.Map;
 @RequestMapping("/alipay")
 public class AlipayController {
 
-    @Autowired
+    @Resource
     private AlipayConfig alipayConfig;
-    @Autowired
+    @Resource
     private AlipayService alipayService;
 
     @ApiOperation("支付宝电脑网站支付")
     @RequestMapping(value = "/pay", method = RequestMethod.GET)
-    public void pay(AliPayParam aliPayParam, HttpServletResponse response) throws IOException {
+    public void pay(AliPayReq aliPayReq, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=" + alipayConfig.getCharset());
-        response.getWriter().write(alipayService.pay(aliPayParam));
+        response.getWriter().write(alipayService.pay(aliPayReq));
         response.getWriter().flush();
         response.getWriter().close();
     }
 
     @ApiOperation("支付宝手机网站支付")
     @RequestMapping(value = "/webPay", method = RequestMethod.GET)
-    public void webPay(AliPayParam aliPayParam, HttpServletResponse response) throws IOException {
+    public void webPay(AliPayReq aliPayReq, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=" + alipayConfig.getCharset());
-        response.getWriter().write(alipayService.webPay(aliPayParam));
+        response.getWriter().write(alipayService.webPay(aliPayReq));
         response.getWriter().flush();
         response.getWriter().close();
     }

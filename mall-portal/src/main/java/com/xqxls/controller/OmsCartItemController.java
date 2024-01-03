@@ -2,10 +2,10 @@ package com.xqxls.controller;
 
 import com.xqxls.api.CommonResult;
 import com.xqxls.model.OmsCartItem;
-import com.xqxls.domain.CartProduct;
-import com.xqxls.domain.CartPromotionItem;
+import com.xqxls.dto.CartProduct;
+import com.xqxls.dto.CartPromotionItem;
 import com.xqxls.service.OmsCartItemService;
-import com.xqxls.service.UmsMemberService;
+import com.xqxls.domain.member.service.UmsMemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

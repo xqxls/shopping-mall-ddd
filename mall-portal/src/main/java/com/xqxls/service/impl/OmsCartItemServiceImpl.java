@@ -1,16 +1,17 @@
 package com.xqxls.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.xqxls.convert.order.OmsCartItemConvert;
+import com.xqxls.domain.order.model.res.CartPromotionItemResult;
+import com.xqxls.domain.order.model.vo.OmsCartItemVO;
 import com.xqxls.mapper.OmsCartItemMapper;
 import com.xqxls.model.OmsCartItem;
 import com.xqxls.model.UmsMember;
 import com.xqxls.dao.PortalProductDao;
-import com.xqxls.domain.CartProduct;
-import com.xqxls.domain.CartPromotionItem;
+import com.xqxls.dto.CartProduct;
 import com.xqxls.service.OmsCartItemService;
-import com.xqxls.service.OmsPromotionService;
-import com.xqxls.service.UmsMemberService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.xqxls.domain.order.service.OmsPromotionService;
+import com.xqxls.domain.member.service.UmsMemberService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
@@ -80,14 +81,14 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
     }
 
     @Override
-    public List<CartPromotionItem> listPromotion(Long memberId, List<Long> cartIds) {
-        List<OmsCartItem> cartItemList = list(memberId);
+    public List<CartPromotionItemResult> listPromotion(Long memberId, List<Long> cartIds) {
+        List<OmsCartItemVO> cartItemVOList = OmsCartItemConvert.INSTANCE.convertEntityToVOList(list(memberId));
         if(CollUtil.isNotEmpty(cartIds)){
-            cartItemList = cartItemList.stream().filter(item->cartIds.contains(item.getId())).collect(Collectors.toList());
+            cartItemVOList = cartItemVOList.stream().filter(item->cartIds.contains(item.getId())).collect(Collectors.toList());
         }
-        List<CartPromotionItem> cartPromotionItemList = new ArrayList<>();
-        if(!CollectionUtils.isEmpty(cartItemList)){
-            cartPromotionItemList = promotionService.calcCartPromotion(cartItemList);
+        List<CartPromotionItemResult> cartPromotionItemList = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(cartItemVOList)){
+            cartPromotionItemList = promotionService.calcCartPromotion(cartItemVOList);
         }
         return cartPromotionItemList;
     }

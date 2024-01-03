@@ -3,7 +3,7 @@ package com.xqxls.dao;
 import com.xqxls.model.CmsSubject;
 import com.xqxls.model.PmsBrand;
 import com.xqxls.model.PmsProduct;
-import com.xqxls.domain.FlashPromotionProduct;
+import com.xqxls.dto.FlashPromotionProduct;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

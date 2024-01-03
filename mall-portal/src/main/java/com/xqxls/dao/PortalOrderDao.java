@@ -1,7 +1,7 @@
 package com.xqxls.dao;
 
 import com.xqxls.model.OmsOrderItem;
-import com.xqxls.domain.OmsOrderDetail;
+import com.xqxls.dto.OmsOrderDetail;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

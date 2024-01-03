@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xqxls.dao.SmsCouponHistoryDao">
-    <resultMap id="couponHistoryDetailMap" type="com.xqxls.domain.SmsCouponHistoryDetail"
+    <resultMap id="couponHistoryDetailMap" type="com.xqxls.dto.SmsCouponHistoryDetail"
                extends="com.xqxls.mapper.SmsCouponHistoryMapper.BaseResultMap">
         <association property="coupon" resultMap="com.xqxls.mapper.SmsCouponMapper.BaseResultMap" columnPrefix="c_">
         </association>

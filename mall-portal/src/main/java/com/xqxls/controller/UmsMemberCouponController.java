@@ -1,13 +1,13 @@
 package com.xqxls.controller;
 
 import com.xqxls.api.CommonResult;
-import com.xqxls.model.SmsCoupon;
-import com.xqxls.model.SmsCouponHistory;
-import com.xqxls.domain.CartPromotionItem;
-import com.xqxls.domain.SmsCouponHistoryDetail;
+import com.xqxls.domain.member.model.res.SmsCouponHistoryDetailResult;
+import com.xqxls.domain.member.model.vo.SmsCouponHistoryVO;
+import com.xqxls.domain.member.model.vo.SmsCouponVO;
+import com.xqxls.domain.member.service.UmsMemberService;
+import com.xqxls.dto.CartPromotionItem;
 import com.xqxls.service.OmsCartItemService;
-import com.xqxls.service.UmsMemberCouponService;
-import com.xqxls.service.UmsMemberService;
+import com.xqxls.domain.member.service.UmsMemberCouponService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ import java.util.List;
 @Api(tags = "UmsMemberCouponController", description = "用户优惠券管理")
 @RequestMapping("/member/coupon")
 public class UmsMemberCouponController {
-    @Autowired
+    @Resource
     private UmsMemberCouponService memberCouponService;
     @Autowired
     private OmsCartItemService cartItemService;
@@ -35,7 +36,7 @@ public class UmsMemberCouponController {
     @ApiOperation("领取指定优惠券")
     @RequestMapping(value = "/add/{couponId}", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult add(@PathVariable Long couponId) {
+    public CommonResult<Object> add(@PathVariable Long couponId) {
         memberCouponService.add(couponId);
         return CommonResult.success(null,"领取成功");
     }
@@ -45,8 +46,8 @@ public class UmsMemberCouponController {
             allowableValues = "0,1,2", paramType = "query", dataType = "integer")
     @RequestMapping(value = "/listHistory", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<List<SmsCouponHistory>> listHistory(@RequestParam(value = "useStatus", required = false) Integer useStatus) {
-        List<SmsCouponHistory> couponHistoryList = memberCouponService.listHistory(useStatus);
+    public CommonResult<List<SmsCouponHistoryVO>> listHistory(@RequestParam(value = "useStatus", required = false) Integer useStatus) {
+        List<SmsCouponHistoryVO> couponHistoryList = memberCouponService.listHistory(useStatus);
         return CommonResult.success(couponHistoryList);
     }
 
@@ -55,8 +56,8 @@ public class UmsMemberCouponController {
             allowableValues = "0,1,2", paramType = "query", dataType = "integer")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<List<SmsCoupon>> list(@RequestParam(value = "useStatus", required = false) Integer useStatus) {
-        List<SmsCoupon> couponList = memberCouponService.list(useStatus);
+    public CommonResult<List<SmsCouponVO>> list(@RequestParam(value = "useStatus", required = false) Integer useStatus) {
+        List<SmsCouponVO> couponList = memberCouponService.list(useStatus);
         return CommonResult.success(couponList);
     }
 
@@ -65,17 +66,17 @@ public class UmsMemberCouponController {
             defaultValue = "1", allowableValues = "0,1", paramType = "query", dataType = "integer")
     @RequestMapping(value = "/list/cart/{type}", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<List<SmsCouponHistoryDetail>> listCart(@PathVariable Integer type) {
+    public CommonResult<List<SmsCouponHistoryDetailResult>> listCart(@PathVariable Integer type) {
         List<CartPromotionItem> cartPromotionItemList = cartItemService.listPromotion(memberService.getCurrentMember().getId(), null);
-        List<SmsCouponHistoryDetail> couponHistoryList = memberCouponService.listCart(cartPromotionItemList, type);
+        List<SmsCouponHistoryDetailResult> couponHistoryList = memberCouponService.listCart(cartPromotionItemList, type);
         return CommonResult.success(couponHistoryList);
     }
 
     @ApiOperation("获取当前商品相关优惠券")
     @RequestMapping(value = "/listByProduct/{productId}", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<List<SmsCoupon>> listByProduct(@PathVariable Long productId) {
-        List<SmsCoupon> couponHistoryList = memberCouponService.listByProduct(productId);
+    public CommonResult<List<SmsCouponVO>> listByProduct(@PathVariable Long productId) {
+        List<SmsCouponVO> couponHistoryList = memberCouponService.listByProduct(productId);
         return CommonResult.success(couponHistoryList);
     }
 }
