@@ -74,7 +74,7 @@ public class UmsMemberController {
     @ApiOperation("根据用户名获取通用用户信息")
     @RequestMapping(value = "/loadByUsername", method = RequestMethod.GET)
     @ResponseBody
-    public UserDto loadUserByUsername(@RequestParam String username) {
-        return memberService.loadUserByUsername(username);
+    public CommonResult<UserDto> loadUserByUsername(@RequestParam String username) {
+        return CommonResult.success(memberService.loadUserByUsername(username));
     }
 }

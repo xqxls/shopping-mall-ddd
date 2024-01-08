@@ -1,9 +1,12 @@
 package com.xqxls.model;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
 public class CmsHelp implements Serializable {
+
+    @Id
     private Long id;
 
     private Long categoryId;

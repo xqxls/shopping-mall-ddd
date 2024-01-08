@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -50,6 +51,10 @@ public class SaTokenConfig {
                     String url = request.getUrl();
                     String path = URLUtil.getPath(url);
                     PathMatcher pathMatcher = new AntPathMatcher();
+                    //非管理端路径直接放行
+                    if (!pathMatcher.match(AuthConstant.ADMIN_URL_PATTERN, path)) {
+                        return;
+                    }
                     if(!ignoreUrls.contains(path)){
                         Map<Object, Object> resourceRolesMap = redisService.hGetAll(AuthConstant.RESOURCE_ROLES_MAP_KEY);
                         Iterator<Object> iterator = resourceRolesMap.keySet().iterator();

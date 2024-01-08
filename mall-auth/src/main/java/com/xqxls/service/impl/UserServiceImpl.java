@@ -3,11 +3,16 @@ package com.xqxls.service.impl;
 import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import com.xqxls.constant.AuthConstant;
+import com.xqxls.constant.MessageConstant;
 import com.xqxls.domain.UserDto;
+import com.xqxls.exception.ApiException;
 import com.xqxls.feign.UmsAdminFeign;
+import com.xqxls.feign.UmsMemberFeign;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用户管理业务类
@@ -17,10 +22,25 @@ import javax.annotation.Resource;
 public class UserServiceImpl {
 
     @Resource
+    private HttpServletRequest request;
+    @Resource
     private UmsAdminFeign umsAdminFeign;
+    @Resource
+    private UmsMemberFeign umsMemberFeign;
 
     public UserDto loadUserByUsername(String username) {
-        return umsAdminFeign.loadUserByUsername(username).getData();
+        String clientId = request.getParameter("client_id");
+        UserDto userDto;
+        if(AuthConstant.ADMIN_CLIENT_ID.equals(clientId)){
+            userDto = umsAdminFeign.loadUserByUsername(username).getData();
+        }else{
+            userDto = umsMemberFeign.loadUserByUsername(username).getData();
+        }
+        if (userDto==null) {
+            throw new ApiException(MessageConstant.USERNAME_PASSWORD_ERROR);
+        }
+        userDto.setClientId(clientId);
+        return userDto;
     }
 
     public SaTokenInfo login(String username, String password) {

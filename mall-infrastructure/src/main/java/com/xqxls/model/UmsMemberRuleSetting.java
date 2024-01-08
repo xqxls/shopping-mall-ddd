@@ -2,10 +2,13 @@ package com.xqxls.model;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class UmsMemberRuleSetting implements Serializable {
+
+    @Id
     private Long id;
 
     @ApiModelProperty(value = "连续签到天数")

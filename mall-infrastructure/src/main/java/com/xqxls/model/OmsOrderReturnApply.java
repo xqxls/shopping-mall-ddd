@@ -2,11 +2,14 @@ package com.xqxls.model;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class OmsOrderReturnApply implements Serializable {
+
+    @Id
     private Long id;
 
     @ApiModelProperty(value = "订单id")

@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
 import com.xqxls.api.CommonResult;
 import com.xqxls.api.ResultCode;
 import com.xqxls.constant.AuthConstant;
@@ -19,6 +20,8 @@ import com.xqxls.mapper.UmsMemberMapper;
 import com.xqxls.model.UmsMember;
 import com.xqxls.model.UmsMemberLevel;
 import com.xqxls.redis.UmsMemberCacheService;
+import com.xqxls.util.SecurityUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +31,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @Description:
@@ -62,7 +62,10 @@ public class UmsMemberRepository implements IUmsMemberRepository {
         example.createCriteria().andEqualTo("username",username);
         List<UmsMember> memberList = memberMapper.selectByExample(example);
         if (!CollectionUtils.isEmpty(memberList)) {
-            return UmsMemberConvert.INSTANCE.convertEntityToVO(memberList.get(0));
+            UmsMemberVO umsMemberVO = new UmsMemberVO();
+            BeanUtils.copyProperties(memberList.get(0),umsMemberVO);
+            return umsMemberVO;
+//            return UmsMemberConvert.INSTANCE.convertEntityToVO(memberList.get(0));
         }
         return null;
     }
@@ -142,28 +145,16 @@ public class UmsMemberRepository implements IUmsMemberRepository {
 
     @Override
     public UmsMemberVO getCurrentMemberVO() {
-        String userStr = request.getHeader(AuthConstant.USER_TOKEN_HEADER);
-        if(StrUtil.isEmpty(userStr)){
-            Asserts.fail(ResultCode.UNAUTHORIZED);
-        }
-        UserDto userDto = JSONUtil.toBean(userStr, UserDto.class);
-        UmsMember member = memberCacheService.getMember(userDto.getId());
-        if(member!=null){
-            return UmsMemberConvert.INSTANCE.convertEntityToVO(member);
-        }else{
-            member = memberMapper.selectByPrimaryKey(userDto.getId());
-            memberCacheService.setMember(member);
-            return UmsMemberConvert.INSTANCE.convertEntityToVO(member);
-        }
+
+        return UmsMemberConvert.INSTANCE.convertEntityToVO(this.getCurrentMember());
     }
 
     @Override
     public UmsMember getCurrentMember() {
-        String userStr = request.getHeader(AuthConstant.USER_TOKEN_HEADER);
-        if(StrUtil.isEmpty(userStr)){
+        UserDto userDto = SecurityUtil.getCurrentUser();
+        if(Objects.isNull(userDto)){
             Asserts.fail(ResultCode.UNAUTHORIZED);
         }
-        UserDto userDto = JSONUtil.toBean(userStr, UserDto.class);
         UmsMember member = memberCacheService.getMember(userDto.getId());
         if(member!=null){
             return member;
@@ -200,7 +191,11 @@ public class UmsMemberRepository implements IUmsMemberRepository {
         if(StrUtil.isEmpty(username)||StrUtil.isEmpty(password)){
             Asserts.fail("用户名或密码不能为空！");
         }
-        CommonResult<Map<String,String>> restResult = authFeign.login(username,password);
+        Map<String, String> params = new HashMap<>();
+        params.put("client_id", AuthConstant.PORTAL_CLIENT_ID);
+        params.put("username",username);
+        params.put("password",password);
+        CommonResult<Map<String,String>> restResult = authFeign.login(params);
         if(ResultCode.SUCCESS.getCode()==restResult.getCode()&&restResult.getData()!=null){
             return restResult.getData();
         }
@@ -214,5 +209,11 @@ public class UmsMemberRepository implements IUmsMemberRepository {
         }
         String realAuthCode = memberCacheService.getAuthCode(telephone);
         return authCode.equals(realAuthCode);
+    }
+
+    public static void main(String[] args) {
+        UmsMember member = new UmsMember();
+        member.setId(11L);
+        System.out.println(JSON.toJSONString(UmsMemberConvert.INSTANCE.convertEntityToVO(member)));
     }
 }

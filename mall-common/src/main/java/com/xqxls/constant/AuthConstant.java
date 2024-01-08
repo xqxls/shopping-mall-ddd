@@ -9,7 +9,7 @@ public interface AuthConstant {
     /**
      * 后台管理接口路径匹配
      */
-    String ADMIN_URL_PATTERN = "/mall-admin/**";
+    String ADMIN_URL_PATTERN = "/mall-domain/**";
 
     /**
      * 用户信息Http请求头

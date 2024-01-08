@@ -2,10 +2,13 @@ package com.xqxls.model;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
 public class SmsFlashPromotionLog implements Serializable {
+
+    @Id
     private Integer id;
 
     private Integer memberId;

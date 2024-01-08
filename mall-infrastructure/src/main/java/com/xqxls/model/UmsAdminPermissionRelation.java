@@ -1,8 +1,11 @@
 package com.xqxls.model;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 
 public class UmsAdminPermissionRelation implements Serializable {
+
+    @Id
     private Long id;
 
     private Long adminId;

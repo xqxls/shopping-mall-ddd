@@ -2,9 +2,12 @@ package com.xqxls.model;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 
 public class PmsProductCategory implements Serializable {
+
+    @Id
     private Long id;
 
     @ApiModelProperty(value = "上机分类的编号：0表示一级分类")

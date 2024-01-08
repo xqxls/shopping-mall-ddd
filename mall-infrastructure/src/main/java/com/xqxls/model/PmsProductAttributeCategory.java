@@ -2,9 +2,12 @@ package com.xqxls.model;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 
 public class PmsProductAttributeCategory implements Serializable {
+
+    @Id
     private Long id;
 
     private String name;

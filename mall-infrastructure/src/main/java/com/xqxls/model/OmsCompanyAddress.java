@@ -2,9 +2,12 @@ package com.xqxls.model;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 
 public class OmsCompanyAddress implements Serializable {
+
+    @Id
     private Long id;
 
     @ApiModelProperty(value = "地址名称")

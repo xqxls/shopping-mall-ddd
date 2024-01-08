@@ -2,10 +2,13 @@ package com.xqxls.model;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
 public class SmsFlashPromotionSession implements Serializable {
+
+    @Id
     @ApiModelProperty(value = "编号")
     private Long id;
 

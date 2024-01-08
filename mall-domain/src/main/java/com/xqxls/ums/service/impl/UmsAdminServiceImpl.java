@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xqxls.api.CommonResult;
 import com.xqxls.api.ResultCode;
+import com.xqxls.constant.AuthConstant;
 import com.xqxls.domain.UserDto;
 import com.xqxls.exception.Asserts;
 import com.xqxls.feign.AuthFeign;
@@ -18,6 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -90,7 +92,11 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         if(StrUtil.isEmpty(username)||StrUtil.isEmpty(password)){
             Asserts.fail("用户名或密码不能为空！");
         }
-        CommonResult<Map<String,String>> restResult = authFeign.login(username,password);
+        Map<String, String> params = new HashMap<>();
+        params.put("client_id", AuthConstant.ADMIN_CLIENT_ID);
+        params.put("username",username);
+        params.put("password",password);
+        CommonResult<Map<String,String>> restResult = authFeign.login(params);
         if(ResultCode.SUCCESS.getCode()==restResult.getCode()&&restResult.getData()!=null){
             return restResult.getData();
         }

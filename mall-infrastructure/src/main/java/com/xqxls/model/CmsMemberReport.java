@@ -2,10 +2,12 @@ package com.xqxls.model;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
 public class CmsMemberReport implements Serializable {
+    @Id
     private Long id;
 
     @ApiModelProperty(value = "举报类型：0->商品评价；1->话题内容；2->用户评论")

@@ -16,5 +16,5 @@ import java.util.Map;
 public interface AuthFeign {
 
     @PostMapping(value = "/oauth/token")
-    CommonResult<Map<String,String>> login(@RequestParam String username, @RequestParam String password);
+    CommonResult<Map<String,String>> login(@RequestParam Map<String, String> parameters);
 }

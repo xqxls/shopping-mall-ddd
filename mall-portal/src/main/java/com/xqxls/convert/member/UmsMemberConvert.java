@@ -16,10 +16,8 @@ import java.util.List;
 public interface UmsMemberConvert {
 
     UmsMemberConvert INSTANCE = Mappers.getMapper(UmsMemberConvert.class);
-
     UmsMember convertVOToEntity(UmsMemberVO vo);
-
     UmsMemberVO convertEntityToVO(UmsMember entity);
-
     List<UmsMemberVO> convertEntityToVOList(List<UmsMember> list);
+
 }
