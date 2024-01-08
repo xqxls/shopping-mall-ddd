@@ -211,9 +211,4 @@ public class UmsMemberRepository implements IUmsMemberRepository {
         return authCode.equals(realAuthCode);
     }
 
-    public static void main(String[] args) {
-        UmsMember member = new UmsMember();
-        member.setId(11L);
-        System.out.println(JSON.toJSONString(UmsMemberConvert.INSTANCE.convertEntityToVO(member)));
-    }
 }
