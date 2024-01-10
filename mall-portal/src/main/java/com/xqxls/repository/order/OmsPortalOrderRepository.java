@@ -29,6 +29,7 @@ import com.xqxls.service.RedisService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
@@ -89,19 +90,19 @@ public class OmsPortalOrderRepository implements IOmsPortalOrderRepository {
         //获取购物车信息
         UmsMember currentMember = memberRepository.getCurrentMember();
         List<CartPromotionItemResult> cartPromotionItemResultList = cartItemRepository.listPromotion(currentMember.getId(),cartIds);
-        result.setCartPromotionItemResultList(cartPromotionItemResultList);
+        result.setCartPromotionItemList(cartPromotionItemResultList);
         //获取用户收货地址列表
         List<UmsMemberReceiveAddressVO> memberReceiveAddressList = memberReceiveAddressRepository.list();
-        result.setMemberReceiveAddressVOList(memberReceiveAddressList);
+        result.setMemberReceiveAddressList(memberReceiveAddressList);
         //获取用户可用优惠券列表
         List<CartPromotionItem> cartPromotionItemList = cartItemRepository.listPromotionItem(currentMember.getId(),cartIds);
         List<SmsCouponHistoryDetailResult> couponHistoryDetailResultList = memberCouponRepository.listCartResult(cartPromotionItemList, 1);
-        result.setCouponHistoryDetailResultList(couponHistoryDetailResultList);
+        result.setCouponHistoryDetailList(couponHistoryDetailResultList);
         //获取用户积分
         result.setMemberIntegration(currentMember.getIntegration());
         //获取积分使用规则
         UmsIntegrationConsumeSetting integrationConsumeSetting = integrationConsumeSettingMapper.selectByPrimaryKey(1L);
-        result.setIntegrationConsumeSettingVO(UmsIntegrationConsumeSettingConvert.INSTANCE.convertEntityToVO(integrationConsumeSetting));
+        result.setIntegrationConsumeSetting(UmsIntegrationConsumeSettingConvert.INSTANCE.convertEntityToVO(integrationConsumeSetting));
         //计算总金额、活动优惠、应付金额
         ConfirmOrderRich.CalcAmount calcAmount = calcCartAmount(cartPromotionItemList);
         result.setCalcAmount(calcAmount);
@@ -263,7 +264,7 @@ public class OmsPortalOrderRepository implements IOmsPortalOrderRepository {
             orderItem.setOrderId(order.getId());
             orderItem.setOrderSn(order.getOrderSn());
         }
-        orderItemDao.insertList(orderItemList);
+        orderItemMapper.insertBatch(orderItemList);
         //如使用优惠券更新优惠券使用状态
         if (orderReq.getCouponId() != null) {
             updateCouponStatus(orderReq.getCouponId(), currentMember.getId(), 1);
@@ -418,7 +419,7 @@ public class OmsPortalOrderRepository implements IOmsPortalOrderRepository {
             OmsOrderDetailResult detailResult = new OmsOrderDetailResult();
             BeanUtils.copyProperties(orderDetail,detailResult);
             List<OmsOrderItemVO> orderItemVOList = OmsOrderItemConvert.INSTANCE.convertEntityToVOList(orderDetail.getOrderItemList());
-            detailResult.setOrderItemVOList(orderItemVOList);
+            detailResult.setOrderItemList(orderItemVOList);
             detailResultList.add(detailResult);
         }
         return detailResultList;
@@ -436,7 +437,7 @@ public class OmsPortalOrderRepository implements IOmsPortalOrderRepository {
         OmsOrderDetailResult detailResult = new OmsOrderDetailResult();
         BeanUtils.copyProperties(orderDetail,detailResult);
         List<OmsOrderItemVO> orderItemVOList = OmsOrderItemConvert.INSTANCE.convertEntityToVOList(orderDetail.getOrderItemList());
-        detailResult.setOrderItemVOList(orderItemVOList);
+        detailResult.setOrderItemList(orderItemVOList);
         return detailResult;
     }
 

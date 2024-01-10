@@ -17,7 +17,7 @@ import java.util.List;
 @Setter
 public class CartProductResult extends PmsProductVO {
 
-    private List<PmsProductAttributeVO> productAttributeVOList;
+    private List<PmsProductAttributeVO> productAttributeList;
 
-    private List<PmsSkuStockVO> skuStockVOList;
+    private List<PmsSkuStockVO> skuStockList;
 }

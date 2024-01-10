@@ -16,6 +16,6 @@ import java.util.List;
 @Setter
 public class OmsOrderDetailResult extends OmsOrderVO {
 
-    private List<OmsOrderItemVO> orderItemVOList;
+    private List<OmsOrderItemVO> orderItemList;
 
 }

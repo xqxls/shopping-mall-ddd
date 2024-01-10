@@ -64,17 +64,6 @@
             <version>${alipay-sdk.version}</version>
         </dependency>
 
-        <!--实体转换工具类-->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>1.5.5.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <version>1.5.5.Final</version>
-        </dependency>
 
         <!-- Sa-Token 权限认证 -->
         <dependency>

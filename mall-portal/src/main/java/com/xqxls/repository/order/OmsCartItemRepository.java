@@ -141,8 +141,8 @@ public class OmsCartItemRepository implements IOmsCartItemRepository {
         BeanUtils.copyProperties(cartProduct,cartProductResult);
         List<PmsProductAttributeVO> productAttributeVOList = PmsPortalProductConvert.INSTANCE.pmsProductAttributeEntityToVOList(cartProduct.getProductAttributeList());
         List<PmsSkuStockVO> skuStockVOList = PmsPortalProductConvert.INSTANCE.pmsSkuStockEntityToVOList(cartProduct.getSkuStockList());
-        cartProductResult.setProductAttributeVOList(productAttributeVOList);
-        cartProductResult.setSkuStockVOList(skuStockVOList);
+        cartProductResult.setProductAttributeList(productAttributeVOList);
+        cartProductResult.setSkuStockList(skuStockVOList);
         return cartProductResult;
     }
 

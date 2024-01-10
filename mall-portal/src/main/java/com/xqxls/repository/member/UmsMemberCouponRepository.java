@@ -130,7 +130,7 @@ public class UmsMemberCouponRepository implements IUmsMemberCouponRepository {
         for(CartPromotionItemRich rich:cartPromotionItemRichList){
             CartPromotionItem cartPromotionItem = new CartPromotionItem();
             BeanUtils.copyProperties(rich,cartPromotionItem);
-            BeanUtils.copyProperties(rich.getOmsCartItemVO(),cartPromotionItem);
+            BeanUtils.copyProperties(rich.getOmsCartItem(),cartPromotionItem);
             cartItemList.add(cartPromotionItem);
         }
         UmsMember currentMember = umsMemberRepository.getCurrentMember();
@@ -324,7 +324,7 @@ public class UmsMemberCouponRepository implements IUmsMemberCouponRepository {
                 BeanUtils.copyProperties(smsCouponProductCategoryRelation,vo);
                 categoryRelationList.add(vo);
             }
-            result.setSmsCouponVO(smsCouponVO);
+            result.setSmsCoupon(smsCouponVO);
             result.setProductRelationList(productRelationList);
             result.setCategoryRelationList(categoryRelationList);
             results.add(result);

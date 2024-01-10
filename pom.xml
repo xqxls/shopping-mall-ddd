@@ -99,6 +99,16 @@
             <version>${fastjson.version}</version>
         </dependency>
 
+        <!--实体转换工具类-->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -244,6 +254,7 @@
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
             </dependency>
+
             <!--实体转换工具类-->
             <dependency>
                 <groupId>org.mapstruct</groupId>
@@ -253,6 +264,7 @@
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-processor</artifactId>
+                <scope>provided</scope>
                 <version>${mapstruct-processor.version}</version>
             </dependency>
         </dependencies>

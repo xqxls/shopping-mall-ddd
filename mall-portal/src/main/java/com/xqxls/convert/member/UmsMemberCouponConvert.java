@@ -2,10 +2,8 @@ package com.xqxls.convert.member;
 
 import com.xqxls.domain.member.model.vo.SmsCouponHistoryVO;
 import com.xqxls.domain.member.model.vo.SmsCouponVO;
-import com.xqxls.domain.member.model.vo.UmsMemberVO;
 import com.xqxls.model.SmsCoupon;
 import com.xqxls.model.SmsCouponHistory;
-import com.xqxls.model.UmsMember;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

@@ -6,7 +6,6 @@ import com.xqxls.domain.member.model.vo.SmsCouponHistoryVO;
 import com.xqxls.domain.member.model.vo.SmsCouponVO;
 import com.xqxls.dto.CartPromotionItem;
 import com.xqxls.dto.SmsCouponHistoryDetail;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

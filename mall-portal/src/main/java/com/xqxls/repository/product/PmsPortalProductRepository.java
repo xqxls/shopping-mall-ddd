@@ -172,14 +172,14 @@ public class PmsPortalProductRepository implements IPmsPortalProductRepository {
         List<PmsProductLadderVO> productLadderVOList = PmsPortalProductConvert.INSTANCE.pmsProductLadderEntityToVOList(result.getProductLadderList());
         List<PmsProductFullReductionVO> productFullReductionVOList = PmsPortalProductConvert.INSTANCE.pmsProductFullReductionEntityToVOList(result.getProductFullReductionList());
         List<SmsCouponVO> couponVOList = PmsPortalProductConvert.INSTANCE.smsCouponEntityToVOList(result.getCouponList());
-        rich.setProductVO(productVO);
-        rich.setBrandVO(brandVO);
-        rich.setProductAttributeVOList(productAttributeVOList);
-        rich.setProductAttributeValueVOList(productAttributeValueVOList);
-        rich.setSkuStockVOList(skuStockVOList);
-        rich.setProductLadderVOList(productLadderVOList);
-        rich.setProductFullReductionVOList(productFullReductionVOList);
-        rich.setCouponVOList(couponVOList);
+        rich.setProduct(productVO);
+        rich.setBrand(brandVO);
+        rich.setProductAttributeList(productAttributeVOList);
+        rich.setProductAttributeValueList(productAttributeValueVOList);
+        rich.setSkuStockList(skuStockVOList);
+        rich.setProductLadderList(productLadderVOList);
+        rich.setProductFullReductionList(productFullReductionVOList);
+        rich.setCouponList(couponVOList);
         return rich;
     }
 }

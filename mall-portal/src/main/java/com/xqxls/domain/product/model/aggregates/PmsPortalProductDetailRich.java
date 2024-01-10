@@ -18,19 +18,19 @@ import java.util.List;
 public class PmsPortalProductDetailRich {
 
     @ApiModelProperty("商品信息")
-    private PmsProductVO productVO;
+    private PmsProductVO product;
     @ApiModelProperty("商品品牌")
-    private PmsBrandVO brandVO;
+    private PmsBrandVO brand;
     @ApiModelProperty("商品属性与参数")
-    private List<PmsProductAttributeVO> productAttributeVOList;
+    private List<PmsProductAttributeVO> productAttributeList;
     @ApiModelProperty("手动录入的商品属性与参数值")
-    private List<PmsProductAttributeValueVO> productAttributeValueVOList;
+    private List<PmsProductAttributeValueVO> productAttributeValueList;
     @ApiModelProperty("商品的sku库存信息")
-    private List<PmsSkuStockVO> skuStockVOList;
+    private List<PmsSkuStockVO> skuStockList;
     @ApiModelProperty("商品阶梯价格设置")
-    private List<PmsProductLadderVO> productLadderVOList;
+    private List<PmsProductLadderVO> productLadderList;
     @ApiModelProperty("商品满减价格设置")
-    private List<PmsProductFullReductionVO> productFullReductionVOList;
+    private List<PmsProductFullReductionVO> productFullReductionList;
     @ApiModelProperty("商品可用优惠券")
-    private List<SmsCouponVO> couponVOList;
+    private List<SmsCouponVO> couponList;
 }

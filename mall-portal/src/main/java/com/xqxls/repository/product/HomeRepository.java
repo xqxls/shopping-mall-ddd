@@ -1,5 +1,6 @@
 package com.xqxls.repository.product;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.github.pagehelper.PageHelper;
 import com.xqxls.convert.product.*;
 import com.xqxls.dao.HomeDao;
@@ -18,8 +19,11 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static com.fasterxml.jackson.databind.type.LogicalType.Collection;
 
 /**
  * @Description:
@@ -48,17 +52,17 @@ public class HomeRepository implements IHomeRepository {
     public HomeContentRich content() {
         HomeContentRich rich = new HomeContentRich();
         //获取首页广告
-        rich.setAdvertiseVOList(SmsHomeAdvertiseConvert.INSTANCE.convertEntityToVOList(getHomeAdvertiseList()));
+        rich.setAdvertiseList(SmsHomeAdvertiseConvert.INSTANCE.convertEntityToVOList(getHomeAdvertiseList()));
         //获取推荐品牌
-        rich.setBrandVOList(PortalBrandConvert.INSTANCE.convertEntityToVOList(homeDao.getRecommendBrandList(0,6)));
+        rich.setBrandList(PortalBrandConvert.INSTANCE.convertEntityToVOList(homeDao.getRecommendBrandList(0,6)));
         //获取秒杀信息
-        rich.setHomeFlashPromotionVO(homeFlashPromotionTOVO(getHomeFlashPromotion()));
+        rich.setHomeFlashPromotion(homeFlashPromotionTOVO(getHomeFlashPromotion()));
         //获取新品推荐
-        rich.setNewProductVOList(PmsPortalProductConvert.INSTANCE.convertEntityToVOList(homeDao.getNewProductList(0,4)));
+        rich.setNewProductList(PmsPortalProductConvert.INSTANCE.convertEntityToVOList(homeDao.getNewProductList(0,4)));
         //获取人气推荐
-        rich.setHotProductVOList(PmsPortalProductConvert.INSTANCE.convertEntityToVOList(homeDao.getHotProductList(0,4)));
+        rich.setHotProductList(PmsPortalProductConvert.INSTANCE.convertEntityToVOList(homeDao.getHotProductList(0,4)));
         //获取推荐专题
-        rich.setSubjectVOList(CmsSubjectConvert.INSTANCE.convertEntityToVOList(homeDao.getRecommendSubjectList(0,4)));
+        rich.setSubjectList(CmsSubjectConvert.INSTANCE.convertEntityToVOList(homeDao.getRecommendSubjectList(0,4)));
         return rich;
     }
 
@@ -181,6 +185,9 @@ public class HomeRepository implements IHomeRepository {
     }
 
     private HomeFlashPromotionVO homeFlashPromotionTOVO(HomeFlashPromotion homeFlashPromotion){
+        if(CollectionUtils.isEmpty(homeFlashPromotion.getProductList())){
+            return new HomeFlashPromotionVO();
+        }
         HomeFlashPromotionVO vo = new HomeFlashPromotionVO();
         BeanUtils.copyProperties(homeFlashPromotion,vo);
         List<FlashPromotionProductVO> productVOList = new ArrayList<>();

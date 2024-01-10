@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 public class SmsCouponHistoryDetailResult extends SmsCouponHistoryVO {
     //相关优惠券信息
-    private SmsCouponVO smsCouponVO;
+    private SmsCouponVO smsCoupon;
     //优惠券关联商品
     private List<SmsCouponProductRelationVO> productRelationList;
     //优惠券关联商品分类

@@ -21,13 +21,13 @@ import java.util.List;
 public class ConfirmOrderRich {
 
     //包含优惠信息的购物车信息
-    private List<CartPromotionItemResult> cartPromotionItemResultList;
+    private List<CartPromotionItemResult> cartPromotionItemList;
     //用户收货地址列表
-    private List<UmsMemberReceiveAddressVO> memberReceiveAddressVOList;
+    private List<UmsMemberReceiveAddressVO> memberReceiveAddressList;
     //用户可用优惠券列表
-    private List<SmsCouponHistoryDetailResult> couponHistoryDetailResultList;
+    private List<SmsCouponHistoryDetailResult> couponHistoryDetailList;
     //积分使用规则
-    private UmsIntegrationConsumeSettingVO integrationConsumeSettingVO;
+    private UmsIntegrationConsumeSettingVO integrationConsumeSetting;
     //会员持有的积分
     private Integer memberIntegration;
     //计算的金额

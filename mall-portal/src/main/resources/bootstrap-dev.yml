@@ -7,6 +7,6 @@ spring:
         server-addr: http://localhost:8848
         file-extension: yaml
 
-#logging:
-#  level:
-#    com.xqxls: debug
+logging:
+  level:
+    com.xqxls: debug

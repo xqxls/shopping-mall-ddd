@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Data
 public class CartPromotionItemRich {
 
-    private OmsCartItemVO omsCartItemVO;
+    private OmsCartItemVO omsCartItem;
 
     //促销活动信息
     private String promotionMessage;
