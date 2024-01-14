@@ -1,8 +1,8 @@
 package com.xqxls.domain.order.repository;
 
-import com.xqxls.domain.order.model.aggregates.ConfirmOrderRich;
 import com.xqxls.domain.order.model.req.OrderReq;
 import com.xqxls.domain.order.model.res.OmsOrderDetailResult;
+import com.xqxls.model.UmsIntegrationConsumeSetting;
 
 import java.util.List;
 import java.util.Map;
@@ -14,10 +14,6 @@ import java.util.Map;
  */
 public interface IOmsPortalOrderRepository {
 
-    /**
-     * 根据用户购物车信息生成确认单信息
-     */
-    ConfirmOrderRich generateConfirmOrder(List<Long> cartIds);
 
     /**
      * 根据提交信息生成订单
@@ -68,4 +64,10 @@ public interface IOmsPortalOrderRepository {
      * 根据orderSn来实现的支付成功逻辑
      */
     void paySuccessByOrderSn(String orderSn, Integer payType);
+
+    /**
+     * 根据主键ID查询
+     * @return 积分规则
+     */
+    UmsIntegrationConsumeSetting selectUmsIntegrationConsumeById(Long id);
 }

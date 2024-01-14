@@ -43,14 +43,6 @@ public class OmsPortalOrderController {
         return CommonResult.success(result, "下单成功");
     }
 
-    @ApiOperation("用户支付成功的回调")
-    @RequestMapping(value = "/paySuccess", method = RequestMethod.POST)
-    @ResponseBody
-    public CommonResult<Object> paySuccess(@RequestParam Long orderId,@RequestParam Integer payType) {
-        Integer count = portalOrderService.paySuccess(orderId,payType);
-        return CommonResult.success(count, "支付成功");
-    }
-
     @ApiOperation("自动取消超时订单")
     @RequestMapping(value = "/cancelTimeOutOrder", method = RequestMethod.POST)
     @ResponseBody

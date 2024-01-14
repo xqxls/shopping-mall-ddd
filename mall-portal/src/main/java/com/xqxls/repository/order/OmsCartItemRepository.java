@@ -42,7 +42,7 @@ public class OmsCartItemRepository implements IOmsCartItemRepository {
     @Resource
     private PortalProductDao productDao;
     @Resource
-    private OmsPromotionRepository promotionRepository;
+    private OmsPromotionService omsPromotionService;
     @Resource
     private UmsMemberRepository umsMemberRepository;
 
@@ -97,7 +97,7 @@ public class OmsCartItemRepository implements IOmsCartItemRepository {
         }
         List<CartPromotionItemResult> cartPromotionItemList = new ArrayList<>();
         if(!CollectionUtils.isEmpty(cartItemVOList)){
-            cartPromotionItemList = promotionRepository.calcCartPromotion(cartItemVOList);
+            cartPromotionItemList = omsPromotionService.calcCartPromotion(cartItemVOList);
         }
         return cartPromotionItemList;
     }
@@ -110,7 +110,7 @@ public class OmsCartItemRepository implements IOmsCartItemRepository {
         }
         List<CartPromotionItem> cartPromotionItemList = new ArrayList<>();
         if(!CollectionUtils.isEmpty(cartItemVOList)){
-            cartPromotionItemList = promotionRepository.calcCartPromotionItem(cartItemVOList);
+            cartPromotionItemList = omsPromotionService.calcCartPromotionItem(cartItemVOList);
         }
         return cartPromotionItemList;
     }

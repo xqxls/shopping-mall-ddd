@@ -3,6 +3,8 @@ package com.xqxls.domain.product.repository;
 import com.xqxls.domain.product.model.aggregates.PmsPortalProductDetailRich;
 import com.xqxls.domain.product.model.res.PmsProductCategoryNodeResult;
 import com.xqxls.domain.product.model.vo.PmsProductVO;
+import com.xqxls.dto.PromotionProduct;
+import com.xqxls.model.OmsCartItem;
 
 import java.util.List;
 
@@ -27,4 +29,6 @@ public interface IPmsPortalProductRepository {
      * 获取前台商品详情
      */
     PmsPortalProductDetailRich detail(Long id);
+
+    List<PromotionProduct> getPromotionProductList(List<Long> productIdList);
 }

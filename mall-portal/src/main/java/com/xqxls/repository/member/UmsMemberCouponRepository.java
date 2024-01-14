@@ -324,7 +324,7 @@ public class UmsMemberCouponRepository implements IUmsMemberCouponRepository {
                 BeanUtils.copyProperties(smsCouponProductCategoryRelation,vo);
                 categoryRelationList.add(vo);
             }
-            result.setSmsCoupon(smsCouponVO);
+            result.setCoupon(smsCouponVO);
             result.setProductRelationList(productRelationList);
             result.setCategoryRelationList(categoryRelationList);
             results.add(result);

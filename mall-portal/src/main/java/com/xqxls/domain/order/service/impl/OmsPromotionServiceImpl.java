@@ -1,9 +1,11 @@
 package com.xqxls.domain.order.service.impl;
 
+import com.xqxls.convert.order.OmsPromotionConvert;
 import com.xqxls.domain.order.model.res.CartPromotionItemResult;
 import com.xqxls.domain.order.model.vo.OmsCartItemVO;
-import com.xqxls.domain.order.repository.IOmsPromotionRepository;
 import com.xqxls.domain.order.service.OmsPromotionService;
+import com.xqxls.domain.order.service.calculatePromotion.CalcCartPromotionItemService;
+import com.xqxls.dto.CartPromotionItem;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,11 +17,18 @@ import java.util.List;
  */
 @Service
 public class OmsPromotionServiceImpl implements OmsPromotionService {
+
     @Resource
-    private IOmsPromotionRepository omsPromotionRepository;
+    private CalcCartPromotionItemService calcCartPromotionItemService;
 
     @Override
     public List<CartPromotionItemResult> calcCartPromotion(List<OmsCartItemVO> cartItemVOList) {
-        return omsPromotionRepository.calcCartPromotion(cartItemVOList);
+        return OmsPromotionConvert.INSTANCE.cartPromotionItemEntityToResultList(this.calcCartPromotionItem(cartItemVOList));
+    }
+
+    @Override
+    public List<CartPromotionItem> calcCartPromotionItem(List<OmsCartItemVO> cartItemVOList) {
+
+        return calcCartPromotionItemService.calcCartPromotionItem(cartItemVOList);
     }
 }

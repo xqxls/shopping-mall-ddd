@@ -2,6 +2,7 @@ package com.xqxls.domain.order.service;
 
 import com.xqxls.domain.order.model.res.CartPromotionItemResult;
 import com.xqxls.domain.order.model.vo.OmsCartItemVO;
+import com.xqxls.dto.CartPromotionItem;
 
 import java.util.List;
 
@@ -15,4 +16,10 @@ public interface OmsPromotionService {
      * @param cartItemVOList 购物车
      */
     List<CartPromotionItemResult> calcCartPromotion(List<OmsCartItemVO> cartItemVOList);
+
+    /**
+     * 计算购物车中的促销活动信息
+     * @param cartItemVOList 购物车
+     */
+    List<CartPromotionItem> calcCartPromotionItem(List<OmsCartItemVO> cartItemVOList);
 }

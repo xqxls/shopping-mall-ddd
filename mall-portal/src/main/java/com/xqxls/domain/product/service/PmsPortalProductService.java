@@ -3,9 +3,8 @@ package com.xqxls.domain.product.service;
 import com.xqxls.domain.product.model.aggregates.PmsPortalProductDetailRich;
 import com.xqxls.domain.product.model.res.PmsProductCategoryNodeResult;
 import com.xqxls.domain.product.model.vo.PmsProductVO;
-import com.xqxls.model.PmsProduct;
-import com.xqxls.dto.PmsPortalProductDetail;
-import com.xqxls.dto.PmsProductCategoryNode;
+import com.xqxls.dto.PromotionProduct;
+import com.xqxls.model.OmsCartItem;
 
 import java.util.List;
 
@@ -28,4 +27,11 @@ public interface PmsPortalProductService {
      * 获取前台商品详情
      */
     PmsPortalProductDetailRich detail(Long id);
+
+    /**
+     * 查询所有商品的优惠相关信息
+     * @param productIdList 商品ID列表
+     * @return 商品优惠信息
+     */
+    List<PromotionProduct> getPromotionProductList(List<Long> productIdList);
 }

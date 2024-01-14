@@ -5,6 +5,8 @@ import com.xqxls.domain.product.model.res.PmsProductCategoryNodeResult;
 import com.xqxls.domain.product.model.vo.PmsProductVO;
 import com.xqxls.domain.product.repository.IPmsPortalProductRepository;
 import com.xqxls.domain.product.service.PmsPortalProductService;
+import com.xqxls.dto.PromotionProduct;
+import com.xqxls.model.OmsCartItem;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,6 +35,11 @@ public class PmsPortalProductServiceImpl implements PmsPortalProductService {
     public PmsPortalProductDetailRich detail(Long id) {
 
         return pmsPortalProductRepository.detail(id);
+    }
+
+    @Override
+    public List<PromotionProduct> getPromotionProductList(List<Long> productIdList) {
+        return pmsPortalProductRepository.getPromotionProductList(productIdList);
     }
 
 }

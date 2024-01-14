@@ -13,6 +13,7 @@ import com.xqxls.domain.product.model.vo.*;
 import com.xqxls.domain.product.repository.IPmsPortalProductRepository;
 import com.xqxls.dto.PmsPortalProductDetail;
 import com.xqxls.dto.PmsProductCategoryNode;
+import com.xqxls.dto.PromotionProduct;
 import com.xqxls.mapper.*;
 import com.xqxls.model.*;
 import org.springframework.beans.BeanUtils;
@@ -160,6 +161,12 @@ public class PmsPortalProductRepository implements IPmsPortalProductRepository {
         //商品可用优惠券
         result.setCouponList(portalProductDao.getAvailableCouponList(product.getId(),product.getProductCategoryId()));
         return convertResultToRich(result);
+    }
+
+    @Override
+    public List<PromotionProduct> getPromotionProductList(List<Long> productIdList) {
+
+        return portalProductDao.getPromotionProductList(productIdList);
     }
 
     private PmsPortalProductDetailRich convertResultToRich(PmsPortalProductDetail result) {
