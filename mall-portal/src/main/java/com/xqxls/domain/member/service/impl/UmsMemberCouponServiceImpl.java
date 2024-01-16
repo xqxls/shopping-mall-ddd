@@ -7,6 +7,7 @@ import com.xqxls.domain.member.model.vo.SmsCouponVO;
 import com.xqxls.domain.member.repository.IUmsMemberCouponRepository;
 import com.xqxls.domain.member.service.UmsMemberCouponService;
 import com.xqxls.dto.CartPromotionItem;
+import com.xqxls.dto.SmsCouponHistoryDetail;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -49,5 +50,10 @@ public class UmsMemberCouponServiceImpl implements UmsMemberCouponService {
     @Override
     public List<SmsCouponVO> list(Integer useStatus) {
         return umsMemberCouponRepository.list(useStatus);
+    }
+
+    @Override
+    public List<SmsCouponHistoryDetail> listCartDetail(List<CartPromotionItem> cartPromotionItemList, Integer type) {
+        return umsMemberCouponRepository.listCartDetail(cartPromotionItemList,type);
     }
 }

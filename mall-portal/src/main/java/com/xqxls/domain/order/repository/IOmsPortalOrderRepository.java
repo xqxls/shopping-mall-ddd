@@ -2,7 +2,7 @@ package com.xqxls.domain.order.repository;
 
 import com.xqxls.domain.order.model.req.OrderReq;
 import com.xqxls.domain.order.model.res.OmsOrderDetailResult;
-import com.xqxls.model.UmsIntegrationConsumeSetting;
+import com.xqxls.model.*;
 
 import java.util.List;
 import java.util.Map;
@@ -70,4 +70,23 @@ public interface IOmsPortalOrderRepository {
      * @return 积分规则
      */
     UmsIntegrationConsumeSetting selectUmsIntegrationConsumeById(Long id);
+
+    /**
+     * 根据主键ID查询
+     * @return Sku
+     */
+    PmsSkuStock selectSkuById(Long id);
+
+    /**
+     * 更新Sku
+     */
+    void updateSkuById(PmsSkuStock skuStock);
+
+    List<OmsOrderSetting> selectAllOrderSetting();
+
+    void save(OmsOrder omsOrder);
+
+    void saveOrderItemBatch(List<OmsOrderItem> orderItemList);
+
+    void updateCouponStatus(Long couponId, Long memberId, Integer useStatus);
 }

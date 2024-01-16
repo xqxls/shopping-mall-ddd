@@ -97,22 +97,22 @@ public class OmsPortalOrderRepository implements IOmsPortalOrderRepository {
         List<CartPromotionItem> cartPromotionItemList = cartItemRepository.listPromotionItem(currentMember.getId(), orderReq.getCartIds());
         for (CartPromotionItem cartPromotionItem : cartPromotionItemList) {
             //生成下单商品信息
-            OmsOrderItem orderItem = new OmsOrderItem();
-            orderItem.setProductId(cartPromotionItem.getProductId());
-            orderItem.setProductName(cartPromotionItem.getProductName());
-            orderItem.setProductPic(cartPromotionItem.getProductPic());
-            orderItem.setProductAttr(cartPromotionItem.getProductAttr());
-            orderItem.setProductBrand(cartPromotionItem.getProductBrand());
-            orderItem.setProductSn(cartPromotionItem.getProductSn());
-            orderItem.setProductPrice(cartPromotionItem.getPrice());
-            orderItem.setProductQuantity(cartPromotionItem.getQuantity());
-            orderItem.setProductSkuId(cartPromotionItem.getProductSkuId());
-            orderItem.setProductSkuCode(cartPromotionItem.getProductSkuCode());
-            orderItem.setProductCategoryId(cartPromotionItem.getProductCategoryId());
-            orderItem.setPromotionAmount(cartPromotionItem.getReduceAmount());
-            orderItem.setPromotionName(cartPromotionItem.getPromotionMessage());
-            orderItem.setGiftIntegration(cartPromotionItem.getIntegration());
-            orderItem.setGiftGrowth(cartPromotionItem.getGrowth());
+            OmsOrderItem orderItem = OmsOrderItem.builder()
+                    .productId(cartPromotionItem.getProductId())
+                    .productName(cartPromotionItem.getProductName())
+                    .productPic(cartPromotionItem.getProductPic())
+                    .productAttr(cartPromotionItem.getProductAttr())
+                    .productBrand(cartPromotionItem.getProductBrand())
+                    .productSn(cartPromotionItem.getProductSn())
+                    .productPrice(cartPromotionItem.getPrice())
+                    .productQuantity(cartPromotionItem.getQuantity())
+                    .productSkuId(cartPromotionItem.getProductSkuId())
+                    .productSkuCode(cartPromotionItem.getProductSkuCode())
+                    .productCategoryId(cartPromotionItem.getProductCategoryId())
+                    .promotionAmount(cartPromotionItem.getReduceAmount())
+                    .promotionName(cartPromotionItem.getPromotionMessage())
+                    .giftIntegration(cartPromotionItem.getIntegration())
+                    .giftGrowth(cartPromotionItem.getGrowth()).build();
             orderItemList.add(orderItem);
         }
         //判断购物车中商品是否都有库存
@@ -434,6 +434,31 @@ public class OmsPortalOrderRepository implements IOmsPortalOrderRepository {
         return integrationConsumeSettingMapper.selectByPrimaryKey(id);
     }
 
+    @Override
+    public PmsSkuStock selectSkuById(Long id) {
+        return skuStockMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void updateSkuById(PmsSkuStock skuStock) {
+        skuStockMapper.updateByPrimaryKeySelective(skuStock);
+    }
+
+    @Override
+    public List<OmsOrderSetting> selectAllOrderSetting() {
+        return orderSettingMapper.selectAll();
+    }
+
+    @Override
+    public void save(OmsOrder omsOrder) {
+        orderMapper.insert(omsOrder);
+    }
+
+    @Override
+    public void saveOrderItemBatch(List<OmsOrderItem> orderItemList) {
+        orderItemMapper.insertBatch(orderItemList);
+    }
+
     /**
      * 生成18位订单编号:8位日期+2位平台号码+2位支付方式+6位以上自增id
      */
@@ -494,7 +519,7 @@ public class OmsPortalOrderRepository implements IOmsPortalOrderRepository {
      * @param memberId  会员id
      * @param useStatus 0->未使用；1->已使用
      */
-    private void updateCouponStatus(Long couponId, Long memberId, Integer useStatus) {
+    public void updateCouponStatus(Long couponId, Long memberId, Integer useStatus) {
         if (couponId == null) return;
         //查询第一张优惠券
         Example example = new Example(SmsCouponHistory.class);

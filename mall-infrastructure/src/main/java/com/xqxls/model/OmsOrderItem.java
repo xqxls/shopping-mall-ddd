@@ -1,6 +1,7 @@
 package com.xqxls.model;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +9,7 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+@Builder
 public class OmsOrderItem implements Serializable {
 
     @Id

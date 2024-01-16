@@ -3,6 +3,7 @@ package com.xqxls.domain.order.service;
 import com.xqxls.domain.order.model.aggregates.ConfirmOrderRich;
 import com.xqxls.domain.order.model.req.OrderReq;
 import com.xqxls.domain.order.model.res.OmsOrderDetailResult;
+import com.xqxls.model.*;
 
 import java.util.List;
 import java.util.Map;
@@ -67,4 +68,5 @@ public interface OmsPortalOrderService {
      * 根据orderSn来实现的支付成功逻辑
      */
     void paySuccessByOrderSn(String orderSn, Integer payType);
+
 }

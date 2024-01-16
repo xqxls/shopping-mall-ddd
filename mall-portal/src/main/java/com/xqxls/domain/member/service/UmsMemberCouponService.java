@@ -5,6 +5,7 @@ import com.xqxls.domain.member.model.res.SmsCouponHistoryDetailResult;
 import com.xqxls.domain.member.model.vo.SmsCouponHistoryVO;
 import com.xqxls.domain.member.model.vo.SmsCouponVO;
 import com.xqxls.dto.CartPromotionItem;
+import com.xqxls.dto.SmsCouponHistoryDetail;
 
 import java.util.List;
 
@@ -42,4 +43,9 @@ public interface UmsMemberCouponService {
      * 获取用户优惠券列表
      */
     List<SmsCouponVO> list(Integer useStatus);
+
+    /**
+     * 根据购物车信息获取可用优惠券
+     */
+    List<SmsCouponHistoryDetail> listCartDetail(List<CartPromotionItem> cartPromotionItemList, Integer type);
 }

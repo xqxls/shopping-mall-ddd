@@ -13,9 +13,9 @@ import com.xqxls.domain.order.model.res.OmsOrderDetailResult;
 import com.xqxls.domain.order.repository.IOmsPortalOrderRepository;
 import com.xqxls.domain.order.service.OmsCartItemService;
 import com.xqxls.domain.order.service.OmsPortalOrderService;
+import com.xqxls.domain.order.service.createOrder.CreateOrderService;
 import com.xqxls.dto.CartPromotionItem;
-import com.xqxls.model.UmsIntegrationConsumeSetting;
-import com.xqxls.model.UmsMember;
+import com.xqxls.model.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -39,6 +39,8 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
     private UmsMemberReceiveAddressService umsMemberReceiveAddressService;
     @Resource
     private UmsMemberCouponService umsMemberCouponService;
+    @Resource
+    private CreateOrderService createOrderService;
 
 
     @Override
@@ -87,7 +89,7 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
 
     @Override
     public Map<String, Object> generateOrder(OrderReq orderReq) {
-        return omsPortalOrderRepository.generateOrder(orderReq);
+        return createOrderService.generateOrder(orderReq);
     }
 
     @Override
