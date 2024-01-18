@@ -33,6 +33,9 @@ mybatis:
   mapper-locations:
     - classpath:dao/*.xml
     - classpath*:mapper/*.xml
+  configuration:
+    cache-enabled: false #禁用二级缓存
+    local-cache-scope: statement #一级缓存指定为statement级别
 management: #开启SpringBoot Admin的监控
   endpoints:
     web:
