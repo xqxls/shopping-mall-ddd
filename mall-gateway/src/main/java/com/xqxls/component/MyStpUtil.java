@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSON;
 import java.util.List;
 
 /**
- * @Description:
+ * @Description: 自定义权限校验接口扩展
  * @Author: xqxls
  * @CreateTime: 2023/12/31 21:33
  */

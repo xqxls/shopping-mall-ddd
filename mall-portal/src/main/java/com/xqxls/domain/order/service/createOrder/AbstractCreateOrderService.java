@@ -43,7 +43,7 @@ public abstract class AbstractCreateOrderService implements ICreateOrderService{
         // 2.获取购物车及优惠信息
         UmsMember currentMember = umsMemberService.getCurrentMember();
         List<CartPromotionItem> cartPromotionItemList = omsCartItemService.listPromotionItem(currentMember.getId(), orderReq.getCartIds());
-        // 3.判断购物车中商品是否都有库存
+        // 3.校验购物车中商品库存
         if (!hasStock(cartPromotionItemList)) {
             Asserts.fail("库存不足，无法下单");
         }
